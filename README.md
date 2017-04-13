@@ -16,7 +16,7 @@ Outreach and CCB API integration.
 
 ### Manual Installation ###
 
-1. Upload the entire `/liquid-outreach` directory to the `/wp-content/plugins/` directory.
+1. Upload the entire `/lqd-outreach` directory to the `/wp-content/plugins/` directory.
 2. Activate Liquid Outreach through the 'Plugins' menu in WordPress.
 
 ## Frequently Asked Questions ##
