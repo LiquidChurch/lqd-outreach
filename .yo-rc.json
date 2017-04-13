@@ -1,0 +1,19 @@
+{
+  "generator-plugin-wp": {
+    "name": "Liquid Outreach",
+    "homepage": "https://liquidchurch.com",
+    "description": "Outreach and CCB API integration.",
+    "version": "0.0.0",
+    "author": "SurajPrGupta, Liquidchurch",
+    "authoremail": "suraj.gupta@scripterz.in",
+    "authorurl": "https://twitter.com/surajprgupta",
+    "license": "GPLv2",
+    "slug": "liquid-outreach",
+    "classname": "Liquid_Outreach",
+    "mainclassname": "Liquid_Outreach",
+    "classprefix": "LO_",
+    "prefix": "liquid_outreach",
+    "year": 2017,
+    "currentVersionWP": "4.7.2"
+  }
+}
