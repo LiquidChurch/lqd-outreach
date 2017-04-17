@@ -3,7 +3,7 @@
  * Plugin Name: Liquid Outreach
  * Plugin URI:  https://liquidchurch.com
  * Description: Outreach and CCB API integration.
- * Version:     0.0.0
+ * Version:     0.2.0
  * Author:      SurajPrGupta, Liquidchurch
  * Author URI:  https://twitter.com/surajprgupta
  * Donate link: https://liquidchurch.com
@@ -14,7 +14,7 @@
  * @link    https://liquidchurch.com
  *
  * @package Liquid_Outreach
- * @version 0.0.0
+ * @version 0.2.0
  *
  * Built using generator-plugin-wp (https://github.com/WebDevStudios/generator-plugin-wp)
  */
@@ -54,7 +54,7 @@ final class Liquid_Outreach {
 	 * @var    string
 	 * @since  0.0.0
 	 */
-	const VERSION = '0.0.0';
+	const VERSION = '0.2.0';
 
 	/**
 	 * URL of plugin directory.
@@ -97,6 +97,22 @@ final class Liquid_Outreach {
 	protected static $single_instance = null;
 
 	/**
+	 * Instance of LO_Ccb_Events
+	 *
+	 * @since0.0.0
+	 * @var LO_Ccb_Events
+	 */
+	protected $ccb_events;
+
+	/**
+	 * Instance of LO_Ccb_Event_Partners
+	 *
+	 * @since0.0.0
+	 * @var LO_Ccb_Event_Partners
+	 */
+	protected $ccb_event_partners;
+
+	/**
 	 * Creates or returns an instance of this class.
 	 *
 	 * @since   0.0.0
@@ -127,8 +143,9 @@ final class Liquid_Outreach {
 	 * @since  0.0.0
 	 */
 	public function plugin_classes() {
-		// $this->plugin_class = new LO_Plugin_Class( $this );
 
+		$this->ccb_events = new LO_Ccb_Events( $this );
+		$this->ccb_event_partners = new LO_Ccb_Event_Partners( $this );
 	} // END OF PLUGIN CLASSES FUNCTION
 
 	/**
@@ -284,6 +301,8 @@ final class Liquid_Outreach {
 			case 'basename':
 			case 'url':
 			case 'path':
+			case 'ccb_events':
+			case 'ccb_event_partners':
 				return $this->$field;
 			default:
 				throw new Exception( 'Invalid ' . __CLASS__ . ' property: ' . $field );

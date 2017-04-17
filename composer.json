@@ -14,5 +14,11 @@
 	"type": "wordpress-plugin",
 	"autoload": {
 		"classmap": ["liquid-outreach.php", "includes/"]
+	},
+	"require": {
+		"guzzlehttp/guzzle": "~6.0",
+		"webdevstudios/cmb2": "dev-trunk",
+		"webdevstudios/cpt-core": "dev-master",
+		"webdevstudios/taxonomy_core": "dev-master"
 	}
 }
