@@ -1,24 +1,31 @@
 {
-	"name": "liquid-outreach",
-	"description": "Outreach and CCB API integration.",
-	"keywords": ["wordpress", "plugin", "generator-plugin-wp"],
-	"homepage": "https://liquidchurch.com",
-	"license": "GPLv2",
-	"authors": [
-	{
-		"name": "SurajPrGupta, Liquidchurch",
-		"homepage": "https://twitter.com/surajprgupta"
-	}
-	],
-	"minimum-stability": "dev",
-	"type": "wordpress-plugin",
-	"autoload": {
-		"classmap": ["liquid-outreach.php", "includes/"]
-	},
-	"require": {
-		"guzzlehttp/guzzle": "~6.0",
-		"webdevstudios/cmb2": "dev-trunk",
-		"webdevstudios/cpt-core": "dev-master",
-		"webdevstudios/taxonomy_core": "dev-master"
-	}
+  "name": "liquid-outreach",
+  "description": "Outreach and CCB API integration.",
+  "keywords": [
+    "wordpress",
+    "plugin",
+    "generator-plugin-wp"
+  ],
+  "homepage": "https://liquidchurch.com",
+  "license": "GPLv2",
+  "authors": [
+    {
+      "name": "SurajPrGupta, Liquidchurch",
+      "homepage": "https://twitter.com/surajprgupta"
+    }
+  ],
+  "minimum-stability": "dev",
+  "type": "wordpress-plugin",
+  "autoload": {
+    "classmap": [
+      "liquid-outreach.php",
+      "includes/"
+    ]
+  },
+  "require": {
+    "guzzlehttp/guzzle": "~6.0",
+    "webdevstudios/cmb2": "dev-trunk",
+    "webdevstudios/cpt-core": "dev-master",
+    "webdevstudios/taxonomy_core": "dev-master"
+  }
 }

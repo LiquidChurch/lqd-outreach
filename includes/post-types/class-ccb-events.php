@@ -2,7 +2,7 @@
     /**
      * Liquid Outreach Ccb Events.
      *
-     * @since   0.1.0
+     * @since   0.0.1
      * @package Liquid_Outreach
      */
     
@@ -10,7 +10,7 @@
     /**
      * Liquid Outreach Ccb Events post type class.
      *
-     * @since 0.1.0
+     * @since 0.0.1
      *
      * @see   https://github.com/WebDevStudios/CPT_Core
      */
@@ -20,7 +20,7 @@
          * Parent plugin class.
          *
          * @var Liquid_Outreach
-         * @since  0.1.0
+         * @since  0.0.1
          */
         protected $plugin = null;
         
@@ -31,7 +31,7 @@
          *
          * See documentation in CPT_Core, and in wp-includes/post.php.
          *
-         * @since  0.1.0
+         * @since  0.0.1
          *
          * @param  Liquid_Outreach $plugin Main plugin object.
          */
@@ -44,9 +44,9 @@
             // First parameter should be an array with Singular, Plural, and Registered name.
             parent::__construct(
                 array(
-                    esc_html__('Project', 'liquid-outreach'),
-                    esc_html__('Projects', 'liquid-outreach'),
-                    'lo-ccb-events',
+                    esc_html__('Event', 'liquid-outreach'),
+                    esc_html__('Events', 'liquid-outreach'),
+                    'lo-events',
                 ),
                 array(
                     'supports'  => array(
@@ -69,7 +69,7 @@
         /**
          * Initiate our hooks.
          *
-         * @since  0.1.0
+         * @since  0.0.1
          */
         public function hooks()
         {
@@ -79,7 +79,7 @@
         /**
          * Add custom fields to the CPT.
          *
-         * @since  0.1.0
+         * @since  0.0.1
          */
         public function fields()
         {
@@ -103,7 +103,7 @@
             $cmb_additional->add_field(array(
                 'name'             => esc_html__('Kid Friendly', 'liquid-outreach'),
                 'desc'             => esc_html__('', 'liquid-outreach'),
-                'id'               => $prefix . 'event_kid_friendly',
+                'id'               => $prefix . 'kid_friendly',
                 'type'             => 'select',
                 'show_option_none' => true,
                 'options'          => array(
@@ -116,7 +116,7 @@
             $cmb_additional->add_field(array(
                 'name'            => __('Cost', 'liquid-outreach'),
                 'desc'            => __('', 'liquid-outreach'),
-                'id'              => $prefix . 'event_cost',
+                'id'              => $prefix . 'cost',
                 'type'            => 'text',
                 'attributes'      => array(
                     'type'    => 'number',
@@ -130,7 +130,7 @@
             $cmb_additional->add_field(array(
                 'name'       => __('Openings', 'liquid-outreach'),
                 'desc'       => __('', 'liquid-outreach'),
-                'id'         => $prefix . 'event_openings',
+                'id'         => $prefix . 'openings',
                 'type'       => 'text',
                 'attributes' => array(
                     'readonly' => 'readonly',
@@ -142,7 +142,7 @@
             $cmb_additional->add_field(array(
                 'name'        => __('Start Date', 'liquid-outreach'),
                 'desc'        => __('', 'liquid-outreach'),
-                'id'          => $prefix . 'event_start_date',
+                'id'          => $prefix . 'start_date',
                 'type'        => 'text_date',
                 'date_format' => 'Y-m-d',
             ));
@@ -151,7 +151,7 @@
             $cmb_additional->add_field(array(
                 'name'        => __('Address', 'liquid-outreach'),
                 'desc'        => __('', 'liquid-outreach'),
-                'id'          => $prefix . 'event_address',
+                'id'          => $prefix . 'address',
                 'type'        => 'textarea_small',
                 'date_format' => 'Y-m-d',
             ));
@@ -160,23 +160,23 @@
             $cmb_additional->add_field(array(
                 'name'        => __('Register Button', 'liquid-outreach'),
                 'desc'        => __('', 'liquid-outreach'),
-                'id'          => $prefix . 'event_regsiter_url',
+                'id'          => $prefix . 'regsiter_url',
                 'type'        => 'text',
                 'date_format' => 'Y-m-d',
             ));
             
-            //Project City meta
+            //Event City meta
             $cmb_additional->add_field(array(
-                'name'        => __('Project City', 'liquid-outreach'),
+                'name'        => __('Event City', 'liquid-outreach'),
                 'desc'        => __('', 'liquid-outreach'),
-                'id'          => $prefix . 'event_city',
+                'id'          => $prefix . 'city',
                 'type'        => 'text',
                 'date_format' => 'Y-m-d',
             ));
             
             // Define our metaboxes and fields.
             $cmb_team_leader = new_cmb2_box(array(
-                'id'           => $prefix . 'team_leader',
+                'id'           => $prefix . 'leader',
                 'title'        => esc_html__('Team Leader', 'liquid-outreach'),
                 'object_types' => array('lo-ccb-events'),
                 'context'      => 'normal',
@@ -190,7 +190,7 @@
             $cmb_team_leader->add_field(array(
                 'name' => esc_html__('ID', 'cmb2'),
                 'desc' => esc_html__('', 'cmb2'),
-                'id'   => $prefix . 'event_team_lead_id',
+                'id'   => $prefix . 'team_lead_id',
                 'type' => 'text',
                 'attributes' => array(
                     'readonly' => 'readonly',
@@ -250,7 +250,7 @@
         /**
          * Registers admin columns to display. Hooked in via CPT_Core.
          *
-         * @since  0.1.0
+         * @since  0.0.1
          *
          * @param  array $columns Array of registered column names/labels.
          * @return array          Modified array.
@@ -265,7 +265,7 @@
         /**
          * Handles admin column display. Hooked in via CPT_Core.
          *
-         * @since  0.1.0
+         * @since  0.0.1
          *
          * @param array   $column  Column currently being rendered.
          * @param integer $post_id ID of post to display column for.
