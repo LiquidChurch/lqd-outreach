@@ -1,11 +1,11 @@
 <?php
 /**
- * Liquid Outreach Ccb Events Tests.
+ * Liquid Outreach Ccb Events Sync Tests.
  *
  * @since   0.0.0
  * @package Liquid_Outreach
  */
-class LO_Ccb_Events_Test extends WP_UnitTestCase {
+class LO_Ccb_Events_Sync_Test extends WP_UnitTestCase {
 
 	/**
 	 * Test if our class exists.
@@ -13,7 +13,7 @@ class LO_Ccb_Events_Test extends WP_UnitTestCase {
 	 * @since  0.0.0
 	 */
 	function test_class_exists() {
-		$this->assertTrue( class_exists( 'LO_Ccb_Events') );
+		$this->assertTrue( class_exists( 'LO_Ccb_Events_Sync') );
 	}
 
 	/**
@@ -22,16 +22,7 @@ class LO_Ccb_Events_Test extends WP_UnitTestCase {
 	 * @since  0.0.0
 	 */
 	function test_class_access() {
-		$this->assertInstanceOf( 'LO_Ccb_Events', liquid_outreach()->lo_ccb_events );
-	}
-
-	/**
-	 * Test to make sure the CPT now exists.
-	 *
-	 * @since  0.0.0
-	 */
-	function test_cpt_exists() {
-		$this->assertTrue( post_type_exists( 'lo-ccb-events' ) );
+		$this->assertInstanceOf( 'LO_Ccb_Events_Sync', liquid_outreach()->lo_ccb_events_sync );
 	}
 
 	/**

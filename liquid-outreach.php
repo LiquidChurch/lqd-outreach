@@ -3,7 +3,7 @@
  * Plugin Name: Liquid Outreach
  * Plugin URI:  https://liquidchurch.com
  * Description: Outreach and CCB API integration.
- * Version:     0.0.2
+ * Version:     0.0.3
  * Author:      SurajPrGupta, Liquidchurch
  * Author URI:  https://twitter.com/surajprgupta
  * Donate link: https://liquidchurch.com
@@ -14,7 +14,7 @@
  * @link    https://liquidchurch.com
  *
  * @package Liquid_Outreach
- * @version 0.0.2
+ * @version 0.0.3
  *
  * Built using generator-plugin-wp (https://github.com/WebDevStudios/generator-plugin-wp)
  */
@@ -54,7 +54,7 @@ final class Liquid_Outreach {
 	 * @var    string
 	 * @since  0.0.0
 	 */
-	const VERSION = '0.0.2';
+	const VERSION = '0.0.3';
 
 	/**
 	 * URL of plugin directory.
@@ -99,7 +99,7 @@ final class Liquid_Outreach {
 	/**
 	 * Instance of LO_Ccb_Events
 	 *
-	 * @since0.0.0
+	 * @since 0.0.1
 	 * @var LO_Ccb_Events
 	 */
 	protected $ccb_events;
@@ -107,10 +107,18 @@ final class Liquid_Outreach {
 	/**
 	 * Instance of LO_Ccb_Event_Partners
 	 *
-	 * @since0.0.0
+	 * @since 0.0.2
 	 * @var LO_Ccb_Event_Partners
 	 */
 	protected $ccb_event_partners;
+
+	/**
+	 * Instance of LO_Lo_Ccb_Events_Sync
+	 *
+	 * @since 0.0.3
+	 * @var LO_Ccb_Events_Sync
+	 */
+	protected $lo_ccb_events_sync;
 
 	/**
 	 * Creates or returns an instance of this class.
@@ -146,6 +154,7 @@ final class Liquid_Outreach {
 
 		$this->ccb_events = new LO_Ccb_Events( $this );
 		$this->ccb_event_partners = new LO_Ccb_Event_Partners( $this );
+		$this->lo_ccb_events_sync = new LO_Ccb_Events_Sync( $this );
 	} // END OF PLUGIN CLASSES FUNCTION
 
 	/**
@@ -303,6 +312,7 @@ final class Liquid_Outreach {
 			case 'path':
 			case 'ccb_events':
 			case 'ccb_event_partners':
+			case 'lo_ccb_events_sync':
 				return $this->$field;
 			default:
 				throw new Exception( 'Invalid ' . __CLASS__ . ' property: ' . $field );

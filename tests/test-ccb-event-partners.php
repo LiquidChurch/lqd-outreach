@@ -22,7 +22,7 @@ class LO_Ccb_Event_Partners_Test extends WP_UnitTestCase {
 	 * @since  0.0.0
 	 */
 	function test_class_access() {
-		$this->assertInstanceOf( 'LO_Ccb_Event_Partners', liquid_outreach()->ccb-event-partners );
+		$this->assertInstanceOf( 'LO_Ccb_Event_Partners', liquid_outreach()->lo_ccb_event_partners );
 	}
 
 	/**
