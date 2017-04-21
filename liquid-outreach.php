@@ -3,7 +3,7 @@
  * Plugin Name: Liquid Outreach
  * Plugin URI:  https://liquidchurch.com
  * Description: Outreach and CCB API integration.
- * Version:     0.0.3
+ * Version:     0.0.5
  * Author:      SurajPrGupta, Liquidchurch
  * Author URI:  https://twitter.com/surajprgupta
  * Donate link: https://liquidchurch.com
@@ -14,7 +14,7 @@
  * @link    https://liquidchurch.com
  *
  * @package Liquid_Outreach
- * @version 0.0.3
+ * @version 0.0.5
  *
  * Built using generator-plugin-wp (https://github.com/WebDevStudios/generator-plugin-wp)
  */
@@ -54,7 +54,7 @@ final class Liquid_Outreach {
 	 * @var    string
 	 * @since  0.0.0
 	 */
-	const VERSION = '0.0.3';
+	const VERSION = '0.0.5';
 
 	/**
 	 * URL of plugin directory.
@@ -113,12 +113,20 @@ final class Liquid_Outreach {
 	protected $ccb_event_partners;
 
 	/**
-	 * Instance of LO_Lo_Ccb_Events_Sync
+	 * Instance of LO_Ccb_Events_Sync
 	 *
 	 * @since 0.0.3
 	 * @var LO_Ccb_Events_Sync
 	 */
 	protected $lo_ccb_events_sync;
+	
+	/**
+	 * Instance of Lo_Ccb_api_event_profiles
+	 *
+	 * @since 0.0.5
+	 * @var Lo_Ccb_api_event_profiles
+	 */
+	protected $lo_ccb_api_event_profiles;
 
 	/**
 	 * Creates or returns an instance of this class.
@@ -155,6 +163,7 @@ final class Liquid_Outreach {
 		$this->ccb_events = new LO_Ccb_Events( $this );
 		$this->ccb_event_partners = new LO_Ccb_Event_Partners( $this );
 		$this->lo_ccb_events_sync = new LO_Ccb_Events_Sync( $this );
+		$this->lo_ccb_api_event_profiles = new Lo_Ccb_api_event_profiles( $this );
 	} // END OF PLUGIN CLASSES FUNCTION
 
 	/**

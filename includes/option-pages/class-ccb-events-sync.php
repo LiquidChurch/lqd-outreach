@@ -1,6 +1,6 @@
 <?php
     /**
-     * Liquid Outreach Lo Ccb Events Sync.
+     * Liquid Outreach Ccb Events Sync.
      *
      * @since   0.0.3
      * @package Liquid_Outreach
@@ -8,7 +8,7 @@
     
     
     /**
-     * Liquid Outreach Lo Ccb Events Sync class.
+     * Liquid Outreach Ccb Events Sync class.
      *
      * @since 0.0.3
      */
