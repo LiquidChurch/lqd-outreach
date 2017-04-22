@@ -12,58 +12,72 @@
      *
      * @since 0.0.3
      */
-    class LO_Ccb_Events_Sync
+    class LO_Ccb_Events_Sync extends Lo_Abstract
     {
-        /**
-         * Parent plugin class.
-         *
-         * @var    Liquid_Outreach
-         * @since  0.0.3
-         */
-        protected $plugin = null;
         
         /**
-         * Option key, and option page slug.
+         * @since  0.0.6
+         * @var string
+         */
+        public static $lo_ccb_events_sync_form = 'lo_ccb_events_sync_form';
+        /**
+         * Page title.
+         *
+         * @var    string
+         * @since  0.0.3
+         */
+        protected $title = '';
+        /**
+         * page key, and page slug.
          *
          * @var    string
          * @since  0.0.3
          */
         protected $key = 'liquid_outreach_ccb_events_sync';
-        
         /**
          * Options page metabox ID.
          *
          * @var    string
          * @since  0.0.3
          */
-        protected $metabox_id = 'liquid_outreach_ccb_events_sync_metabox';
-        
-        /**
-         * Options Page title.
-         *
-         * @var    string
-         * @since  0.0.3
-         */
-        protected $title = '';
-        
+        protected $metabox_id = '_liquid_outreach_ccb_events_sync_metabox';
         /**
          * Options Page hook.
          *
          * @var string
          */
         protected $options_page = '';
+        /**
+         * allowed post action
+         *
+         * @since  0.0.6
+         * @var array
+         */
+        private $acceptable_post_action
+            = array(
+                'liquid_outreach_ccb_events_sync',
+            );
+        /**
+         * @since  0.0.6
+         * @var bool
+         */
+        private $form_submitted = false;
+        
+        /**
+         * @since  0.0.6
+         * @var bool
+         */
+        private $form_handle_status = false;
         
         /**
          * Constructor.
          *
          * @since  0.0.3
-         *
          * @param  Liquid_Outreach $plugin Main plugin object.
          */
         public function __construct($plugin)
         {
-            $this->plugin = $plugin;
-            $this->hooks();
+            parent::__construct($plugin);
             
             // Set our title.
             $this->title = esc_attr__('Liquid Outreach Ccb Events Sync', 'liquid-outreach');
@@ -76,31 +90,51 @@
          */
         public function hooks()
         {
-            
-            // Hook in our actions to the admin.
-            add_action('admin_init', array($this, 'admin_init'));
-            add_action('admin_menu', array($this, 'add_options_page'));
-            
+            $this->check_post_action();
+            add_action('admin_menu', array($this, 'add_admin_menu_page'));
             add_action('cmb2_admin_init', array($this, 'add_options_page_metabox'));
-            
         }
         
         /**
-         * Register our setting to WP.
+         * check if post action is valid
          *
-         * @since  0.0.3
+         * @since  0.0.6
          */
-        public function admin_init()
+        private function check_post_action()
         {
-            register_setting($this->key, $this->key);
+            // If no form submission, bail
+            if (empty($_POST)) {
+                return false;
+            }
+            
+            // check required $_POST variables and security nonce
+            if (
+                !isset($_POST['submit-cmb'], $_POST['object_id'], $_POST['nonce_CMB2php' .
+                                                                         $this->metabox_id])
+                || !wp_verify_nonce($_POST['nonce_CMB2php' . $this->metabox_id],
+                    'nonce_CMB2php' . $this->metabox_id)
+            ) {
+                return new WP_Error('security_fail', __('Security check failed.'));
+            }
+            
+            $this->form_submitted = true;
+            $nonce = sanitize_text_field($_POST['nonce_CMB2php' . $this->metabox_id]);
+            $action = sanitize_text_field($_POST['object_id']);
+            
+            if (!in_array($action, $this->acceptable_post_action)) {
+                return new WP_Error('security_fail', __('Post action failed.'));
+            }
+    
+            $method_key = str_replace('-', '_', $action) . '_handler';
+            $this->form_handle_status = $this->{$method_key}();
         }
         
         /**
-         * Add menu options page.
+         * add admin menu page
          *
-         * @since  0.0.3
+         * @since  0.0.6
          */
-        public function add_options_page()
+        public function add_admin_menu_page()
         {
             $this->options_page = add_submenu_page(
                 'edit.php?post_type=lo-events',
@@ -126,7 +160,9 @@
             ?>
             <div class="wrap cmb2-options-page <?php echo esc_attr($this->key); ?>">
                 <h2><?php echo esc_html(get_admin_page_title()); ?></h2>
-                <?php cmb2_metabox_form($this->metabox_id, $this->key); ?>
+                <?php
+                    cmb2_metabox_form($this->metabox_id, $this->key);
+                ?>
             </div>
             <?php
         }
@@ -141,24 +177,30 @@
             
             // Add our CMB2 metabox.
             $cmb = new_cmb2_box(array(
-                'id'         => $this->metabox_id,
-                'hookup'     => false,
-                'cmb_styles' => false,
-                'show_on'    => array(
-                    // These are important, don't remove.
-                    'key'   => 'options-page',
-                    'value' => array($this->key),
-                ),
+                'id'           => $this->metabox_id,
+                'object_types' => array('post'),
+                'hookup'       => false,
+                'save_fields'  => false,
+                'cmb_styles'   => false,
             ));
             
             // Add your fields here.
             $cmb->add_field(array(
-                'name'    => __('Test Text', 'liquid-outreach'),
-                'desc'    => __('field description (optional)', 'liquid-outreach'),
-                'id'      => 'test_text', // No prefix needed.
-                'type'    => 'text',
-                'default' => __('Default Text', 'liquid-outreach'),
+                'name' => __('Fetch Events From Date', 'liquid-outreach'),
+                'desc' => __('All events created or modified since the date will be synced',
+                    'liquid-outreach'),
+                'id'   => 'modified_since', // No prefix needed.
+                'type' => 'text_date',
             ));
             
+        }
+    
+        /**
+         * Option page form handler
+         *
+         * @since  0.0.6
+         */
+        protected function liquid_outreach_ccb_events_sync_handler() {
+            p($_POST);
         }
     }
