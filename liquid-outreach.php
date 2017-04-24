@@ -64,64 +64,6 @@
          * @since  0.0.0
          */
         protected static $single_instance = null;
-        
-        /**
-         * URL of plugin directory.
-         *
-         * @var    string
-         * @since  0.0.0
-         */
-        protected $url = '';
-        
-        /**
-         * Path of plugin directory.
-         *
-         * @var    string
-         * @since  0.0.0
-         */
-        protected $path = '';
-        
-        /**
-         * Plugin basename.
-         *
-         * @var    string
-         * @since  0.0.0
-         */
-        protected $basename = '';
-        
-        /**
-         * Detailed activation error messages.
-         *
-         * @var    array
-         * @since  0.0.0
-         */
-        protected $activation_errors = array();
-        
-        /**
-         * Instance of LO_Ccb_Events
-         *
-         * @since 0.0.1
-         * @var LO_Ccb_Events
-         */
-        protected $ccb_events;
-        
-        
-        /**
-         * Instance of LO_Ccb_Event_Partners
-         *
-         * @since 0.0.2
-         * @var LO_Ccb_Event_Partners
-         */
-        protected $ccb_event_partners;
-        
-        /**
-         * Instance of LO_Ccb_Events_Sync
-         *
-         * @since 0.0.3
-         * @var LO_Ccb_Events_Sync
-         */
-        protected $lo_ccb_events_sync;
-        
         /**
          * Instance of Lo_Ccb_api_event_profiles
          *
@@ -129,6 +71,55 @@
          * @var Lo_Ccb_api_event_profiles
          */
         public $lo_ccb_api_event_profiles;
+        /**
+         * URL of plugin directory.
+         *
+         * @var    string
+         * @since  0.0.0
+         */
+        protected $url = '';
+        /**
+         * Path of plugin directory.
+         *
+         * @var    string
+         * @since  0.0.0
+         */
+        protected $path = '';
+        /**
+         * Plugin basename.
+         *
+         * @var    string
+         * @since  0.0.0
+         */
+        protected $basename = '';
+        /**
+         * Detailed activation error messages.
+         *
+         * @var    array
+         * @since  0.0.0
+         */
+        protected $activation_errors = array();
+        /**
+         * Instance of LO_Ccb_Events
+         *
+         * @since 0.0.1
+         * @var LO_Ccb_Events
+         */
+        protected $ccb_events;
+        /**
+         * Instance of LO_Ccb_Event_Partners
+         *
+         * @since 0.0.2
+         * @var LO_Ccb_Event_Partners
+         */
+        protected $ccb_event_partners;
+        /**
+         * Instance of LO_Ccb_Events_Sync
+         *
+         * @since 0.0.3
+         * @var LO_Ccb_Events_Sync
+         */
+        protected $lo_ccb_events_sync;
         
         /**
          * Sets up our plugin.
@@ -178,6 +169,8 @@
          */
         public function _activate()
         {
+            $this->create_required_db_table();
+            
             // Bail early if requirements aren't met.
             if (!$this->check_requirements()) {
                 return;
@@ -185,6 +178,36 @@
             
             // Make sure any rewrite functionality has been loaded.
             flush_rewrite_rules();
+        }
+    
+        /**
+         * create required table
+         *
+         * @since 0.0.8
+         */
+        public function create_required_db_table()
+        {
+            global $wpdb;
+            $table_name = $wpdb->prefix . 'lo_ccb_events_api_data';
+            if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
+                //table not in database. Create new table
+                $charset_collate = $wpdb->get_charset_collate();
+                
+                $sql
+                    = "CREATE TABLE $table_name(
+                      `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+                      `ccb_event_id` bigint(20) unsigned NOT NULL,
+                      `data` text NOT NULL,
+                      `md5_hash` varchar(255) NOT NULL,
+                      `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                      `last_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                      `last_synced` timestamp NULL DEFAULT NULL,
+                      PRIMARY KEY (`id`)
+                    ) $charset_collate;";
+                
+                require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+                dbDelta($sql);
+            }
         }
         
         /**

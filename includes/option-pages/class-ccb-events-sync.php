@@ -317,6 +317,13 @@
                 $request_arguments = $request['parameters']['argument'];
                 $page_arguments = $this->search_for_sub_arr('name', 'page', $request_arguments);
                 
+                if(!empty($response['events']['count'])) {
+                    global $wpdb;
+                    foreach ($response['events']['event'] as $index => $event) {
+                        
+                    }
+                }
+                
                 echo json_encode([
                     'error'        => !empty($api_error),
                     'success'      => empty($api_error),
