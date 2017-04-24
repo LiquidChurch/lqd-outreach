@@ -148,12 +148,12 @@
         {
             if (empty($this->api_error)) {
                 $this->api_http_resp_code = wp_remote_retrieve_response_code($this->api_response);
-                lo_debug('add', array(
-                    $this->api_name . ' -> api_http_resp_code',
-                    json_encode($this->api_http_resp_code),
-                    0,
-                    'API'
-                ));
+//                lo_debug('add', array(
+//                    $this->api_name . ' -> api_http_resp_code',
+//                    json_encode($this->api_http_resp_code),
+//                    0,
+//                    'API'
+//                ));
             }
         }
         
@@ -171,12 +171,12 @@
                     'error_msg'  => __('Critical Error, Please contact site administrator',
                         'liquid-outreach')
                 );
-                lo_debug('add', array(
-                    $this->api_name . ' -> api_http_resp_code_error',
-                    json_encode($this->api_error),
-                    0,
-                    'API'
-                ));
+//                lo_debug('add', array(
+//                    $this->api_name . ' -> api_http_resp_code_error',
+//                    json_encode($this->api_error),
+//                    0,
+//                    'API'
+//                ));
             }
         }
         

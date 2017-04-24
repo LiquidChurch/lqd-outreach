@@ -12,13 +12,13 @@ class Lo_Ccb_api_event_profiles extends Lo_Ccb_api_main
      * @var string
      * @since 0.0.5
      */
-    protected $api_name    = "event_profile";
+    protected $api_name    = "event_profiles";
     
     /**
      * @var string
      * @since 0.0.5
      */
-    protected $api_req_str = "srv=event_profile";
+    protected $api_req_str = "srv=event_profiles";
     
     /**
      * @var string
@@ -70,19 +70,18 @@ class Lo_Ccb_api_event_profiles extends Lo_Ccb_api_main
      */
     public function map_fields()
     {
-        if (!isset($this->plugin->gravity_render->gform_api_field)) {
-            return new WP_Error('not_found', 'Form Post fields are not present');
+        $post_fields = [
+            'modified_since' => !empty($_POST['modified_since']) ? date('Y-m-d', strtotime($_POST['modified_since'])) : ''
+        ];
+
+        $this->api_fields = [
+            'page' => !empty($_POST['page']) ? $_POST['page'] : 30,
+            'per_page' => !empty($_POST['per_page']) ? $_POST['per_page'] : 100
+        ];
+        
+        if(!empty($post_fields['modified_since'])) {
+            $this->api_fields['modified_since'] = $post_fields['modified_since'];
         }
-
-        $post_fields = $this->plugin->gravity_render->gform_api_field;
-
-        if (!isset($post_fields['event.id'])) {
-            return new WP_Error('not_found', 'Event ID values are required');
-        }
-
-        $this->api_fields = array(
-            'id' => isset($post_fields['event.id']) ? $post_fields['event.id'] : '',
-        );
     }
     
     /**
@@ -105,7 +104,7 @@ class Lo_Ccb_api_event_profiles extends Lo_Ccb_api_main
             ));
 
         $this->api_response = wp_remote_post($this->api_url, $this->api_args);
-        lo_debug('add', array($this->api_name . ' -> raw_api_response', json_encode($this->api_response), 0, 'API'));
+//        lo_debug('add', array($this->api_name . ' -> raw_api_response', json_encode($this->api_response), 0, 'API'));
     }
 
 }

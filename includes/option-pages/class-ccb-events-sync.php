@@ -20,6 +20,7 @@
          * @var string
          */
         public static $lo_ccb_events_sync_form = 'lo_ccb_events_sync_form';
+        
         /**
          * Page title.
          *
@@ -27,6 +28,7 @@
          * @since  0.0.3
          */
         protected $title = '';
+        
         /**
          * page key, and page slug.
          *
@@ -34,6 +36,7 @@
          * @since  0.0.3
          */
         protected $key = 'liquid_outreach_ccb_events_sync';
+        
         /**
          * Options page metabox ID.
          *
@@ -41,12 +44,14 @@
          * @since  0.0.3
          */
         protected $metabox_id = '_liquid_outreach_ccb_events_sync_metabox';
+        
         /**
          * Options Page hook.
          *
          * @var string
          */
         protected $options_page = '';
+        
         /**
          * allowed post action
          *
@@ -57,6 +62,7 @@
             = array(
                 'liquid_outreach_ccb_events_sync',
             );
+        
         /**
          * @since  0.0.6
          * @var bool
@@ -77,10 +83,10 @@
          */
         public function __construct($plugin)
         {
-            parent::__construct($plugin);
-            
             // Set our title.
             $this->title = esc_attr__('Liquid Outreach Ccb Events Sync', 'liquid-outreach');
+            
+            parent::__construct($plugin);
         }
         
         /**
@@ -90,7 +96,7 @@
          */
         public function hooks()
         {
-            $this->check_post_action();
+            add_action('wp_ajax_lo_admin_ajax_fetch_ccb_events', array($this, 'check_post_action'));
             add_action('admin_menu', array($this, 'add_admin_menu_page'));
             add_action('cmb2_admin_init', array($this, 'add_options_page_metabox'));
         }
@@ -100,7 +106,7 @@
          *
          * @since  0.0.6
          */
-        private function check_post_action()
+        public function check_post_action()
         {
             // If no form submission, bail
             if (empty($_POST)) {
@@ -124,7 +130,7 @@
             if (!in_array($action, $this->acceptable_post_action)) {
                 return new WP_Error('security_fail', __('Post action failed.'));
             }
-    
+            
             $method_key = str_replace('-', '_', $action) . '_handler';
             $this->form_handle_status = $this->{$method_key}();
         }
@@ -164,6 +170,48 @@
                     cmb2_metabox_form($this->metabox_id, $this->key);
                 ?>
             </div>
+
+            <script type="text/javascript">
+
+                (function ($) {
+
+                    $(document).ready(function () {
+
+                        $('#' + '<?php echo $this->metabox_id ?>').on('submit', function (e) {
+                            e.preventDefault();
+
+                            var nonce = {
+                                key: 'nonce_CMB2php' + '<?php echo $this->metabox_id ?>',
+                                value: $('#' + 'nonce_CMB2php' + '<?php echo $this->metabox_id ?>').val()
+                            };
+
+                            var data = {
+                                'action': 'lo_admin_ajax_fetch_ccb_events',
+                                'submit-cmb': $('[name="submit-cmb"]').attr('value'),
+                                'object_id': $('[name="object_id"]').val(),
+                                'modified_since': $('#modified_since').val()
+                            };
+                            data[nonce['key']] = nonce['value'];
+
+                            console.log($('[name="submit-cmb"]').attr('value'));
+                            console.log(data);
+
+                            var ajax_url = "<?php echo admin_url('admin-ajax.php'); ?>";
+                            $.ajax({
+                                url: ajax_url,
+                                method: 'POST',
+                                data: data,
+                                dataType: "json"
+                            }).done(function (res) {
+                                console.log(res);
+                            });
+                        });
+
+                    });
+
+                })(jQuery);
+
+            </script>
             <?php
         }
         
@@ -186,21 +234,66 @@
             
             // Add your fields here.
             $cmb->add_field(array(
-                'name' => __('Fetch Events From Date', 'liquid-outreach'),
-                'desc' => __('All events created or modified since the date will be synced',
+                'name'    => __('Fetch Events From Date', 'liquid-outreach'),
+                'desc'    => __('All events created or modified since the date will be synced',
                     'liquid-outreach'),
-                'id'   => 'modified_since', // No prefix needed.
-                'type' => 'text_date',
+                'id'      => 'modified_since', // No prefix needed.
+                'type'    => 'text_date',
+                'default' => !empty($_POST['modified_since']) ? $_POST['modified_since'] : ''
             ));
             
         }
     
         /**
+         * @param $id
+         * @param $array
+         * @return int|null|string
+         *
+         * @since  0.0.6
+         */
+        function search_for_sub_arr($id, $value, $array) {
+            foreach ($array as $key => $val) {
+                if ($val[$id] === $value) {
+                    return $val;
+                }
+            }
+            return null;
+        }
+        
+        /**
          * Option page form handler
          *
          * @since  0.0.6
          */
-        protected function liquid_outreach_ccb_events_sync_handler() {
-            p($_POST);
+        protected function liquid_outreach_ccb_events_sync_handler()
+        {
+            $this->plugin->lo_ccb_api_event_profiles->api_map();
+            $api_error = $this->plugin->lo_ccb_api_event_profiles->api_error;
+            
+            if (empty($api_error)) {
+                
+                $request = $this->plugin->lo_ccb_api_event_profiles->api_response_arr['ccb_api']['request'];
+                $response = $this->plugin->lo_ccb_api_event_profiles->api_response_arr['ccb_api']['response'];
+                $request_arguments = $request['parameters']['argument'];
+                $page_arguments = $this->search_for_sub_arr('name', 'page', $request_arguments);
+                
+                echo json_encode([
+                    'error'        => !empty($api_error),
+                    'success'      => empty($api_error),
+                    'current_page' => $page_arguments['value'],
+                    'next_page'    => empty($response['events']['count']) ? false : ($page_arguments['value'] + 1)
+                ]);
+                
+            } else {
+    
+                echo json_encode([
+                    'error'        => !empty($api_error),
+                    'success'      => empty($api_error),
+                    'details' => $api_error
+                    ]
+                );
+            }
+            
+            die();
         }
     }

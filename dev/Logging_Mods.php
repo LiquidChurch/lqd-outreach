@@ -8,7 +8,7 @@ if (class_exists('WP_Logging')) {
         public function __construct()
         {
             parent::__construct();
-            add_filter('wp_log_types', array($this, 'lo_add_log_types'));
+            add_filter('wp_log_types', array($this, 'pw_add_log_types'));
         }
 
         public function pw_add_log_types($types)
