@@ -193,24 +193,35 @@
                             };
                             data[nonce['key']] = nonce['value'];
 
-                            console.log($('[name="submit-cmb"]').attr('value'));
                             console.log(data);
 
-                            var ajax_url = "<?php echo admin_url('admin-ajax.php'); ?>";
-                            $.ajax({
-                                url: ajax_url,
-                                method: 'POST',
-                                data: data,
-                                dataType: "json"
-                            }).done(function (res) {
-                                console.log(res);
-                            });
+                            ccb_event_ajax_call(data);
                         });
 
                     });
 
-                })(jQuery);
+                    var ccb_event_ajax_call = function(data) {
 
+                        var ajax_url = "<?php echo admin_url('admin-ajax.php'); ?>";
+                        $.ajax({
+                            url: ajax_url,
+                            method: 'POST',
+                            data: data,
+                            dataType: "json"
+                        }).done(function (res) {
+                            if(res.error == false && res.success == true) {
+                                if(res.next_page != false) {
+                                    data['page'] = res.next_page;
+                                    ccb_event_ajax_call(data);
+                                }
+                            } else {
+
+                            }
+                        });
+                    }
+
+                })(jQuery);
+                
             </script>
             <?php
         }
