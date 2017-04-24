@@ -166,11 +166,11 @@
         {
             ?>
             <style>
-            .hide-obj {
-                display: none !important;
-            }
+                .hide-obj {
+                    display: none !important;
+                }
             </style>
-            
+
             <div class="wrap cmb2-options-page <?php echo esc_attr($this->key); ?>">
                 <h2><?php echo esc_html(get_admin_page_title()); ?></h2>
                 <?php
@@ -189,7 +189,7 @@
                         '<hr/>' +
                         '<h3 class="lo-page-det" style="color:blue;">Fetching page <span>1</span></h3>' +
                         '<h3 class="lo-page-error hide-obj" style="display:none; color:red;">Error!!! Trying again.</h3>');
-                    
+
                     $(document).ready(function () {
 
                         $('#' + '<?php echo $this->metabox_id ?>').on('submit', function (e) {
