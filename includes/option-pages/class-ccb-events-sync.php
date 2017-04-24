@@ -96,6 +96,7 @@
          */
         public function hooks()
         {
+            add_action('admin_enqueue_scripts', array($this, 'admin_enqueue_js'));
             add_action('wp_ajax_lo_admin_ajax_fetch_ccb_events', array($this, 'check_post_action'));
             add_action('admin_menu', array($this, 'add_admin_menu_page'));
             add_action('cmb2_admin_init', array($this, 'add_options_page_metabox'));
@@ -164,6 +165,12 @@
         public function admin_page_display()
         {
             ?>
+            <style>
+            .hide-obj {
+                display: none !important;
+            }
+            </style>
+            
             <div class="wrap cmb2-options-page <?php echo esc_attr($this->key); ?>">
                 <h2><?php echo esc_html(get_admin_page_title()); ?></h2>
                 <?php
@@ -175,6 +182,14 @@
 
                 (function ($) {
 
+                    var blockui_msg = $('<h2>' +
+                        '<img style="width: 25px; vertical-align: middle;" src="<?php echo $this->plugin->url .
+                                                                                           '/assets/images/spinner.svg'?>" /> ' +
+                        'Please Wait...</h2>' +
+                        '<hr/>' +
+                        '<h3 class="lo-page-det" style="color:blue;">Fetching page <span>1</span></h3>' +
+                        '<h3 class="lo-page-error hide-obj" style="display:none; color:red;">Error!!! Trying again.</h3>');
+                    
                     $(document).ready(function () {
 
                         $('#' + '<?php echo $this->metabox_id ?>').on('submit', function (e) {
@@ -193,14 +208,18 @@
                             };
                             data[nonce['key']] = nonce['value'];
 
-                            console.log(data);
-
                             ccb_event_ajax_call(data);
                         });
 
                     });
 
-                    var ccb_event_ajax_call = function(data) {
+                    var ccb_event_ajax_call = function (data) {
+
+                        if (typeof data['page'] == 'undefined') {
+                            $.blockUI({
+                                message: blockui_msg
+                            });
+                        }
 
                         var ajax_url = "<?php echo admin_url('admin-ajax.php'); ?>";
                         $.ajax({
@@ -209,19 +228,26 @@
                             data: data,
                             dataType: "json"
                         }).done(function (res) {
-                            if(res.error == false && res.success == true) {
-                                if(res.next_page != false) {
+                            if (res.error == false && res.success == true) {
+                                if (res.next_page != false) {
                                     data['page'] = res.next_page;
+                                    $(blockui_msg[3]).addClass('hide-obj');
+                                    $(blockui_msg[2]).find('span').html(data['page']);
                                     ccb_event_ajax_call(data);
+                                } else {
+                                    $.unblockUI();
+                                    alert('All data has been fetched and saved to table temporarily, Please go to the Event Sync Page and sync the data to WP.');
                                 }
                             } else {
-
+                                $(blockui_msg[3]).addClass('hide-obj');
+                                data['page'] = res.current_page;
+                                ccb_event_ajax_call(data);
                             }
                         });
                     }
 
                 })(jQuery);
-                
+
             </script>
             <?php
         }
@@ -254,21 +280,22 @@
             ));
             
         }
-    
+        
         /**
-         * @param $id
-         * @param $array
-         * @return int|null|string
+         * include page specific js
          *
-         * @since  0.0.6
+         * @param $hook
+         *
+         * @since 0.0.7
          */
-        function search_for_sub_arr($id, $value, $array) {
-            foreach ($array as $key => $val) {
-                if ($val[$id] === $value) {
-                    return $val;
-                }
+        public function admin_enqueue_js($hook)
+        {
+            if ('lo-events_page_liquid_outreach_ccb_events_sync' != $hook) {
+                return;
             }
-            return null;
+            
+            wp_enqueue_script('block-ui-js',
+                $this->plugin->url . '/assets/bower/blockUI/jquery.blockUI.js');
         }
         
         /**
@@ -283,8 +310,10 @@
             
             if (empty($api_error)) {
                 
-                $request = $this->plugin->lo_ccb_api_event_profiles->api_response_arr['ccb_api']['request'];
-                $response = $this->plugin->lo_ccb_api_event_profiles->api_response_arr['ccb_api']['response'];
+                $request
+                    = $this->plugin->lo_ccb_api_event_profiles->api_response_arr['ccb_api']['request'];
+                $response
+                    = $this->plugin->lo_ccb_api_event_profiles->api_response_arr['ccb_api']['response'];
                 $request_arguments = $request['parameters']['argument'];
                 $page_arguments = $this->search_for_sub_arr('name', 'page', $request_arguments);
                 
@@ -292,19 +321,39 @@
                     'error'        => !empty($api_error),
                     'success'      => empty($api_error),
                     'current_page' => $page_arguments['value'],
-                    'next_page'    => empty($response['events']['count']) ? false : ($page_arguments['value'] + 1)
+                    'next_page'    => empty($response['events']['count']) ? false : ($page_arguments['value'] +
+                                                                                     1)
                 ]);
                 
             } else {
-    
+                
                 echo json_encode([
-                    'error'        => !empty($api_error),
-                    'success'      => empty($api_error),
-                    'details' => $api_error
+                        'error'        => !empty($api_error),
+                        'success'      => empty($api_error),
+                        'details'      => $api_error,
+                        'current_page' => empty($_POST['page']) ? 1 : $_POST['page'],
                     ]
                 );
             }
             
             die();
+        }
+        
+        /**
+         * @param $id
+         * @param $array
+         * @return int|null|string
+         *
+         * @since  0.0.6
+         */
+        function search_for_sub_arr($id, $value, $array)
+        {
+            foreach ($array as $key => $val) {
+                if ($val[$id] === $value) {
+                    return $val;
+                }
+            }
+            
+            return null;
         }
     }
