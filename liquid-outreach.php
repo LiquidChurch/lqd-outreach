@@ -299,6 +299,7 @@
             if (is_admin()) {
                 $this->lo_ccb_api_event_profiles = new Lo_Ccb_api_event_profiles($this);
                 $this->lo_ccb_events_sync = new LO_Ccb_Events_Sync($this);
+                $this->lo_ccb_events_sync_post = new LO_Ccb_Events_Sync_Post($this);
             } else {
             
             }
