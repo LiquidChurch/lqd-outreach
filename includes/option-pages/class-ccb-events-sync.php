@@ -317,10 +317,37 @@
                 $request_arguments = $request['parameters']['argument'];
                 $page_arguments = $this->search_for_sub_arr('name', 'page', $request_arguments);
                 
-                if(!empty($response['events']['count'])) {
+                if (!empty($response['events']['count'])) {
                     global $wpdb;
+                    $table_name = $wpdb->prefix . 'lo_ccb_events_api_data';
+                    
                     foreach ($response['events']['event'] as $index => $event) {
+                        $exist = $wpdb->get_row("SELECT * FROM $table_name WHERE ccb_event_id = ".$event['id'],
+                            ARRAY_A);
+    
+                        if ( null !== $exist ) {
+                            
+                            if($exist['md5_hash'] != md5(json_encode($event))) {
+                                $wpdb->replace(
+                                    'table',
+                                    array(
+                                        'data' => $json_event = json_encode($event),
+                                        'md5_hash' => md5($json_event),
+                                        'last_modified' => date('Y-m-d H:i:s', time()),
+                                    )
+                                );
+                            }
                         
+                        } else {
+    
+                            $wpdb->insert( $table_name, array(
+                                'ccb_event_id' => $event['id'],
+                                'data' => $json_event = json_encode($event),
+                                'md5_hash' => md5($json_event),
+                                'created' => date('Y-m-d H:i:s', time()),
+                                'last_modified' => date('Y-m-d H:i:s', time()),
+                            )  );
+                        }
                     }
                 }
                 
