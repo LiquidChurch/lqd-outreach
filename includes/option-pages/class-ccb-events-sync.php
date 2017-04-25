@@ -208,6 +208,7 @@
                             };
                             data[nonce['key']] = nonce['value'];
 
+                            $(blockui_msg[2]).find('span').html('1');
                             ccb_event_ajax_call(data);
                         });
 
