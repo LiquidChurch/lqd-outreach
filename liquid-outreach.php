@@ -197,6 +197,7 @@
                     = "CREATE TABLE $table_name(
                       `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
                       `ccb_event_id` bigint(20) unsigned NOT NULL,
+                      `wp_post_id` bigint(20) unsigned null
                       `data` text NOT NULL,
                       `md5_hash` varchar(255) NOT NULL,
                       `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -299,7 +300,6 @@
             if (is_admin()) {
                 $this->lo_ccb_api_event_profiles = new Lo_Ccb_api_event_profiles($this);
                 $this->lo_ccb_events_sync = new LO_Ccb_Events_Sync($this);
-                $this->lo_ccb_events_sync_post = new LO_Ccb_Events_Sync_Post($this);
             } else {
             
             }
