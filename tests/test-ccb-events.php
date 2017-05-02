@@ -31,7 +31,7 @@ class LO_Ccb_Events_Test extends WP_UnitTestCase {
 	 * @since  0.0.0
 	 */
 	function test_cpt_exists() {
-		$this->assertTrue( post_type_exists( 'lo-ccb-events' ) );
+		$this->assertTrue( post_type_exists( 'lo-events' ) );
 	}
 
 	/**

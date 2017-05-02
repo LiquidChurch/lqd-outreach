@@ -91,7 +91,7 @@
             $cmb_additional = new_cmb2_box(array(
                 'id'           => $prefix . 'additional_meta',
                 'title'        => esc_html__('Additional Details', 'liquid-outreach'),
-                'object_types' => array('lo-ccb-events'),
+                'object_types' => array('lo-events'),
                 'context'      => 'normal',
                 'priority'     => 'high',
                 'show_names'   => true, // Show field names on the left
@@ -178,7 +178,7 @@
             $cmb_team_leader = new_cmb2_box(array(
                 'id'           => $prefix . 'leader',
                 'title'        => esc_html__('Team Leader', 'liquid-outreach'),
-                'object_types' => array('lo-ccb-events'),
+                'object_types' => array('lo-events'),
                 'context'      => 'normal',
                 'priority'     => 'high',
                 'show_names'   => true, // Show field names on the left
