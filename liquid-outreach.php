@@ -296,6 +296,7 @@
             
             $this->ccb_events = new LO_Ccb_Events($this);
             $this->ccb_event_partners = new LO_Ccb_Event_Partners($this);
+            $this->ccb_event_categories = new LO_Ccb_Event_Categories($this);
             
             if (is_admin()) {
                 $this->lo_ccb_api_event_profiles = new Lo_Ccb_api_event_profiles($this);
