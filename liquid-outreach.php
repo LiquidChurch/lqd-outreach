@@ -77,7 +77,7 @@
          * @var    string
          * @since  0.0.0
          */
-        protected $url = '';
+        public $url = '';
         /**
          * Path of plugin directory.
          *

@@ -188,8 +188,8 @@
             
             //team leader meta
             $cmb_team_leader->add_field(array(
-                'name' => esc_html__('ID', 'cmb2'),
-                'desc' => esc_html__('', 'cmb2'),
+                'name' => esc_html__('ID', 'liquid-outreach'),
+                'desc' => esc_html__('', 'liquid-outreach'),
                 'id'   => $prefix . 'team_lead_id',
                 'type' => 'text',
                 'attributes' => array(
@@ -200,8 +200,8 @@
             
             //team leader fname meta
             $cmb_team_leader->add_field(array(
-                'name' => esc_html__('First Name', 'cmb2'),
-                'desc' => esc_html__('', 'cmb2'),
+                'name' => esc_html__('First Name', 'liquid-outreach'),
+                'desc' => esc_html__('', 'liquid-outreach'),
                 'id'   => $prefix . 'event_team_lead_fname',
                 'type' => 'text',
                 'attributes' => array(
@@ -212,8 +212,8 @@
             
             //team leader lname meta
             $cmb_team_leader->add_field(array(
-                'name' => esc_html__('Last Name', 'cmb2'),
-                'desc' => esc_html__('', 'cmb2'),
+                'name' => esc_html__('Last Name', 'liquid-outreach'),
+                'desc' => esc_html__('', 'liquid-outreach'),
                 'id'   => $prefix . 'event_team_lead_lname',
                 'type' => 'text',
                 'attributes' => array(
@@ -224,8 +224,8 @@
             
             //team leader email meta
             $cmb_team_leader->add_field(array(
-                'name' => esc_html__('Email', 'cmb2'),
-                'desc' => esc_html__('', 'cmb2'),
+                'name' => esc_html__('Email', 'liquid-outreach'),
+                'desc' => esc_html__('', 'liquid-outreach'),
                 'id'   => $prefix . 'event_team_lead_email',
                 'type' => 'text',
                 'attributes' => array(
@@ -236,8 +236,8 @@
             
             //team leader phone meta
             $cmb_team_leader->add_field(array(
-                'name' => esc_html__('Phone', 'cmb2'),
-                'desc' => esc_html__('', 'cmb2'),
+                'name' => esc_html__('Phone', 'liquid-outreach'),
+                'desc' => esc_html__('', 'liquid-outreach'),
                 'id'   => $prefix . 'event_team_lead_phone',
                 'type' => 'text',
                 'attributes' => array(

@@ -84,7 +84,7 @@
         public function __construct($plugin)
         {
             // Set our title.
-            $this->title = esc_attr__('Liquid Outreach Ccb Events Sync 1', 'liquid-outreach');
+            $this->title = esc_attr__('Liquid Outreach Ccb Events Sync', 'liquid-outreach');
             
             parent::__construct($plugin);
         }
@@ -237,7 +237,8 @@
                                     ccb_event_ajax_call(data);
                                 } else {
                                     $.unblockUI();
-                                    alert('All data has been fetched and saved to table temporarily, Please go to the Event Sync Page and sync the data to WP.');
+                                    alert('All data has been fetched and saved to table temporarily, This page will auto refresh after clicking the OK button (if not then please refresh the page) and options to sync the data to WP Post will appear.');
+                                    location.reload();
                                 }
                             } else {
                                 $(blockui_msg[3]).addClass('hide-obj');
@@ -250,7 +251,163 @@
                 })(jQuery);
 
             </script>
+            
             <?php
+            $this->show_sync_details();
+        }
+        
+        /**
+         * Show sync details for events
+         *
+         * @since 0.0.9
+         */
+        protected function show_sync_details()
+        {
+            $sync_data = $this->check_sync_data();
+            if (empty($sync_data['num_rows'])) {
+                return false;
+            }
+            ?>
+            <br/>
+            <hr/>
+
+            <div class="wrap cmb2-options-page-2">
+                <div class="cmb2-wrap form-table">
+                    <div class="cmb-row">
+                        <div class="cmb-th">
+                            <label for=""><?php echo esc_html__('Fetched Data Details',
+                                    'liquid-outreach') ?></label>
+                        </div>
+                    </div>
+                    <div class="cmb-row" style="text-align: center;">
+                        <div class="cmb-th">
+                            <label for="">
+                                <?php echo esc_html__('Total Data',
+                                    'liquid-outreach') ?>
+                            </label>
+                        </div>
+                        <div class="cmb-th">
+                            <label for="">
+                                <?php echo esc_html__('Synced Data',
+                                    'liquid-outreach') ?>
+                            </label>
+                        </div>
+                        <div class="cmb-th">
+                            <label for="">
+                                <?php echo esc_html__('Updated Data',
+                                    'liquid-outreach') ?>
+                            </label>
+                        </div>
+                        <div class="cmb-th">
+                            <label for="">
+                                <?php echo esc_html__('New Data',
+                                    'liquid-outreach') ?>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="cmb-row" style="text-align: center;">
+                        <div class="cmb-th"><?php echo $sync_data['num_rows'] ?></div>
+                        <div class="cmb-th"><?php echo count($sync_data['data']['synced_data']) ?></div>
+                        <div class="cmb-th"><?php echo count($sync_data['data']['updated_data']) ?></div>
+                        <div class="cmb-th"><?php echo count($sync_data['data']['new_data']) ?></div>
+                    </div>
+                    <div class="cmb-row" style="text-align: center;">
+                        <div class="cmb-th">
+                            <button type="buton"
+                                   class="button-primary" style="text-align: center;">
+                                Sync All</button>
+                        </div>
+                        <div class="cmb-th">
+                            <button type="buton"
+                                   class="button-primary" style="text-align: center;"
+                                   <?php echo (0 == count($sync_data['data']['synced_data']) ? 'disabled' : '')?>
+                            >ReSync Existing</button>
+                        </div>
+                        <div class="cmb-th">
+                            <button type="buton"
+                                   class="button-primary" style="text-align: center;"
+                                <?php echo (0 == count($sync_data['data']['updated_data']) ? 'disabled' : '')?>
+                            >Sync Updated</button>
+                        </div>
+                        <div class="cmb-th">
+                            <button type="buton"
+                                   class="button-primary" style="text-align: center;"
+                                <?php echo (0 == count($sync_data['data']['new_data']) ? 'disabled' : '')?>
+                            >Sync New</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php
+        }
+        
+        /**
+         * Check event sync data
+         *
+         * @since 0.0.9
+         */
+        protected function check_sync_data()
+        {
+            global $wpdb;
+            $results
+                = $wpdb->get_results('SELECT `id`, `ccb_event_id`, `wp_post_id`, `data`, `md5_hash`, `last_modified`, `last_synced` FROM ' .
+                                     $wpdb->prefix . 'lo_ccb_events_api_data', ARRAY_A);
+            
+            $data = [
+                'all_data'        => [],
+                'synced_data'     => [],
+                'updated_data'        => [],
+                'new_data' => []
+            ];
+            
+            if (!empty($results)) {
+                foreach ($results as $index => $result) {
+                    
+                    if (empty($result['data'])) {
+                        continue;
+                    }
+                    
+                    $api_data = json_decode($result['data'], 1);
+                    
+                    $val = [
+                        'title'              => $api_data['name'],
+                        'description'        => !empty($api_data['description']) ? $api_data['description'] : '',
+                        'kid_friendly'       => (isset($api_data['registration']['event_type']['id']) &&
+                                                 ($api_data['registration']['event_type']['id'] ==
+                                                  '1')) ? true : false,
+                        'organizer_id'       => (isset($api_data['organizer']['id'])) ? $api_data['organizer']['id'] : null,
+                        'registration_limit' => (isset($api_data['registration']['limit'])) ? $api_data['registration']['limit'] : null,
+                        'start_time'         => (isset($api_data['start_datetime'])) ? $api_data['start_datetime'] : null,
+                        'group_id'           => (isset($api_data['group']['id'])) ? $api_data['group']['id'] : null,
+                        'address'            => (isset($api_data['location'])) ? $api_data['location'] : null,
+                    ];
+    
+                    $data['all_data'][] = $val;
+                    
+                    if (!empty($result['wp_post_id'])) {
+    
+                        $data['synced_data'][] = $val;
+                        
+                        $last_modified = strtotime($result['last_modified']);
+                        $last_synced = strtotime($result['last_synced']);
+                        
+                        if ($last_modified > $last_synced) {
+                            $data['updated_data'][] = $val;
+                        }
+                    } else {
+    
+                        $data['new_data'][] = $val;
+                    }
+                }
+                
+            } else {
+                return null;
+            }
+            
+            return [
+                'num_rows' => $wpdb->num_rows,
+                'data'  => $data,
+            ];
         }
         
         /**
@@ -323,31 +480,32 @@
                     $table_name = $wpdb->prefix . 'lo_ccb_events_api_data';
                     
                     foreach ($response['events']['event'] as $index => $event) {
-                        $exist = $wpdb->get_row("SELECT * FROM $table_name WHERE ccb_event_id = ".$event['id'],
+                        $exist = $wpdb->get_row("SELECT * FROM $table_name WHERE ccb_event_id = " .
+                                                $event['id'],
                             ARRAY_A);
-    
-                        if ( null !== $exist ) {
+                        
+                        if (null !== $exist) {
                             
-                            if($exist['md5_hash'] != md5(json_encode($event))) {
+                            if ($exist['md5_hash'] != md5(json_encode($event))) {
                                 $wpdb->replace(
                                     'table',
                                     array(
-                                        'data' => $json_event = json_encode($event),
-                                        'md5_hash' => md5($json_event),
+                                        'data'          => $json_event = json_encode($event),
+                                        'md5_hash'      => md5($json_event),
                                         'last_modified' => date('Y-m-d H:i:s', time()),
                                     )
                                 );
                             }
-                        
+                            
                         } else {
-    
-                            $wpdb->insert( $table_name, array(
-                                'ccb_event_id' => $event['id'],
-                                'data' => $json_event = json_encode($event),
-                                'md5_hash' => md5($json_event),
-                                'created' => date('Y-m-d H:i:s', time()),
+                            
+                            $wpdb->insert($table_name, array(
+                                'ccb_event_id'  => $event['id'],
+                                'data'          => $json_event = json_encode($event),
+                                'md5_hash'      => md5($json_event),
+                                'created'       => date('Y-m-d H:i:s', time()),
                                 'last_modified' => date('Y-m-d H:i:s', time()),
-                            )  );
+                            ));
                         }
                     }
                 }
@@ -376,6 +534,7 @@
         
         /**
          * @param $id
+         * @param $value
          * @param $array
          * @return int|null|string
          *
