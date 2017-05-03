@@ -97,17 +97,21 @@
         public function hooks()
         {
             add_action('admin_enqueue_scripts', array($this, 'admin_enqueue_js'));
-            add_action('wp_ajax_lo_admin_ajax_fetch_ccb_events', array($this, 'check_post_action'));
+            add_action('wp_ajax_lo_admin_ajax_fetch_ccb_events',
+                array($this, 'fetch_ccb_events_ccb_ajax_callback'));
+            add_action('wp_ajax_lo_admin_ajax_sync_ccb_events',
+                array($this, 'sync_ccb_events_ccb_ajax_callback'));
             add_action('admin_menu', array($this, 'add_admin_menu_page'));
             add_action('cmb2_admin_init', array($this, 'add_options_page_metabox'));
         }
         
         /**
          * check if post action is valid
+         * and process data for fetch ccb events
          *
          * @since  0.0.6
          */
-        public function check_post_action()
+        public function fetch_ccb_events_ccb_ajax_callback()
         {
             // If no form submission, bail
             if (empty($_POST)) {
@@ -313,32 +317,166 @@
                     </div>
                     <div class="cmb-row" style="text-align: center;">
                         <div class="cmb-th">
-                            <button type="buton"
-                                   class="button-primary" style="text-align: center;">
-                                Sync All</button>
+                            <button type="buton" data-ccb-events="all"
+                                    class="button-primary lo-sync-ccb-event"
+                                    style="text-align: center;">
+                                Sync All
+                            </button>
                         </div>
                         <div class="cmb-th">
-                            <button type="buton"
-                                   class="button-primary" style="text-align: center;"
-                                   <?php echo (0 == count($sync_data['data']['synced_data']) ? 'disabled' : '')?>
-                            >ReSync Existing</button>
+                            <button type="buton" data-ccb-events="synced"
+                                    class="button-primary lo-sync-ccb-event"
+                                    style="text-align: center;"
+                                <?php echo(0 ==
+                                           count($sync_data['data']['synced_data']) ? 'disabled' : '') ?>
+                            >ReSync Existing
+                            </button>
                         </div>
                         <div class="cmb-th">
-                            <button type="buton"
-                                   class="button-primary" style="text-align: center;"
-                                <?php echo (0 == count($sync_data['data']['updated_data']) ? 'disabled' : '')?>
-                            >Sync Updated</button>
+                            <button type="buton" data-ccb-events="updated"
+                                    class="button-primary lo-sync-ccb-event"
+                                    style="text-align: center;"
+                                <?php echo(0 ==
+                                           count($sync_data['data']['updated_data']) ? 'disabled' : '') ?>
+                            >Sync Updated
+                            </button>
                         </div>
                         <div class="cmb-th">
-                            <button type="buton"
-                                   class="button-primary" style="text-align: center;"
-                                <?php echo (0 == count($sync_data['data']['new_data']) ? 'disabled' : '')?>
-                            >Sync New</button>
+                            <button type="buton" data-ccb-events="new"
+                                    class="button-primary lo-sync-ccb-event"
+                                    style="text-align: center;"
+                                <?php echo(0 ==
+                                           count($sync_data['data']['new_data']) ? 'disabled' : '') ?>
+                            >Sync New
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <script type="text/javascript">
+                (function ($) {
+
+                    $(document).ready(function () {
+
+                        var blockui_msg_event_sync;
+
+                        var ccb_events_data = {
+                            'all': <?php echo json_encode($sync_data['data']['all_data']) ?>,
+                            'synced': <?php echo json_encode($sync_data['data']['synced_data']) ?>,
+                            'updated': <?php echo json_encode($sync_data['data']['updated_data']) ?>,
+                            'new': <?php echo json_encode($sync_data['data']['new_data']) ?>
+                        };
+
+                        $('.lo-sync-ccb-event').on('click', function (e) {
+
+                            e.preventDefault();
+
+                            var ccb_data = ccb_events_data[$(this).data('ccb-events')];
+                            var total_data = ccb_data.length, offset = 0, limit = 100;
+                            var ccb_data_chunk = ccb_data.slice(offset, (offset + limit));
+                            var nonce = '<?php echo wp_create_nonce('nonce_lo_sync_ccb_event'); ?>';
+
+                            blockui_msg_event_sync = $('<h2>' +
+                                '<img style="width: 25px; vertical-align: middle;" src="<?php echo $this->plugin->url .
+                                                                                                   '/assets/images/spinner.svg'?>" /> ' +
+                                'Please Wait...</h2>' +
+                                '<hr/>' +
+                                '<h3 class="lo-page-det" style="color:blue;">Syncing <span class="lo-sync-span">' + (offset + 1) + ' - ' + (offset + 100) + ' of ' + total_data + '</span></h3>' +
+                                '<h3 class="lo-page-error hide-obj" style="display:none; color:red;">Error!!! Trying again.</h3>');
+
+                            var data = {
+                                'action': 'lo_admin_ajax_sync_ccb_events',
+                                'nonce': nonce,
+                                'data': ccb_data_chunk,
+                                'offset': offset,
+                                'limit': limit
+                            };
+                            
+                            $(blockui_msg_event_sync[2]).find('span.lo-sync-span').html((offset + 1) + ' - ' + (offset + 100) + ' of ' + total_data);
+
+                            ccb_event_sync_ajax_call(data, blockui_msg_event_sync);
+                        });
+
+                        var ccb_event_sync_ajax_call = function (data, blockui_msg) {
+
+                            if (typeof data['offset'] == 'undefined' || data['offset'] == 0) {
+                                $.blockUI({
+                                    message: blockui_msg
+                                });
+                            }
+
+                            var ajax_url = "<?php echo admin_url('admin-ajax.php'); ?>";
+                            $.ajax({
+                                url: ajax_url,
+                                method: 'POST',
+                                data: data,
+                                dataType: "json"
+                            }).done(function (res) {
+                                
+                                console.log(res);
+                                return;
+                                
+                                if (res.error == false && res.success == true) {
+                                    if (res.next_page != false) {
+                                        data['page'] = res.next_page;
+                                        $(blockui_msg[3]).addClass('hide-obj');
+                                        $(blockui_msg[2]).find('span').html(data['page']);
+                                        ccb_event_ajax_call(data);
+                                    } else {
+                                        $.unblockUI();
+                                        alert('All data has been fetched and saved to table temporarily, This page will auto refresh after clicking the OK button (if not then please refresh the page) and options to sync the data to WP Post will appear.');
+                                        location.reload();
+                                    }
+                                } else {
+                                    $(blockui_msg[3]).addClass('hide-obj');
+                                    data['page'] = res.current_page;
+                                    ccb_event_ajax_call(data);
+                                }
+                            });
+                        }
+
+                    });
+
+                })(jQuery);
+            </script>
             <?php
+        }
+    
+        /**
+         * check if post action is valid
+         * and process data for ajax call sync ccb events
+         *
+         * @since  0.1.2
+         */
+        public function sync_ccb_events_ccb_ajax_callback()
+        {
+            p($_POST, 1, 1);
+            // If no form submission, bail
+            if (empty($_POST)) {
+                return false;
+            }
+        
+            // check required $_POST variables and security nonce
+            if (
+                !isset($_POST['submit-cmb'], $_POST['object_id'], $_POST['nonce_CMB2php' .
+                                                                         $this->metabox_id])
+                || !wp_verify_nonce($_POST['nonce_CMB2php' . $this->metabox_id],
+                    'nonce_CMB2php' . $this->metabox_id)
+            ) {
+                return new WP_Error('security_fail', __('Security check failed.'));
+            }
+        
+            $this->form_submitted = true;
+            $nonce = sanitize_text_field($_POST['nonce_CMB2php' . $this->metabox_id]);
+            $action = sanitize_text_field($_POST['object_id']);
+        
+            if (!in_array($action, $this->acceptable_post_action)) {
+                return new WP_Error('security_fail', __('Post action failed.'));
+            }
+        
+            $method_key = str_replace('-', '_', $action) . '_handler';
+            $this->form_handle_status = $this->{$method_key}();
         }
         
         /**
@@ -354,10 +492,10 @@
                                      $wpdb->prefix . 'lo_ccb_events_api_data', ARRAY_A);
             
             $data = [
-                'all_data'        => [],
-                'synced_data'     => [],
-                'updated_data'        => [],
-                'new_data' => []
+                'all_data'     => [],
+                'synced_data'  => [],
+                'updated_data' => [],
+                'new_data'     => []
             ];
             
             if (!empty($results)) {
@@ -371,7 +509,7 @@
                     
                     $val = [
                         'title'              => $api_data['name'],
-                        'description'        => !empty($api_data['description']) ? $api_data['description'] : '',
+                        'description'        => (isset($api_data['description']) && !empty($api_data['description'])) ? $api_data['description'] : '',
                         'kid_friendly'       => (isset($api_data['registration']['event_type']['id']) &&
                                                  ($api_data['registration']['event_type']['id'] ==
                                                   '1')) ? true : false,
@@ -379,13 +517,13 @@
                         'registration_limit' => (isset($api_data['registration']['limit'])) ? $api_data['registration']['limit'] : null,
                         'start_time'         => (isset($api_data['start_datetime'])) ? $api_data['start_datetime'] : null,
                         'group_id'           => (isset($api_data['group']['id'])) ? $api_data['group']['id'] : null,
-                        'address'            => (isset($api_data['location'])) ? $api_data['location'] : null,
+                        'address'            => (isset($api_data['location']) && !empty($api_data['location'])) ? $api_data['location'] : null,
                     ];
-    
+                    
                     $data['all_data'][] = $val;
                     
                     if (!empty($result['wp_post_id'])) {
-    
+                        
                         $data['synced_data'][] = $val;
                         
                         $last_modified = strtotime($result['last_modified']);
@@ -395,7 +533,7 @@
                             $data['updated_data'][] = $val;
                         }
                     } else {
-    
+                        
                         $data['new_data'][] = $val;
                     }
                 }
@@ -406,7 +544,7 @@
             
             return [
                 'num_rows' => $wpdb->num_rows,
-                'data'  => $data,
+                'data'     => $data,
             ];
         }
         
@@ -451,6 +589,8 @@
             if ('lo-events_page_liquid_outreach_ccb_events_sync' != $hook) {
                 return;
             }
+            
+            wp_enqueue_script('underscore');
             
             wp_enqueue_script('block-ui-js',
                 $this->plugin->url . '/assets/bower/blockUI/jquery.blockUI.js');
