@@ -64,6 +64,7 @@
          * @since  0.0.0
          */
         protected static $single_instance = null;
+        
         /**
          * Instance of Lo_Ccb_api_event_profiles
          *
@@ -71,6 +72,23 @@
          * @var Lo_Ccb_api_event_profiles
          */
         public $lo_ccb_api_event_profiles;
+        
+        /**
+         * Instance of Lo_Ccb_api_individual_profile
+         *
+         * @since 0.1.3
+         * @var Lo_Ccb_api_individual_profile
+         */
+        public $lo_ccb_api_individual_profile;
+        
+        /**
+         * Instance of Lo_Ccb_api_attendance_profile
+         *
+         * @since 0.1.4
+         * @var Lo_Ccb_api_attendance_profile
+         */
+        public $lo_ccb_api_attendance_profile;
+        
         /**
          * URL of plugin directory.
          *
@@ -300,6 +318,8 @@
             
             if (is_admin()) {
                 $this->lo_ccb_api_event_profiles = new Lo_Ccb_api_event_profiles($this);
+                $this->lo_ccb_api_individual_profile = new Lo_Ccb_api_individual_profile($this);
+                $this->lo_ccb_api_attendance_profile = new Lo_Ccb_api_attendance_profile($this);
                 $this->lo_ccb_events_sync = new LO_Ccb_Events_Sync($this);
             } else {
             

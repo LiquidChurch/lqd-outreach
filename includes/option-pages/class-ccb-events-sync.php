@@ -477,7 +477,12 @@
             $method_key = str_replace('-', '_', $action) . '_handler';
             $this->form_handle_status = $this->{$method_key}();
         }
-        
+    
+        /**
+         * ccb event sync handler method
+         *
+         * @since 0.1.2
+         */
         public function lo_admin_ajax_sync_ccb_events_handler() {
         
         }
