@@ -61,6 +61,7 @@
         private $acceptable_post_action
             = array(
                 'liquid_outreach_ccb_events_sync',
+                'lo_admin_ajax_sync_ccb_events',
             );
         
         /**
@@ -451,7 +452,6 @@
          */
         public function sync_ccb_events_ccb_ajax_callback()
         {
-            p($_POST, 1, 1);
             // If no form submission, bail
             if (empty($_POST)) {
                 return false;
@@ -459,17 +459,16 @@
         
             // check required $_POST variables and security nonce
             if (
-                !isset($_POST['submit-cmb'], $_POST['object_id'], $_POST['nonce_CMB2php' .
-                                                                         $this->metabox_id])
-                || !wp_verify_nonce($_POST['nonce_CMB2php' . $this->metabox_id],
-                    'nonce_CMB2php' . $this->metabox_id)
+                !isset($_POST['action'], $_POST['nonce'], $_POST['data'])
+                || !wp_verify_nonce($_POST['nonce'],
+                    'nonce_lo_sync_ccb_event')
             ) {
                 return new WP_Error('security_fail', __('Security check failed.'));
             }
         
             $this->form_submitted = true;
-            $nonce = sanitize_text_field($_POST['nonce_CMB2php' . $this->metabox_id]);
-            $action = sanitize_text_field($_POST['object_id']);
+            $nonce = sanitize_text_field($_POST['nonce']);
+            $action = sanitize_text_field($_POST['action']);
         
             if (!in_array($action, $this->acceptable_post_action)) {
                 return new WP_Error('security_fail', __('Post action failed.'));
@@ -477,6 +476,10 @@
         
             $method_key = str_replace('-', '_', $action) . '_handler';
             $this->form_handle_status = $this->{$method_key}();
+        }
+        
+        public function lo_admin_ajax_sync_ccb_events_handler() {
+        
         }
         
         /**
