@@ -61,6 +61,7 @@
                         'create_posts' => 'do_not_allow', // false < WP 4.5, credit @Ewout
                     ),
                     'map_meta_cap' => true,
+                    'show_in_menu' => 'edit.php?post_type=lo-events'
                 )
             );
         }
