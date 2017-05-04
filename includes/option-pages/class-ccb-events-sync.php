@@ -561,17 +561,26 @@
 			$inserted               = 0;
 			$updated                = 0;
 			$event_post_meta_prefix = 'lo_ccb_events_';
+			$eventPartner_post_meta_prefix = 'lo_ccb_event_partner_';
 			$ccb_event_data         = $_POST['data'];
 			
 			if ( ! empty( $ccb_event_data ) ) {
 				
 				foreach ( $ccb_event_data as $index => $ccb_event_datum ) {
+				    
+					//create events partners post
+					$partner_query = new WP_Query( "post_type=lo-event-partners&meta_key=".$eventPartner_post_meta_prefix."group_id&meta_value=".$ccb_event_datum['group_id'] );
+					if(!$partner_query->have_posts()) {
+						$new_partner_post = wp_insert_post( [
+							'post_title'   => $ccb_event_datum['group_name'],
+							'post_type'    => 'lo-event-partners',
+							'meta_input' => [
+								$eventPartner_post_meta_prefix."group_id" => $ccb_event_datum['group_id']
+                            ]
+						] );
+                    }
 					
-					$event_post_data         = [];
-					$event_partner_post_data = [];
-					$event_organizer_data    = [];
-					$event_attendees_data    = [];
-					
+					//create events post
 					$event_post_data = [
 						'title'      => $ccb_event_datum['title'],
 						'content'    => $ccb_event_datum['description'],
@@ -594,6 +603,9 @@
 							
 							$event_post_meta_prefix .
 							'group_id' => $ccb_event_datum['group_id'],
+							
+							$event_post_meta_prefix .
+							'ccb_event_id' => $ccb_event_datum['ccb_event_id'],
 						]
 					];
 					

@@ -147,7 +147,7 @@
                 'name'        => __('Start Date', 'liquid-outreach'),
                 'desc'        => __('', 'liquid-outreach'),
                 'id'          => $prefix . 'start_date',
-                'type'        => 'text_date',
+                'type'        => 'text_datetime_timestamp',
                 'date_format' => 'Y-m-d',
 //                'attributes' => array(
 //                    'readonly' => 'readonly',
@@ -161,7 +161,6 @@
                 'desc'        => __('', 'liquid-outreach'),
                 'id'          => $prefix . 'address',
                 'type'        => 'textarea_small',
-                'date_format' => 'Y-m-d',
 //                'attributes' => array(
 //                    'readonly' => 'readonly',
 //                    'disabled' => 'disabled',
@@ -174,7 +173,6 @@
                 'desc'        => __('', 'liquid-outreach'),
                 'id'          => $prefix . 'regsiter_url',
                 'type'        => 'text',
-                'date_format' => 'Y-m-d',
             ));
             
             //Event City meta
@@ -183,11 +181,34 @@
                 'desc'        => __('', 'liquid-outreach'),
                 'id'          => $prefix . 'city',
                 'type'        => 'text',
-                'date_format' => 'Y-m-d',
 //                'attributes' => array(
 //                    'readonly' => 'readonly',
 //                    'disabled' => 'disabled',
 //                ),
+            ));
+            
+            //Event ccb id meta
+            $cmb_additional->add_field(array(
+                'name'        => __('CCB Event ID', 'liquid-outreach'),
+                'desc'        => __('', 'liquid-outreach'),
+                'id'          => $prefix . 'ccb_event_id',
+                'type'        => 'text',
+                'attributes' => array(
+                    'readonly' => 'readonly',
+                    'disabled' => 'disabled',
+                ),
+            ));
+            
+            //Event group id meta
+            $cmb_additional->add_field(array(
+                'name'        => __('CCB Group ID', 'liquid-outreach'),
+                'desc'        => __('', 'liquid-outreach'),
+                'id'          => $prefix . 'group_id',
+                'type'        => 'text',
+                'attributes' => array(
+                    'readonly' => 'readonly',
+                    'disabled' => 'disabled',
+                ),
             ));
             
             // Define our metaboxes and fields.
