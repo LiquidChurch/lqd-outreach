@@ -107,9 +107,13 @@
                 'type'             => 'select',
                 'show_option_none' => true,
                 'options'          => array(
-                    'standard' => esc_html__('Yes', 'liquid-outreach'),
-                    'custom'   => esc_html__('No', 'liquid-outreach'),
+                    'yes' => esc_html__('Yes', 'liquid-outreach'),
+                    'no'   => esc_html__('No', 'liquid-outreach'),
                 ),
+//                'attributes' => array(
+//                    'readonly' => 'readonly',
+//                    'disabled' => 'disabled',
+//                ),
             ));
             
             //cost meta
@@ -132,10 +136,10 @@
                 'desc'       => __('', 'liquid-outreach'),
                 'id'         => $prefix . 'openings',
                 'type'       => 'text',
-                'attributes' => array(
-                    'readonly' => 'readonly',
-                    'disabled' => 'disabled',
-                ),
+//                'attributes' => array(
+//                    'readonly' => 'readonly',
+//                    'disabled' => 'disabled',
+//                ),
             ));
             
             //start date meta
@@ -145,6 +149,10 @@
                 'id'          => $prefix . 'start_date',
                 'type'        => 'text_date',
                 'date_format' => 'Y-m-d',
+//                'attributes' => array(
+//                    'readonly' => 'readonly',
+//                    'disabled' => 'disabled',
+//                ),
             ));
             
             //address meta
@@ -154,6 +162,10 @@
                 'id'          => $prefix . 'address',
                 'type'        => 'textarea_small',
                 'date_format' => 'Y-m-d',
+//                'attributes' => array(
+//                    'readonly' => 'readonly',
+//                    'disabled' => 'disabled',
+//                ),
             ));
             
             //Register Button meta
@@ -172,6 +184,10 @@
                 'id'          => $prefix . 'city',
                 'type'        => 'text',
                 'date_format' => 'Y-m-d',
+//                'attributes' => array(
+//                    'readonly' => 'readonly',
+//                    'disabled' => 'disabled',
+//                ),
             ));
             
             // Define our metaboxes and fields.
@@ -192,10 +208,10 @@
                 'desc' => esc_html__('', 'liquid-outreach'),
                 'id'   => $prefix . 'team_lead_id',
                 'type' => 'text',
-                'attributes' => array(
-                    'readonly' => 'readonly',
-                    'disabled' => 'disabled',
-                ),
+//                'attributes' => array(
+//                    'readonly' => 'readonly',
+//                    'disabled' => 'disabled',
+//                ),
             ));
             
             //team leader fname meta
@@ -204,10 +220,10 @@
                 'desc' => esc_html__('', 'liquid-outreach'),
                 'id'   => $prefix . 'event_team_lead_fname',
                 'type' => 'text',
-                'attributes' => array(
-                    'readonly' => 'readonly',
-                    'disabled' => 'disabled',
-                ),
+//                'attributes' => array(
+//                    'readonly' => 'readonly',
+//                    'disabled' => 'disabled',
+//                ),
             ));
             
             //team leader lname meta
@@ -216,10 +232,10 @@
                 'desc' => esc_html__('', 'liquid-outreach'),
                 'id'   => $prefix . 'event_team_lead_lname',
                 'type' => 'text',
-                'attributes' => array(
-                    'readonly' => 'readonly',
-                    'disabled' => 'disabled',
-                ),
+//                'attributes' => array(
+//                    'readonly' => 'readonly',
+//                    'disabled' => 'disabled',
+//                ),
             ));
             
             //team leader email meta
@@ -228,10 +244,10 @@
                 'desc' => esc_html__('', 'liquid-outreach'),
                 'id'   => $prefix . 'event_team_lead_email',
                 'type' => 'text',
-                'attributes' => array(
-                    'readonly' => 'readonly',
-                    'disabled' => 'disabled',
-                ),
+//                'attributes' => array(
+//                    'readonly' => 'readonly',
+//                    'disabled' => 'disabled',
+//                ),
             ));
             
             //team leader phone meta
@@ -240,10 +256,10 @@
                 'desc' => esc_html__('', 'liquid-outreach'),
                 'id'   => $prefix . 'event_team_lead_phone',
                 'type' => 'text',
-                'attributes' => array(
-                    'readonly' => 'readonly',
-                    'disabled' => 'disabled',
-                ),
+//                'attributes' => array(
+//                    'readonly' => 'readonly',
+//                    'disabled' => 'disabled',
+//                ),
             ));
         }
         
