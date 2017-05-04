@@ -47,9 +47,9 @@ class Lo_Ccb_api_individual_profile extends Lo_Ccb_api_main
      *
      * @since 0.1.3
      */
-    public function api_map()
+    public function api_map($data = [])
     {
-        $this->map_fields();
+        $this->map_fields($data);
         $this->mod_req_str();
         $this->call_ccb_api();
         $this->process_api_response();
@@ -68,10 +68,10 @@ class Lo_Ccb_api_individual_profile extends Lo_Ccb_api_main
      * @return WP_Error
      * @since 0.1.3
      */
-    public function map_fields()
+    public function map_fields($data)
     {
         $post_fields = [
-            'individual_id' => !empty($_POST['individual_id']) ? $_POST['individual_id'] : ''
+            'individual_id' => !empty($data['organizer_id']) ? $data['organizer_id'] : ''
         ];
 
         if(!empty($post_fields['individual_id'])) {

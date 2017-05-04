@@ -96,12 +96,15 @@
         public function hooks()
         {
         }
-        
+    
         /**
          * Map with appropriate API call
+         *
          * @since 0.0.4
+         * @param array $data
+         * @return
          */
-        public abstract function api_map();
+        public abstract function api_map($data = []);
         
         /**
          *

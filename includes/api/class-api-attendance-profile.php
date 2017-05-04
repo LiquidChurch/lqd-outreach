@@ -47,9 +47,9 @@ class Lo_Ccb_api_attendance_profile extends Lo_Ccb_api_main
      *
      * @since 0.1.4
      */
-    public function api_map()
+    public function api_map($data = [])
     {
-        $this->map_fields();
+        $this->map_fields($data);
         $this->mod_req_str();
         $this->call_ccb_api();
         $this->process_api_response();
@@ -68,15 +68,15 @@ class Lo_Ccb_api_attendance_profile extends Lo_Ccb_api_main
      * @return WP_Error
      * @since 0.1.4
      */
-    public function map_fields()
+    public function map_fields($data)
     {
         $post_fields = [
-            'id' => !empty($_POST['event_id']) ? $_POST['event_id'] : '',
-            'occurrence' => !empty($_POST['occurrence']) ? $_POST['occurrence'] : ''
+            'id' => !empty($data['event_id']) ? $data['event_id'] : '',
+            'occurrence' => !empty($data['occurrence']) ? $data['occurrence'] : date('Y-m-d', time())
         ];
 
         if(!empty($post_fields['id'])) {
-            $this->api_fields['id'] = $post_fields['event_id'];
+            $this->api_fields['id'] = $post_fields['id'];
         }
         if(!empty($post_fields['occurrence'])) {
             $this->api_fields['occurrence'] = $post_fields['occurrence'];

@@ -47,7 +47,7 @@ class Lo_Ccb_api_event_profiles extends Lo_Ccb_api_main
      *
      * @since 0.0.5
      */
-    public function api_map()
+    public function api_map($data = [])
     {
         $this->map_fields();
         $this->mod_req_str();

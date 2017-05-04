@@ -393,7 +393,7 @@
                                 'offset': offset,
                                 'limit': limit
                             };
-                            
+
                             $(blockui_msg_event_sync[2]).find('span.lo-sync-span').html((offset + 1) + ' - ' + (offset + 100) + ' of ' + total_data);
 
                             ccb_event_sync_ajax_call(data, blockui_msg_event_sync);
@@ -414,10 +414,10 @@
                                 data: data,
                                 dataType: "json"
                             }).done(function (res) {
-                                
+
                                 console.log(res);
                                 return;
-                                
+
                                 if (res.error == false && res.success == true) {
                                     if (res.next_page != false) {
                                         data['page'] = res.next_page;
@@ -442,49 +442,6 @@
                 })(jQuery);
             </script>
             <?php
-        }
-    
-        /**
-         * check if post action is valid
-         * and process data for ajax call sync ccb events
-         *
-         * @since  0.1.2
-         */
-        public function sync_ccb_events_ccb_ajax_callback()
-        {
-            // If no form submission, bail
-            if (empty($_POST)) {
-                return false;
-            }
-        
-            // check required $_POST variables and security nonce
-            if (
-                !isset($_POST['action'], $_POST['nonce'], $_POST['data'])
-                || !wp_verify_nonce($_POST['nonce'],
-                    'nonce_lo_sync_ccb_event')
-            ) {
-                return new WP_Error('security_fail', __('Security check failed.'));
-            }
-        
-            $this->form_submitted = true;
-            $nonce = sanitize_text_field($_POST['nonce']);
-            $action = sanitize_text_field($_POST['action']);
-        
-            if (!in_array($action, $this->acceptable_post_action)) {
-                return new WP_Error('security_fail', __('Post action failed.'));
-            }
-        
-            $method_key = str_replace('-', '_', $action) . '_handler';
-            $this->form_handle_status = $this->{$method_key}();
-        }
-    
-        /**
-         * ccb event sync handler method
-         *
-         * @since 0.1.2
-         */
-        public function lo_admin_ajax_sync_ccb_events_handler() {
-        
         }
         
         /**
@@ -516,16 +473,22 @@
                     $api_data = json_decode($result['data'], 1);
                     
                     $val = [
+                        'ccb_event_id'       => $result['ccb_event_id'],
+                        'wp_post_id'         => $result['wp_post_id'],
                         'title'              => $api_data['name'],
-                        'description'        => (isset($api_data['description']) && !empty($api_data['description'])) ? $api_data['description'] : '',
+                        'description'        => (isset($api_data['description']) &&
+                                                 !empty($api_data['description'])) ? $api_data['description'] : '',
                         'kid_friendly'       => (isset($api_data['registration']['event_type']['id']) &&
                                                  ($api_data['registration']['event_type']['id'] ==
                                                   '1')) ? true : false,
                         'organizer_id'       => (isset($api_data['organizer']['id'])) ? $api_data['organizer']['id'] : null,
                         'registration_limit' => (isset($api_data['registration']['limit'])) ? $api_data['registration']['limit'] : null,
                         'start_time'         => (isset($api_data['start_datetime'])) ? $api_data['start_datetime'] : null,
+                        'end_time'         => (isset($api_data['end_datetime'])) ? $api_data['end_datetime'] : null,
                         'group_id'           => (isset($api_data['group']['id'])) ? $api_data['group']['id'] : null,
-                        'address'            => (isset($api_data['location']) && !empty($api_data['location'])) ? $api_data['location'] : null,
+                        'group_name'           => (isset($api_data['group']['value'])) ? $api_data['group']['value'] : null,
+                        'address'            => (isset($api_data['location']) &&
+                                                 !empty($api_data['location'])) ? $api_data['location'] : null,
                     ];
                     
                     $data['all_data'][] = $val;
@@ -553,6 +516,195 @@
             return [
                 'num_rows' => $wpdb->num_rows,
                 'data'     => $data,
+            ];
+        }
+        
+        /**
+         * check if post action is valid
+         * and process data for ajax call sync ccb events
+         *
+         * @since  0.1.2
+         */
+        public function sync_ccb_events_ccb_ajax_callback()
+        {
+            // If no form submission, bail
+            if (empty($_POST)) {
+                return false;
+            }
+            
+            // check required $_POST variables and security nonce
+            if (
+                !isset($_POST['action'], $_POST['nonce'], $_POST['data'])
+                || !wp_verify_nonce($_POST['nonce'],
+                    'nonce_lo_sync_ccb_event')
+            ) {
+                return new WP_Error('security_fail', __('Security check failed.'));
+            }
+            
+            $this->form_submitted = true;
+            $nonce = sanitize_text_field($_POST['nonce']);
+            $action = sanitize_text_field($_POST['action']);
+            
+            if (!in_array($action, $this->acceptable_post_action)) {
+                return new WP_Error('security_fail', __('Post action failed.'));
+            }
+            
+            $method_key = str_replace('-', '_', $action) . '_handler';
+            $this->form_handle_status = $this->{$method_key}();
+        }
+        
+        /**
+         * ccb event sync handler method
+         *
+         * @since 0.1.2
+         */
+        public function lo_admin_ajax_sync_ccb_events_handler()
+        {
+            $ccb_event_data = $_POST['data'];
+            
+            if (!empty($ccb_event_data)) {
+                
+                foreach ($ccb_event_data as $index => $ccb_event_datum) {
+                    
+                    $event_post_data = [];
+                    $event_partner_post_data = [];
+                    $event_organizer_data = [];
+                    $event_attendees_data = [];
+                    
+                    $event_organizer_data
+                        = $this->get_event_organizer_data($ccb_event_datum['ccb_event_id'],
+                        $ccb_event_datum['organizer_id']);
+                    
+                    if($ccb_event_datum['registration_limit'] != 0 &&
+                       (strtotime($ccb_event_datum['start_time']) > time())) {
+                        $event_attendees_data
+                            = $this->get_event_attendance_data($ccb_event_datum['ccb_event_id'], date('Y-m-d', strtotime($ccb_event_datum['start_time'])));
+                    }
+                    
+                    if(empty($ccb_event_datum['wp_post_id'])) {
+                    
+                    } else {
+                    
+                    }
+                    
+                }
+            }
+            
+        }
+    
+        /**
+         * get organizer data either from cache or api call
+         *
+         * @since 0.1.5
+         * @param $ccb_event_id
+         * @param $organizer_id
+         * @return array
+         */
+        protected function get_event_organizer_data($ccb_event_id, $organizer_id)
+        {
+            $api_error = false;
+            $transient_key = "ccb_event_$ccb_event_id" . "_organizer_$organizer_id" .
+                             "_data";
+            $cache_data = get_transient($transient_key);
+            $individual_data = [];
+            
+            if (empty($cache_data)) {
+                
+                $this->plugin->lo_ccb_api_individual_profile->api_map([
+                    'organizer_id' => $organizer_id
+                ]);
+                $api_error = $this->plugin->lo_ccb_api_individual_profile->api_error;
+                
+                if (empty($api_error)) {
+                    
+                    $request
+                        = $this->plugin->lo_ccb_api_individual_profile->api_response_arr['ccb_api']['request'];
+                    
+                    $response
+                        = $this->plugin->lo_ccb_api_individual_profile->api_response_arr['ccb_api']['response'];
+                    
+                    if (!empty($response['individuals']['count'])) {
+                        
+                        $individual = $response['individuals']['individual'];
+                        
+                        $individual_data = [
+                            'first_name' => empty($individual['first_name']) ?: $individual['first_name'],
+                            'last_name'  => $individual['last_name'],
+                            'phone'      => $individual['phones']['phone'][0]['value'],
+                            'email'      => $individual['email'],
+                        ];
+                        
+                        set_transient($transient_key, $individual_data, (60 * 60 * 24));
+                    } else {
+                        $api_error = true;
+                    }
+                    
+                }
+                
+            } else {
+                $individual_data = $cache_data;
+            }
+            
+            return [
+                'error'           => !empty($api_error),
+                'individual_data' => $individual_data
+            ];
+        }
+    
+        /**
+         * get attendance data either from cache or api call
+         *
+         * @since 0.1.6
+         * @param $ccb_event_id
+         * @param $occurrence
+         * @return array
+         */
+        protected function get_event_attendance_data($ccb_event_id, $occurrence)
+        {
+            $api_error = false;
+            $transient_key = "ccb_event_$ccb_event_id" . "attendance_data";
+            $cache_data = get_transient($transient_key);
+            $attendees_data = [];
+    
+            if (empty($cache_data)) {
+        
+                $this->plugin->lo_ccb_api_attendance_profile->api_map([
+                    'event_id' => $ccb_event_id,
+                    'occurrence' => $occurrence
+                ]);
+                $api_error = $this->plugin->lo_ccb_api_attendance_profile->api_error;
+                
+                if (empty($api_error)) {
+            
+                    $request
+                        = $this->plugin->lo_ccb_api_attendance_profile->api_response_arr['ccb_api']['request'];
+            
+                    $response
+                        = isset($this->plugin->lo_ccb_api_attendance_profile->api_response_arr['ccb_api']['response']) ? $this->plugin->lo_ccb_api_attendance_profile->api_response_arr['ccb_api']['response'] : [];
+                    
+                    if (!empty($response)) {
+                
+                        $attendees = $response['events']['event']['attendees'];
+    
+                        $attendees_data = [
+                            'count'  => count($attendees),
+                            'attendees' => $attendees
+                        ];
+                
+                        set_transient($transient_key, $attendees_data, (60 * 60));
+                    } else {
+                        $api_error = true;
+                    }
+            
+                }
+        
+            } else {
+                $attendees_data = $cache_data;
+            }
+    
+            return [
+                'error'           => !empty($api_error),
+                'attendees_data' => $attendees_data
             ];
         }
         
