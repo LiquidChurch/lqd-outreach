@@ -102,6 +102,7 @@
 				array( $this, 'sync_ccb_events_ccb_ajax_callback' ) );
 			add_action( 'admin_menu', array( $this, 'add_admin_menu_page' ) );
 			add_action( 'cmb2_admin_init', array( $this, 'add_options_page_metabox' ) );
+			add_action( 'before_delete_post', array( $this, 'update_api_data_table' ) );
 		}
 		
 		/**
@@ -672,6 +673,7 @@
 								[
 									'wp_post_id'  => $new_post,
 									'last_synced' => date( 'Y-m-d H:i:s', time() ),
+									'last_modified' => date('Y-m-d H:i:s', time())
 								],
 								[
 									'ccb_event_id' => $ccb_event_datum['ccb_event_id']
@@ -695,6 +697,7 @@
 								$wpdb->prefix . 'lo_ccb_events_api_data',
 								[
 									'last_synced' => date( 'Y-m-d H:i:s', time() ),
+									'last_modified' => date('Y-m-d H:i:s', time())
 								],
 								[
 									'ccb_event_id' => $ccb_event_datum['ccb_event_id']
@@ -970,4 +973,24 @@
 			
 			return null;
 		}
+		
+		/**
+         * update api data table when event post is deleted
+         *
+         * @since 0.1.7
+		 * @param $pid
+		 */
+		public function update_api_data_table($pid) {
+		    global $wpdb;
+		    $ccb_event_id = get_post_meta($pid, 'lo_ccb_events_ccb_event_id', true);
+		    if(!empty($ccb_event_id)) {
+			    $wpdb->update( $wpdb->prefix . 'lo_ccb_events_api_data', [
+			            'wp_post_id' => null,
+                        'last_synced' => date('Y-m-d H:i:s', time()),
+                        'last_modified' => date('Y-m-d H:i:s', time())
+                ], [
+			            'ccb_event_id' => $ccb_event_id
+                ] );
+            }
+        }
 	}
