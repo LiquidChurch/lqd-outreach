@@ -215,7 +215,7 @@
                     = "CREATE TABLE $table_name(
                       `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
                       `ccb_event_id` bigint(20) unsigned NOT NULL,
-                      `wp_post_id` bigint(20) unsigned null
+                      `wp_post_id` bigint(20) unsigned NULL,
                       `data` text NOT NULL,
                       `md5_hash` varchar(255) NOT NULL,
                       `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
