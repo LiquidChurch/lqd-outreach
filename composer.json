@@ -25,6 +25,7 @@
   "require": {
     "webdevstudios/cmb2": "dev-trunk",
     "webdevstudios/cpt-core": "dev-master",
-    "webdevstudios/taxonomy_core": "dev-master"
+    "webdevstudios/taxonomy_core": "dev-master",
+    "webdevstudios/wds-shortcodes": "dev-master"
   }
 }
