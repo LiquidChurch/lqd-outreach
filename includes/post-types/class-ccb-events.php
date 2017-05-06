@@ -229,10 +229,10 @@
                 'desc' => esc_html__('', 'liquid-outreach'),
                 'id'   => $prefix . 'team_lead_id',
                 'type' => 'text',
-//                'attributes' => array(
-//                    'readonly' => 'readonly',
-//                    'disabled' => 'disabled',
-//                ),
+                'attributes' => array(
+                    'readonly' => 'readonly',
+                    'disabled' => 'disabled',
+                ),
             ));
             
             //team leader fname meta

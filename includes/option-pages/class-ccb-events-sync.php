@@ -559,27 +559,31 @@
 		 */
 		public function lo_admin_ajax_sync_ccb_events_handler() {
 			global $wpdb;
-			$inserted               = 0;
-			$updated                = 0;
-			$event_post_meta_prefix = 'lo_ccb_events_';
+			$inserted                      = 0;
+			$updated                       = 0;
+			$event_post_meta_prefix        = 'lo_ccb_events_';
 			$eventPartner_post_meta_prefix = 'lo_ccb_event_partner_';
-			$ccb_event_data         = $_POST['data'];
+			$ccb_event_data                = $_POST['data'];
 			
 			if ( ! empty( $ccb_event_data ) ) {
 				
 				foreach ( $ccb_event_data as $index => $ccb_event_datum ) {
-				    
+					
 					//create events partners post
-					$partner_query = new WP_Query( "post_type=lo-event-partners&meta_key=".$eventPartner_post_meta_prefix."group_id&meta_value=".$ccb_event_datum['group_id'] );
-					if(!$partner_query->have_posts()) {
+					$partner_query = new WP_Query( "post_type=lo-event-partners&meta_key=" .
+					                               $eventPartner_post_meta_prefix .
+					                               "group_id&meta_value=" .
+					                               $ccb_event_datum['group_id'] );
+					if ( ! $partner_query->have_posts() ) {
 						$new_partner_post = wp_insert_post( [
-							'post_title'   => $ccb_event_datum['group_name'],
-							'post_type'    => 'lo-event-partners',
+							'post_title' => $ccb_event_datum['group_name'],
+							'post_type'  => 'lo-event-partners',
 							'meta_input' => [
-								$eventPartner_post_meta_prefix."group_id" => $ccb_event_datum['group_id']
-                            ]
+								$eventPartner_post_meta_prefix .
+								"group_id" => $ccb_event_datum['group_id']
+							]
 						] );
-                    }
+					}
 					
 					//create events post
 					$event_post_data = [
@@ -632,9 +636,10 @@
 							= $event_organizer_data['individual_data']['email'];
 					}
 					
-					if ( $ccb_event_datum['registration_limit'] != 0 &&
-					     ( strtotime( $ccb_event_datum['start_time'] ) > time() )
-					) {
+					if ( $ccb_event_datum['registration_limit'] == 0 ) {
+						$event_post_data['meta_input'][ $event_post_meta_prefix . 'openings' ]
+							= 'no-limit';
+					} elseif ( strtotime( $ccb_event_datum['start_time'] ) > time() ) {
 						$event_attendees_data
 							= $this->get_event_attendance_data( $ccb_event_datum['ccb_event_id'],
 							date( 'Y-m-d', strtotime( $ccb_event_datum['start_time'] ) ) );
@@ -671,9 +676,9 @@
 							$wpdb->update(
 								$wpdb->prefix . 'lo_ccb_events_api_data',
 								[
-									'wp_post_id'  => $new_post,
-									'last_synced' => date( 'Y-m-d H:i:s', time() ),
-									'last_modified' => date('Y-m-d H:i:s', time())
+									'wp_post_id'    => $new_post,
+									'last_synced'   => date( 'Y-m-d H:i:s', time() ),
+									'last_modified' => date( 'Y-m-d H:i:s', time() )
 								],
 								[
 									'ccb_event_id' => $ccb_event_datum['ccb_event_id']
@@ -696,8 +701,8 @@
 							$wpdb->update(
 								$wpdb->prefix . 'lo_ccb_events_api_data',
 								[
-									'last_synced' => date( 'Y-m-d H:i:s', time() ),
-									'last_modified' => date('Y-m-d H:i:s', time())
+									'last_synced'   => date( 'Y-m-d H:i:s', time() ),
+									'last_modified' => date( 'Y-m-d H:i:s', time() )
 								],
 								[
 									'ccb_event_id' => $ccb_event_datum['ccb_event_id']
@@ -880,6 +885,27 @@
 		}
 		
 		/**
+		 * update api data table when event post is deleted
+		 *
+		 * @since 0.1.7
+		 *
+		 * @param $pid
+		 */
+		public function update_api_data_table( $pid ) {
+			global $wpdb;
+			$ccb_event_id = get_post_meta( $pid, 'lo_ccb_events_ccb_event_id', true );
+			if ( ! empty( $ccb_event_id ) ) {
+				$wpdb->update( $wpdb->prefix . 'lo_ccb_events_api_data', [
+					'wp_post_id'    => null,
+					'last_synced'   => date( 'Y-m-d H:i:s', time() ),
+					'last_modified' => date( 'Y-m-d H:i:s', time() )
+				], [
+					'ccb_event_id' => $ccb_event_id
+				] );
+			}
+		}
+		
+		/**
 		 * Option page form handler
 		 *
 		 * @since  0.0.6
@@ -973,24 +999,4 @@
 			
 			return null;
 		}
-		
-		/**
-         * update api data table when event post is deleted
-         *
-         * @since 0.1.7
-		 * @param $pid
-		 */
-		public function update_api_data_table($pid) {
-		    global $wpdb;
-		    $ccb_event_id = get_post_meta($pid, 'lo_ccb_events_ccb_event_id', true);
-		    if(!empty($ccb_event_id)) {
-			    $wpdb->update( $wpdb->prefix . 'lo_ccb_events_api_data', [
-			            'wp_post_id' => null,
-                        'last_synced' => date('Y-m-d H:i:s', time()),
-                        'last_modified' => date('Y-m-d H:i:s', time())
-                ], [
-			            'ccb_event_id' => $ccb_event_id
-                ] );
-            }
-        }
 	}
