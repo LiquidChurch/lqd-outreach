@@ -74,7 +74,30 @@
         public function hooks()
         {
             add_action('cmb2_init', array($this, 'fields'));
+	        add_action( 'cmb2_render_list_related_ccb_events', array($this, 'cmb2_render_callback_for_list_related_ccb_events'), 10, 5 );
         }
+	
+	    /**
+	     * Custom field for cmb2 for listing related ccb events
+	     *
+	     * @since 0.1.8
+	     * @param $field
+	     * @param $escaped_value
+	     * @param $object_id
+	     * @param $object_type
+	     * @param $field_type_object
+	     */
+	    function cmb2_render_callback_for_list_related_ccb_events( $field, $escaped_value, $object_id, $object_type, $field_type_object ) {
+		    $event_query = new WP_Query( "post_type=lo-events&meta_key=lo_ccb_events_group_id&meta_value=" .
+		                                   get_post_meta($_GET['post'], 'lo_ccb_event_partner_group_id', true ));
+		    if ( $event_query->have_posts() ) {
+		    	while($event_query->have_posts()) {
+				    $event_query->the_post();
+				    global $post;
+				    echo '<a href="'.get_edit_post_link($post->ID).'" target="_blank">'.$post->post_title.'</a>';
+			    }
+		    }
+	    }
         
         /**
          * Add custom fields to the CPT.
@@ -142,10 +165,10 @@
             
             //list_of_projects meta
             $cmb_additional->add_field(array(
-                'name' => __('List of Projects', 'liquid-outreach'),
+                'name' => __('List of Related Events', 'liquid-outreach'),
                 'desc' => __('', 'liquid-outreach'),
                 'id'   => $prefix . 'list_of_projects',
-                'type' => 'text',
+                'type' => 'list_related_ccb_events',
             ));
             
             //group_id meta
