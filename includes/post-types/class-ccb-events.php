@@ -23,6 +23,27 @@
          * @since  0.0.1
          */
         protected $plugin = null;
+	
+	    /**
+	     * Bypass temp. cache
+	     *
+	     * @var boolean
+	     * @since  0.2.4
+	     */
+	    public $flush = false;
+	
+	    /**
+	     * Default WP_Query args
+	     *
+	     * @var   array
+	     * @since 0.2.4
+	     */
+	    protected $query_args = array(
+		    'post_type' => 'THIS(REPLACE)',
+		    'post_status' => 'publish',
+		    'posts_per_page' => 1,
+		    'no_found_rows' => true,
+	    );
         
         /**
          * Constructor.
@@ -312,4 +333,35 @@
             switch ($column) {
             }
         }
+	
+	    /**
+	     * Retrieve lo-events.
+	     *
+	     * @since  0.2.4
+	     *
+	     * @return WP_Query|LO_Events_Post object
+	     */
+	    public function get_many($args)
+	    {
+		    $defaults = $this->query_args;
+		    unset($defaults['posts_per_page']);
+		    unset($defaults['no_found_rows']);
+		    $args['augment_posts'] = true;
+		
+		    $args = apply_filters('lo_get_events_args', wp_parse_args($args, $defaults));
+		    $events = new WP_Query($args);
+		
+		    if (
+			    isset($args['augment_posts'])
+			    && $args['augment_posts']
+			    && $events->have_posts()
+			    // Don't augment for queries w/ greater than 100 posts, for perf. reasons.
+			    && $events->post_count < 100
+		    ) {
+			    foreach ($events->posts as $key => $post) {
+				    $events->posts[$key] = new LO_Events_Post($post);
+			    }
+		    }
+		    return $events;
+	    }
     }

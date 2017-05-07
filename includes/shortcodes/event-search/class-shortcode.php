@@ -56,12 +56,44 @@ class LO_Shortcodes_Event_Search_Run extends LO_Shortcodes_Run_Base {
 		wp_enqueue_script('lo-vandertable', Liquid_Outreach::$url . '/assets/js/vandertable.js');
 		wp_enqueue_script('lo-index', Liquid_Outreach::$url . '/assets/js/index.js');
 		
+		$args = wp_parse_args( [], array(
+			'post_type' => 'lo-events',
+			'posts_per_page' => 10,
+		) );
+		
+		$events = liquid_outreach()->lo_ccb_events->get_many($args);
+		$max = $events->max_num_pages;
+		$pagination = $this->get_pagination($max);
+		
 		$template = isset($_GET['template']) ? $_GET['template'] : 'search';
 		$content = '';
 		$content .= LO_Style_Loader::get_template('lc-plugin');
 		$content .= LO_Style_Loader::get_template('vandertable');
-		$content .= LO_Template_Loader::get_template( $template, array() );
+		$content .= LO_Template_Loader::get_template( $template, array(
+			'events' => $events,
+			'pagination' => $pagination,
+		) );
 		return $content;
+	}
+	
+	/**
+	 * Pagination links
+	 *
+	 * @since 0.2.4
+	 * @param $total_pages
+	 *
+	 * @return array
+	 */
+	protected function get_pagination($total_pages)
+	{
+		$nav = array('prev_link' => '', 'next_link' => '');
+		
+		if (!$this->bool_att('remove_pagination')) {
+			$nav['prev_link'] = get_previous_posts_link(__('<span>&larr;</span> Newer', 'liquid-outreach'), $total_pages);
+			$nav['next_link'] = get_next_posts_link(__('Older <span>&rarr;</span>', 'liquid-outreach'), $total_pages);
+		}
+		
+		return $nav;
 	}
 
 }

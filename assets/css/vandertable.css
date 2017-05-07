@@ -5,6 +5,7 @@ VanderTable Responsive CSS
  
 .VanderTable {
     margin: 1em 0;
+    margin-left:0 !important;
     width: 100%;
     overflow: hidden;
     background: #FFF;
@@ -24,6 +25,7 @@ VanderTable Responsive CSS
     background-color: #167F92;
     color: #FFF;
     padding: 1em;
+    font-size: 16px;
 }
 .VanderTableSorter button {
     border: 0px solid transparent;
@@ -57,6 +59,7 @@ VanderTable Responsive CSS
     display: block;
     word-wrap: break-word;
     max-width: 7em;
+    font-size: 16px;
 }
 .VanderTable td:first-child {
     display: table-cell;
