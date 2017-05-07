@@ -70,6 +70,11 @@ class LO_Shortcodes_Event_Search_Run extends LO_Shortcodes_Run_Base {
 		
 		$categories = liquid_outreach()->lo_ccb_event_categories->get_many([]);
 		
+		$partners = liquid_outreach()->lo_ccb_event_partners->get_many([
+			'post_type' => liquid_outreach()->lo_ccb_event_partners->post_type(),
+			'posts_per_page' => -1,
+		]);
+		
 		$template = isset($_GET['template']) ? $_GET['template'] : 'search';
 		$content = '';
 		$content .= LO_Style_Loader::get_template('lc-plugin');
@@ -78,6 +83,7 @@ class LO_Shortcodes_Event_Search_Run extends LO_Shortcodes_Run_Base {
 			'events' => !empty($events->posts) ? $events->posts : [],
 			'pagination' => $pagination,
 			'categories' => $categories,
+			'partners' => !empty($partners->posts) ? $partners->posts : [],
 		) );
 		return $content;
 	}

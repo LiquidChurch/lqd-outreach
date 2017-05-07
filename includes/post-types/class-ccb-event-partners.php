@@ -23,6 +23,47 @@
          * @since  0.1.0
          */
         protected $plugin = null;
+	
+	    /**
+	     * Bypass temp. cache
+	     *
+	     * @var boolean
+	     * @since  0.2.7
+	     */
+	    public $flush = false;
+	
+	    /**
+	     * @var bool
+	     * @since  0.2.7
+	     */
+	    protected $overrides_processed = false;
+	
+	    /**
+	     * The identifier for this object
+	     *
+	     * @var string
+	     * @since  0.2.7
+	     */
+	    protected $id = 'lo-event-partners';
+	
+	    /**
+	     * Default WP_Query args
+	     *
+	     * @var   array
+	     * @since 0.2.4
+	     */
+	    protected $query_args = array(
+		    'post_type' => 'THIS(REPLACE)',
+		    'post_status' => 'publish',
+		    'posts_per_page' => 1,
+		    'no_found_rows' => true,
+	    );
+	
+	    /**
+	     * @var string
+	     * @since  0.2.7
+	     */
+	    public $meta_prefix = 'lo_ccb_event_partner_';
         
         /**
          * Constructor.
@@ -61,7 +102,8 @@
                         'create_posts' => 'do_not_allow', // false < WP 4.5, credit @Ewout
                     ),
                     'map_meta_cap' => true,
-                    'show_in_menu' => 'edit.php?post_type=lo-events'
+                    'show_in_menu' => 'edit.php?post_type=lo-events',
+                    'rewrite' => array('slug' => 'event-partners'),
                 )
             );
         }
@@ -108,7 +150,7 @@
         {
             
             // Set our prefix.
-            $prefix = 'lo_ccb_event_partner_';
+            $prefix = $this->meta_prefix;
             
             // Define our metaboxes and fields.
             $cmb_additional = new_cmb2_box(array(
@@ -212,4 +254,98 @@
             switch ($column) {
             }
         }
+	
+	    /**
+	     * Retrieve lo-events-partners
+	     *
+	     * @since  0.2.7
+	     *
+	     * @return WP_Query|LO_Event_Partners_Post object
+	     */
+	    public function get_many($args)
+	    {
+		    $defaults = $this->query_args;
+		    unset($defaults['posts_per_page']);
+		    unset($defaults['no_found_rows']);
+		    $args['augment_posts'] = true;
+		    $args['orderby'] = 'title';
+		    $args['order'] = 'ASC';
+		    $args = apply_filters('lo_get_event_partners_args', wp_parse_args($args, $defaults));
+		
+		    $partners = new WP_Query($args);
+		
+		    if (
+			    isset($args['augment_posts'])
+			    && $args['augment_posts']
+			    && $partners->have_posts()
+			    // Don't augment for queries w/ greater than 100 posts, for perf. reasons.
+			    && $partners->post_count < 100
+		    ) {
+			    foreach ($partners->posts as $key => $post) {
+				    $partners->posts[$key] = new LO_Event_Partners_Post($post);
+			    }
+		    }
+		    return $partners;
+	    }
+	
+	    /**
+	     * Provides access to protected class properties.
+	     * @since  0.2.7
+	     * @param  boolean $key Specific CPT parameter to return
+	     * @return mixed        Specific CPT parameter or array of singular, plural and registered name
+	     */
+	    public function post_type( $key = 'post_type' ) {
+		    if ( ! $this->overrides_processed ) {
+			    $this->filter_values();
+		    }
+		
+		    return parent::post_type( $key );
+	    }
+	
+	    /**
+	     * @since  0.2.7
+	     */
+	    public function filter_values() {
+		    if ( $this->overrides_processed ) {
+			    return;
+		    }
+		
+		    $args = array(
+			    'singular'      => $this->singular,
+			    'plural'        => $this->plural,
+			    'post_type'     => $this->post_type,
+			    'arg_overrides' => $this->arg_overrides,
+		    );
+		
+		    $filtered_args = apply_filters( 'lo_post_types_'. $this->id, $args, $this );
+		
+		    if ( $filtered_args !== $args ) {
+			    foreach ( $args as $arg => $val ) {
+				    if ( isset( $filtered_args[ $arg ] ) ) {
+					    $this->{$arg} = $filtered_args[ $arg ];
+				    }
+			    }
+		    }
+		
+		    $this->overrides_processed = true;
+	    }
+	
+	    /**
+	     * Magic getter for our object. Allows getting but not setting.
+	     *
+	     * @param string $field
+	     * @throws Exception Throws an exception if the field is invalid.
+	     * @return mixed
+	     * @since  0.2.7
+	     */
+	    public function __get( $field ) {
+		    switch ( $field ) {
+			    case 'id':
+			    case 'arg_overrides':
+			    case 'cpt_args':
+				    return $this->{$field};
+			    default:
+				    throw new Exception( 'Invalid ' . __CLASS__ . ' property: ' . $field );
+		    }
+	    }
     }

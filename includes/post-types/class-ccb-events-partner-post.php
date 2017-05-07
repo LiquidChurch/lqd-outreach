@@ -1,31 +1,24 @@
 <?php
 /**
- * Liquid Outreach Sermon Post
- * @since 0.2.3
+ * Liquid Outreach Event Partner Post
+ * @since 0.2.7
  * @package Liquid Outreach
  */
 
-class LO_Events_Post {
+class LO_Event_Partners_Post {
 
 	/**
 	 * Post object to wrap
 	 *
 	 * @var   WP_Post
-	 * @since 0.2.3
+	 * @since 0.2.7
 	 */
 	protected $post;
 	
 	/**
-	 * event categoroes object
-	 *
-	 * @since 0.2.5
-	 */
-	protected $event_categories;
-
-	/**
 	 * Constructor
 	 *
-	 * @since  0.2.3
+	 * @since  0.2.7
 	 * @param  mixed $post Post object to wrap
 	 * @return void
 	 */
@@ -34,7 +27,7 @@ class LO_Events_Post {
 			throw new Exception( 'Sorry, '. __CLASS__ .' expects a WP_Post object.' );
 		}
 
-		$post_type = liquid_outreach()->lo_ccb_events->post_type();
+		$post_type = liquid_outreach()->lo_ccb_event_partners->post_type();
 
 		if ( $post->post_type !== $post_type ) {
 			throw new Exception( 'Sorry, '. __CLASS__ .' expects a '. $post_type .' object.' );
@@ -46,9 +39,9 @@ class LO_Events_Post {
 	/**
 	 * Wrapper for get_permalink.
 	 *
-	 * @since  0.2.3
+	 * @since  0.2.7
 	 *
-	 * @return string Sermon post permalink.
+	 * @return string Event Partner post permalink.
 	 */
 	public function permalink() {
 		return get_permalink( $this->ID );
@@ -57,9 +50,9 @@ class LO_Events_Post {
 	/**
 	 * Wrapper for get_the_title.
 	 *
-	 * @since  0.2.3
+	 * @since  0.2.7
 	 *
-	 * @return string Sermon post title.
+	 * @return string Event Partner post title.
 	 */
 	public function title() {
 		return get_the_title( $this->ID );
@@ -68,9 +61,9 @@ class LO_Events_Post {
 	/**
 	 * Wrapper for the_excerpt. Returns value. Must be used in loop.
 	 *
-	 * @since  0.2.3
+	 * @since  0.2.7
 	 *
-	 * @return string Sermon post excerpt.
+	 * @return string Event Partner post excerpt.
 	 */
 	public function loop_excerpt() {
 		ob_start();
@@ -84,7 +77,7 @@ class LO_Events_Post {
 	/**
 	 * Wrapper for get_the_post_thumbnail which stores the results to the object
 	 *
-	 * @since  0.2.3
+	 * @since  0.2.7
 	 *
 	 * @param  string|array $size  Optional. Image size to use. Accepts any valid image size, or
 	 *	                            an array of width and height values in pixels (in that order).
@@ -123,7 +116,7 @@ class LO_Events_Post {
 	/**
 	 * Wrapper for get_post_thumbnail_id
 	 *
-	 * @since  0.2.3
+	 * @since  0.2.7
 	 *
 	 * @return string|int Post thumbnail ID or empty string.
 	 */
@@ -134,7 +127,7 @@ class LO_Events_Post {
 	/**
 	 * Wrapper for get_post_meta
 	 *
-	 * @since  0.2.3
+	 * @since  0.2.7
 	 *
 	 * @param  string  $key Meta key
 	 *
@@ -145,51 +138,12 @@ class LO_Events_Post {
 	}
 	
 	/**
-	 * Get all categories for this event
-	 *
-	 * @since  0.2.5
-	 *
-	 * @param  array  Args to pass to LO_Ccb_Event_Categories::get()
-	 *
-	 * @return WP_Term|false Event_Category term object.
-	 */
-	public function get_event_categories( $args = array() ) {
-		$categories = null;
-		if ( empty( $this->event_categories ) ) {
-			$categories = $this->event_categories = $this->init_taxonomy( 'lo_ccb_event_categories' );
-		}
-		if ( empty( $categories ) ) {
-			return false;
-		}
-		$category = array();
-		foreach($categories as $key => $val) {
-			$category[] = liquid_outreach()->lo_ccb_event_categories->get( $val, $args );
-		}
-		
-		return $category;
-	}
-	
-	/**
-	 * Initate the taxonomy.
-	 *
-	 * @since  0.2.5
-	 *
-	 * @param  string  $taxonomy Taxonomy to initiate
-	 *
-	 * @return array  Array of terms for this taxonomy.
-	 */
-	protected function init_taxonomy( $taxonomy_class ) {
-		$tax_slug = liquid_outreach()->{$taxonomy_class}->taxonomy();
-		return get_the_terms( $this->ID, $tax_slug );
-	}
-
-	/**
 	 * Magic getter for our object.
 	 *
 	 * @param string $property
 	 * @throws Exception Throws an exception if the field is invalid.
 	 * @return mixed
-	 * @since  0.2.5
+	 * @since  0.2.7
 	 */
 	public function __get( $property ) {
 		// Automate
@@ -213,7 +167,7 @@ class LO_Events_Post {
 	 * @param string $property
 	 * @throws Exception Throws an exception if the field is invalid.
 	 * @return mixed
-	 * @since  0.2.5
+	 * @since  0.2.7
 	 */
 	public function __isset( $property ) {
 		// Automate

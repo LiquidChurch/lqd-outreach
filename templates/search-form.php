@@ -46,15 +46,29 @@
                     <div class="form-group col-sm-12">
                         <label class="lo-filter-col col-sm-2 control-label lo-text-align-left"
                                style="margin-right:0;"
-                               for="lo-event-org">Organizations</label>
+                               for="lo-event-org">Partners</label>
                         <div class="col-sm-8">
                             <select id="lo-event-org" name="lo-event-org"
                                     class="form-control">
-                                <option value="all">Project Category</option>
-                                <option>Project Category</option>
-                                <option>Project Location</option>
-                                <option>Project Day</option>
-                                <option>Project Organization</option>
+                                <option value="">All Project Partners</option>
+	                            <?php
+		                            if ( ! empty( $this->get( 'partners' ) ) ) {
+			                            foreach (
+				                            $this->get( 'partners' ) as $index => $partner
+			                            ) {
+			                                if($partner instanceof WP_Post) {
+			                                 
+				                                echo '<option value="' . $partner->post_name . '">' .
+				                                     $partner->post_title . '</option>';
+                                            } else {
+			                                    
+				                                echo '<option value="' . $partner->post->post_name . '">' .
+				                                     $partner->title() . '</option>';
+                                            }
+				                            
+			                            }
+		                            }
+	                            ?>
                             </select>
                         </div>
                     </div> <!-- form group [order by] -->
