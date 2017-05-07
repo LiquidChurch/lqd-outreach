@@ -23,6 +23,14 @@ abstract class LO_Shortcodes_Run_Base extends WDS_Shortcodes {
 	 * @since 0.2.0
 	 */
 	public $ccb_event_partner;
+	
+	/**
+	 * LO_Ccb_Event_Categories object
+	 *
+	 * @var   LO_Ccb_Event_Categories
+	 * @since 0.2.0
+	 */
+	public $ccb_event_categories;
 
 	/**
 	 * Constructor
@@ -32,9 +40,12 @@ abstract class LO_Shortcodes_Run_Base extends WDS_Shortcodes {
 	 * @param LO_Ccb_Events $ccb_event
 	 * @param LO_Ccb_Event_Partners $ccb_event_partner
 	 */
-	public function __construct( LO_Ccb_Events $ccb_event, LO_Ccb_Event_Partners $ccb_event_partner ) {
+	public function __construct( LO_Ccb_Events $ccb_event, LO_Ccb_Event_Partners $ccb_event_partner, LO_Ccb_Event_Categories $ccb_event_categories ) {
+		
 		$this->ccb_event = $ccb_event;
 		$this->ccb_event_partner = $ccb_event_partner;
+		$this->ccb_event_categories = $ccb_event_categories;
+		
 		parent::__construct();
 	}
 
