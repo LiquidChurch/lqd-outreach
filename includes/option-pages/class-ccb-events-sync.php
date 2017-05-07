@@ -687,7 +687,7 @@
 						
 					} else {
 						
-						$update_post = wp_insert_post( [
+						$update_post = wp_update_post( [
 							'ID'           => $ccb_event_datum['wp_post_id'],
 							'post_title'   => $event_post_data['title'],
 							'post_content' => $event_post_data['content'],

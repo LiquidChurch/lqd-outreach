@@ -33,6 +33,20 @@
 	    public $flush = false;
 	
 	    /**
+	     * @var bool
+	     * @since  0.2.4
+	     */
+	    protected $overrides_processed = false;
+	
+	    /**
+	     * The identifier for this object
+	     *
+	     * @var string
+	     * @since  0.2.4
+	     */
+	    protected $id = 'lo-events';
+	
+	    /**
 	     * Default WP_Query args
 	     *
 	     * @var   array
@@ -44,6 +58,12 @@
 		    'posts_per_page' => 1,
 		    'no_found_rows' => true,
 	    );
+	
+	    /**
+	     * @var string
+	     * @since  0.2.4
+	     */
+	    public $meta_prefix = 'lo_ccb_events_';
         
         /**
          * Constructor.
@@ -85,6 +105,8 @@
                     'map_meta_cap' => true,
                 )
             );
+            
+	        $this->query_args['post_type'] = $this->post_type();
         }
         
         /**
@@ -106,7 +128,7 @@
         {
             
             // Set our prefix.
-            $prefix = 'lo_ccb_events_';
+            $prefix = $this->meta_prefix;
             
             // Define our metaboxes and fields.
             $cmb_additional = new_cmb2_box(array(
@@ -347,8 +369,16 @@
 		    unset($defaults['posts_per_page']);
 		    unset($defaults['no_found_rows']);
 		    $args['augment_posts'] = true;
-		
+		    $args['meta_key'] = $this->meta_prefix . 'start_date';
+		    $args['orderby'] = 'meta_value_num';
+		    $args['order'] = 'ASC';
+		    $args['meta_query'] = [
+			    'key' => $this->meta_prefix . 'start_date',
+			    'value' => time(),
+			    'compare' => '>='
+		    ];
 		    $args = apply_filters('lo_get_events_args', wp_parse_args($args, $defaults));
+		    
 		    $events = new WP_Query($args);
 		
 		    if (
@@ -363,5 +393,63 @@
 			    }
 		    }
 		    return $events;
+	    }
+	
+	    /**
+	     * Provides access to protected class properties.
+	     * @since  0.2.4
+	     * @param  boolean $key Specific CPT parameter to return
+	     * @return mixed        Specific CPT parameter or array of singular, plural and registered name
+	     */
+	    public function post_type( $key = 'post_type' ) {
+		    if ( ! $this->overrides_processed ) {
+			    $this->filter_values();
+		    }
+		
+		    return parent::post_type( $key );
+	    }
+	
+	    public function filter_values() {
+		    if ( $this->overrides_processed ) {
+			    return;
+		    }
+		
+		    $args = array(
+			    'singular'      => $this->singular,
+			    'plural'        => $this->plural,
+			    'post_type'     => $this->post_type,
+			    'arg_overrides' => $this->arg_overrides,
+		    );
+		
+		    $filtered_args = apply_filters( 'lo_post_types_'. $this->id, $args, $this );
+		
+		    if ( $filtered_args !== $args ) {
+			    foreach ( $args as $arg => $val ) {
+				    if ( isset( $filtered_args[ $arg ] ) ) {
+					    $this->{$arg} = $filtered_args[ $arg ];
+				    }
+			    }
+		    }
+		
+		    $this->overrides_processed = true;
+	    }
+	
+	    /**
+	     * Magic getter for our object. Allows getting but not setting.
+	     *
+	     * @param string $field
+	     * @throws Exception Throws an exception if the field is invalid.
+	     * @return mixed
+	     * @since  0.2.4
+	     */
+	    public function __get( $field ) {
+		    switch ( $field ) {
+			    case 'id':
+			    case 'arg_overrides':
+			    case 'cpt_args':
+				    return $this->{$field};
+			    default:
+				    throw new Exception( 'Invalid ' . __CLASS__ . ' property: ' . $field );
+		    }
 	    }
     }

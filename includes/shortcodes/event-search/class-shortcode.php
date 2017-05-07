@@ -56,12 +56,19 @@ class LO_Shortcodes_Event_Search_Run extends LO_Shortcodes_Run_Base {
 		wp_enqueue_script('lo-vandertable', Liquid_Outreach::$url . '/assets/js/vandertable.js');
 		wp_enqueue_script('lo-index', Liquid_Outreach::$url . '/assets/js/index.js');
 		
-		$args = wp_parse_args( [], array(
-			'post_type' => 'lo-events',
+		$args = $this->get_initial_query_args();
+		
+		$args = wp_parse_args( $args, array(
+			'post_type' => liquid_outreach()->lo_ccb_events->post_type(),
 			'posts_per_page' => 10,
 		) );
 		
 		$events = liquid_outreach()->lo_ccb_events->get_many($args);
+		
+		if (!$events->have_posts()) {
+			return null;
+		}
+		
 		$max = $events->max_num_pages;
 		$pagination = $this->get_pagination($max);
 		
@@ -70,7 +77,7 @@ class LO_Shortcodes_Event_Search_Run extends LO_Shortcodes_Run_Base {
 		$content .= LO_Style_Loader::get_template('lc-plugin');
 		$content .= LO_Style_Loader::get_template('vandertable');
 		$content .= LO_Template_Loader::get_template( $template, array(
-			'events' => $events,
+			'events' => $events->posts,
 			'pagination' => $pagination,
 		) );
 		return $content;
@@ -89,11 +96,23 @@ class LO_Shortcodes_Event_Search_Run extends LO_Shortcodes_Run_Base {
 		$nav = array('prev_link' => '', 'next_link' => '');
 		
 		if (!$this->bool_att('remove_pagination')) {
-			$nav['prev_link'] = get_previous_posts_link(__('<span>&larr;</span> Newer', 'liquid-outreach'), $total_pages);
-			$nav['next_link'] = get_next_posts_link(__('Older <span>&rarr;</span>', 'liquid-outreach'), $total_pages);
+			$nav['prev_link'] = get_previous_posts_link(__('<span>&larr;</span> Previous', 'liquid-outreach'), $total_pages);
+			$nav['next_link'] = get_next_posts_link(__('Next <span>&rarr;</span>', 'liquid-outreach'), $total_pages);
 		}
 		
 		return $nav;
+	}
+	
+	/**
+	 * @return array
+	 * @since  0.2.4
+	 */
+	public function get_initial_query_args()
+	{
+		$paged = (int)get_query_var('paged') ? get_query_var('paged') : 1;
+		$offset = (($paged - 1) * 10);
+		
+		return compact('paged', 'offset');
 	}
 
 }
