@@ -51,9 +51,16 @@ class LO_Shortcodes_Event_Search_Run extends LO_Shortcodes_Run_Base {
 	 * @since 0.2.1
 	 */
 	public function shortcode() {
+		
+		wp_enqueue_script('jquery-ui-sortable');
+		wp_enqueue_script('lo-vandertable', Liquid_Outreach::$url . '/assets/js/vandertable.js');
+		wp_enqueue_script('lo-index', Liquid_Outreach::$url . '/assets/js/index.js');
+		
+		$template = isset($_GET['template']) ? $_GET['template'] : 'search';
 		$content = '';
 		$content .= LO_Style_Loader::get_template('lc-plugin');
-		$content .= LO_Template_Loader::get_template( 'search', array() );
+		$content .= LO_Style_Loader::get_template('vandertable');
+		$content .= LO_Template_Loader::get_template( $template, array() );
 		return $content;
 	}
 
