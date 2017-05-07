@@ -65,20 +65,19 @@ class LO_Shortcodes_Event_Search_Run extends LO_Shortcodes_Run_Base {
 		
 		$events = liquid_outreach()->lo_ccb_events->get_many($args);
 		
-		if (!$events->have_posts()) {
-			return null;
-		}
-		
-		$max = $events->max_num_pages;
+		$max = !empty($events->max_num_pages) ? $events->max_num_pages : 0;
 		$pagination = $this->get_pagination($max);
+		
+		$categories = liquid_outreach()->lo_ccb_event_categories->get_many([]);
 		
 		$template = isset($_GET['template']) ? $_GET['template'] : 'search';
 		$content = '';
 		$content .= LO_Style_Loader::get_template('lc-plugin');
 		$content .= LO_Style_Loader::get_template('vandertable');
 		$content .= LO_Template_Loader::get_template( $template, array(
-			'events' => $events->posts,
+			'events' => !empty($events->posts) ? $events->posts : [],
 			'pagination' => $pagination,
+			'categories' => $categories,
 		) );
 		return $content;
 	}

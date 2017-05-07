@@ -49,6 +49,17 @@
 	    protected $term_get_args_defaults = array(
 		    'image_size' => 64,
 	    );
+	
+	    /**
+	     * The default args array for self::get_many()
+	     *
+	     * @var array
+	     * @since  0.2.6
+	     */
+	    protected $term_get_many_args_defaults = array(
+		    'orderby'       => 'name',
+		    'augment_terms' => true,
+	    );
         
         /**
          * Constructor.
@@ -131,6 +142,61 @@
             
             return new_cmb2_box(apply_filters("lo_cmb2_box_args_{$this->id}_{$cmb_id}", $args));
         }
+	
+	    /**
+	     * Wrapper for get_terms
+	     *
+	     * @since  0.2.6
+	     *
+	     * @param  array $args             Array of arguments (passed to get_terms).
+	     * @param  array $single_term_args Array of arguments for LO_Ccb_Event_Categories::get().
+	     *
+	     * @return array|false Array of term objects or false
+	     */
+	    public function get_many( $args = array(), $single_term_args = array() ) {
+		    $args = wp_parse_args( $args, $this->term_get_many_args_defaults );
+		    $args = apply_filters( "lo_get_{$this->id}_args", $args );
+		
+		    $terms = self::get_terms( $this->taxonomy(), $args );
+		    
+		    if ( ! $terms || is_wp_error( $terms ) ) {
+			    return false;
+		    }
+		
+		    if (
+			    isset( $args['augment_terms'] )
+			    && $args['augment_terms']
+			    && ! empty( $terms )
+			    // Don't augment for queries w/ greater than 100 terms, for perf. reasons.
+			    && 100 < count( $terms )
+		    ) {
+			    foreach ( $terms as $key => $term ) {
+				    $terms[ $key ] = $this->get( $term, $single_term_args );
+			    }
+		    }
+		
+		    return $terms;
+	    }
+	
+	    /**
+	     * Wrapper for `get_terms` to account for changes in WP 4.5 where taxonomy
+	     * is expected as part of the arguments.
+	     *
+	     * @since  0.2.6
+	     *
+	     * @return mixed Array of terms on success
+	     */
+	    protected static function get_terms( $taxonomy, $args = array() ) {
+		    unset( $args['augment_terms'] );
+		    if ( version_compare( $GLOBALS['wp_version'], '4.5.0', '>=' ) ) {
+			    $args['taxonomy'] = $taxonomy;
+			    $terms = get_terms( $args );
+		    } else {
+			    $terms = get_terms( $taxonomy, $args );
+		    }
+		
+		    return $terms;
+	    }
 	
 	    /**
 	     * Get a single term object
