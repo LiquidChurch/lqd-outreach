@@ -3,152 +3,165 @@
  * Copyright 2013-2016 Start Bootstrap
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
  */
- body{
-	background-color:#f2f2f2;
- }
-.nav-custom {
-	background-color:#fff;
-	-webkit-box-shadow: 0px 1px 5px 0px rgba(97,97,97,1);
--moz-box-shadow: 0px 1px 5px 0px rgba(97,97,97,1);
-box-shadow: 0px 1px 5px 0px rgba(97,97,97,1);
+.lo-full {
+    width:100%;
 }
-.navbar-brand{
-	font-size:22px!important;
-}
-.navbar-nav > li > a{
-	font-size:18px;
-	color:#666;
-}
-#f1_container {
-  position: relative;
-  width: 350px;
-  height: 240px;
-  z-index: 1;
-  text-align:center;
-  margin:10px auto;	
-}
-.front{
-  background:#fff;
-  padding:25px;
-}
-#f1_container {
-  perspective: 1000;
-}
-#f1_card {
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  transition: all 1.0s linear;
-}
-#f1_container:hover #f1_card {
-  transform: rotateY(180deg);
-  box-shadow: -5px 5px 5px #aaa;
-}
-.face {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-}
-.face.back {
-  display: block;
-  transform: rotateY(180deg);
-  box-sizing: border-box;
-  padding: 10px;
-  color: white;
-  text-align: center;
-  background-color: #e2e2e2;
-}
-.back p{
-	font-size:14px;
-	color:#000;
-}
-.project-heading{
-	display:block;
-	font-size:22px;
-	text-transform:uppercase;
-	color:#666;
-	margin-top:10px;
-}
-.view-proj-num{
-background: #e0e0e0;
-  background-image: -webkit-linear-gradient(top, #e0e0e0, #ababab);
-  background-image: -moz-linear-gradient(top, #e0e0e0, #ababab);
-  background-image: -ms-linear-gradient(top, #e0e0e0, #ababab);
-  background-image: -o-linear-gradient(top, #e0e0e0, #ababab);
-  background-image: linear-gradient(to bottom, #e0e0e0, #ababab);
-  text-shadow: 4px 3px 5px #666666;
-  font-family: Arial;
-  color: #616161;
-  font-size: 14px;
-  padding: 10px 20px 10px 20px;
-  text-decoration: none;
+.lo-nav-custom {
+    background-color: #fff;
+    -webkit-box-shadow: 0px 1px 5px 0px rgba(97, 97, 97, 1);
+    -moz-box-shadow: 0px 1px 5px 0px rgba(97, 97, 97, 1);
+    box-shadow: 0px 1px 5px 0px rgba(97, 97, 97, 1);
 }
 
+.lo-navbar-nav > li > a {
+    font-size: 18px;
+    color: #666;
+}
 
-.filter-col{
-    padding-left:10px;
-    padding-right:10px;
+.lo-f1-container {
+    position: relative;
+    width: 350px;
+    height: 240px;
+    z-index: 1;
+    text-align: center;
+    margin: 10px auto;
+    perspective: 1000px;
 }
-#pref-search{
-	width:90%;
+
+.lo-front {
+    background: #fff;
+    padding: 25px;
 }
+
+.lo-f1-card {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: all 1.0s linear;
+}
+
+.lo-f1-container:hover .lo-f1-card {
+    transform: rotateY(180deg);
+    box-shadow: -5px 5px 5px #aaa;
+}
+
+.lo-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+}
+
+.lo-face.lo-back {
+    display: block;
+    transform: rotateY(180deg);
+    box-sizing: border-box;
+    padding: 10px;
+    color: white;
+    text-align: center;
+    background-color: #e2e2e2;
+}
+
+.lo-back p {
+    font-size: 14px;
+    color: #000;
+}
+
+.lo-project-heading {
+    display: block;
+    font-size: 22px;
+    text-transform: uppercase;
+    color: #666;
+    margin-top: 10px;
+}
+
+.lo-view-proj-num {
+    background: #e0e0e0;
+    background-image: -webkit-linear-gradient(top, #e0e0e0, #ababab);
+    background-image: -moz-linear-gradient(top, #e0e0e0, #ababab);
+    background-image: -ms-linear-gradient(top, #e0e0e0, #ababab);
+    background-image: -o-linear-gradient(top, #e0e0e0, #ababab);
+    background-image: linear-gradient(to bottom, #e0e0e0, #ababab);
+    text-shadow: 4px 3px 5px #666666;
+    font-family: Arial;
+    color: #616161;
+    font-size: 14px;
+    padding: 10px 20px 10px 20px;
+    text-decoration: none;
+}
+
+.lo-filter-col {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
 /*****************************
 Search result page style*********
 ******************************/
-.search-heading{
-	color:#2186eb;
-	font-size:24px;
-	display:block;
+.lo-search-heading {
+    color: #2186eb;
+    font-size: 24px;
+    display: block;
 }
+
 /********************************
 custom breadcrumb style********
 ********************************/
-.breadcrumb-arrow {
+.lo-breadcrumb-arrow {
     height: 36px;
     padding: 0;
     line-height: 36px;
     list-style: none;
     background-color: #e6e9ed
 }
-.breadcrumb-arrow li:first-child a {
+
+.lo-breadcrumb-arrow li:first-child a {
     border-radius: 4px 0 0 4px;
     -webkit-border-radius: 4px 0 0 4px;
     -moz-border-radius: 4px 0 0 4px
 }
-.breadcrumb-arrow li, .breadcrumb-arrow li a, .breadcrumb-arrow li span {
+
+.lo-breadcrumb-arrow li, .lo-breadcrumb-arrow li a, .lo-breadcrumb-arrow li span {
     display: inline-block;
     vertical-align: top
 }
-.breadcrumb-arrow li:not(:first-child) {
+
+.lo-breadcrumb-arrow li:not(:first-child) {
     margin-left: -5px
 }
-.breadcrumb-arrow li+li:before {
+
+.lo-breadcrumb-arrow li + li:before {
     padding: 0;
     content: ""
 }
-.breadcrumb-arrow li span {
+
+.lo-breadcrumb-arrow li span {
     padding: 0 10px
 }
-.breadcrumb-arrow li a, .breadcrumb-arrow li:not(:first-child) span {
+
+.lo-breadcrumb-arrow li a, .lo-breadcrumb-arrow li:not(:first-child) span {
     height: 36px;
     padding: 0 10px 0 25px;
     line-height: 36px
 }
-.breadcrumb-arrow li:first-child a {
+
+.lo-breadcrumb-arrow li:first-child a {
     padding: 0 10px
 }
-.breadcrumb-arrow li a {
+
+.lo-breadcrumb-arrow li a {
     position: relative;
     color: #fff;
     text-decoration: none;
     background-color: #3bafda;
     border: 1px solid #3bafda
 }
-.breadcrumb-arrow li:first-child a {
+
+.lo-breadcrumb-arrow li:first-child a {
     padding-left: 10px
 }
-.breadcrumb-arrow li a:after, .breadcrumb-arrow li a:before {
+
+.lo-breadcrumb-arrow li a:after, .lo-breadcrumb-arrow li a:before {
     position: absolute;
     top: -1px;
     width: 0;
@@ -157,62 +170,76 @@ custom breadcrumb style********
     border-top: 18px solid transparent;
     border-bottom: 18px solid transparent
 }
-.breadcrumb-arrow li a:before {
+
+.lo-breadcrumb-arrow li a:before {
     right: -10px;
     z-index: 3;
     border-left-color: #3bafda;
     border-left-style: solid;
     border-left-width: 11px
 }
-.breadcrumb-arrow li a:after {
+
+.lo-breadcrumb-arrow li a:after {
     right: -11px;
     z-index: 2;
     border-left: 11px solid #2494be
 }
-.breadcrumb-arrow li a:focus, .breadcrumb-arrow li a:hover {
+
+.lo-breadcrumb-arrow li a:focus, .lo-breadcrumb-arrow li a:hover {
     background-color: #4fc1e9;
     border: 1px solid #4fc1e9
 }
-.breadcrumb-arrow li a:focus:before, .breadcrumb-arrow li a:hover:before {
+
+.lo-breadcrumb-arrow li a:focus:before, .lo-breadcrumb-arrow li a:hover:before {
     border-left-color: #4fc1e9
 }
-.breadcrumb-arrow li a:active {
+
+.lo-breadcrumb-arrow li a:active {
     background-color: #2494be;
     border: 1px solid #2494be
 }
-.breadcrumb-arrow li a:active:after, .breadcrumb-arrow li a:active:before {
+
+.lo-breadcrumb-arrow li a:active:after, .lo-breadcrumb-arrow li a:active:before {
     border-left-color: #2494be
 }
-.breadcrumb-arrow li span {
+
+.lo-breadcrumb-arrow li span {
     color: #434a54
 }
+
 /******************************
 ******Outreach page styles****
 ******************************/
-.add-info-label-2{
-	padding:0px 65px;
-	color:#999;
+.lo-add-info-label-2 {
+    padding: 0px 65px;
+    color: #999;
 }
-.add-info-label{
-	padding: 10px 25px;
-	font-weight: bolder;
-	color:#999;
-	
+
+.lo-add-info-label {
+    padding: 10px 25px;
+    font-weight: bolder;
+    color: #999;
+
 }
-.panel-custom{
-	padding:25px;
+
+.lo-panel-custom {
+    padding: 25px;
 }
-.no-margin{
-   margin-left: 0!important;
-   
+
+.lo-no-margin {
+    margin-left: 0 !important;
+
 }
-.project-table-head{
-   padding-right:2em
-   
+
+.lo-project-table-head {
+    padding-right: 2em
+
 }
-.text-align-left {
+
+.lo-text-align-left {
     text-align: left !important;
 }
-.event-search-btn, .event-search-label, .event-search-input {
-    margin-top:10px;
+
+.lo-event-search-btn, .lo-event-search-label, .lo-event-search-input {
+    margin-top: 10px;
 }
