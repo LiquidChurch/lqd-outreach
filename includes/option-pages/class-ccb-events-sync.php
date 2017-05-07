@@ -594,7 +594,7 @@
 							'kid_friendly' => $ccb_event_datum['kid_friendly'],
 							
 							$event_post_meta_prefix .
-							'start_date' => $ccb_event_datum['start_time'],
+							'start_date' => strtotime( $ccb_event_datum['start_time'] ),
 							
 							$event_post_meta_prefix .
 							'address' => ! empty( $ccb_event_datum['address'] ) ? ( is_array( $ccb_event_datum['address'] ) ? ( implode( PHP_EOL,
