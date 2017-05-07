@@ -5,12 +5,12 @@
 </div>
 <!-- /.container -->
 <!-- Navigation -->
-<nav class="navbar lo-nav-custom" role="navigation">
-    <div class="container">
+<nav class="navbar navbar-default lo-nav-custom" role="navigation">
+    <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse"
-                    data-target="#bs-example-navbar-collapse-1">
+            <button type="button" class="lo-navbar-toggle navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#lo-events-navbar" aria-expanded="false">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -18,7 +18,7 @@
             </button>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <div class="collapse navbar-collapse" id="lo-events-navbar">
             <ul class="nav navbar-nav lo-navbar-nav">
                 <li>
                     <a href="#">Search Projects</a>
@@ -135,7 +135,7 @@
             <div class="row">
                 <div class="col-md-4 col-sm-12">
                     <div class="lo-f1-container">
-                        <div class="lo-f1-card" class="shadow">
+                        <div class="lo-f1-card">
                             <div class="lo-front lo-face">
                                 <img src="<?php echo Liquid_Outreach::$url .
 								                     '/assets/css/img/HandsOn.png' ?>"/>
@@ -155,7 +155,7 @@
 
                 <div class="col-md-4 col-sm-12">
                     <div class="lo-f1-container">
-                        <div class="lo-f1-card" class="shadow">
+                        <div class="lo-f1-card">
                             <div class="lo-front lo-face">
                                 <img src="<?php echo Liquid_Outreach::$url .
 								                     '/assets/css/img/HandsOn.png' ?>"/>
@@ -175,7 +175,7 @@
 
                 <div class="col-md-4 col-sm-12">
                     <div class="lo-f1-container">
-                        <div class="lo-f1-card shadow">
+                        <div class="lo-f1-card">
                             <div class="lo-front lo-face">
                                 <img src="<?php echo Liquid_Outreach::$url .
 								                     '/assets/css/img/HandsOn.png' ?>"/>
@@ -195,7 +195,7 @@
 
                 <div class="col-md-4 col-sm-12">
                     <div class="lo-f1-container">
-                        <div class="lo-f1-card shadow">
+                        <div class="lo-f1-card">
                             <div class="lo-front lo-face">
                                 <img src="<?php echo Liquid_Outreach::$url .
 								                     '/assets/css/img/HandsOn.png' ?>"/>
@@ -215,7 +215,7 @@
 
                 <div class="col-md-4 col-sm-12">
                     <div class="lo-f1-container">
-                        <div class="lo-f1-card shadow">
+                        <div class="lo-f1-card">
                             <div class="lo-front lo-face">
                                 <img src="<?php echo Liquid_Outreach::$url .
 								                     '/assets/css/img/HandsOn.png' ?>"/>
@@ -235,7 +235,7 @@
 
                 <div class="col-md-4 col-sm-12">
                     <div class="lo-f1-container">
-                        <div class="lo-f1-card shadow">
+                        <div class="lo-f1-card">
                             <div class="lo-front lo-face">
                                 <img src="<?php echo Liquid_Outreach::$url .
 								                     '/assets/css/img/HandsOn.png' ?>"/>
