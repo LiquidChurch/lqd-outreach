@@ -185,7 +185,7 @@
                 (function ($) {
 
                     var blockui_msg = $('<h2>' +
-                        '<img style="width: 25px; vertical-align: middle;" src="<?php echo $this->plugin->url .
+                        '<img style="width: 25px; vertical-align: middle;" src="<?php echo Liquid_Outreach::$url .
 						                                                                   '/assets/images/spinner.svg'?>" /> ' +
                         'Please Wait...</h2>' +
                         '<hr/>' +
@@ -375,7 +375,7 @@
                             var nonce = '<?php echo wp_create_nonce( 'nonce_lo_sync_ccb_event' ); ?>';
 
                             blockui_msg_event_sync = $('<h2>' +
-                                '<img style="width: 25px; vertical-align: middle;" src="<?php echo $this->plugin->url .
+                                '<img style="width: 25px; vertical-align: middle;" src="<?php echo Liquid_Outreach::$url .
 								                                                                   '/assets/images/spinner.svg'?>" /> ' +
                                 'Please Wait...</h2>' +
                                 '<hr/>' +
@@ -881,7 +881,7 @@
 			wp_enqueue_script( 'underscore' );
 			
 			wp_enqueue_script( 'block-ui-js',
-				$this->plugin->url . '/assets/bower/blockUI/jquery.blockUI.js' );
+				Liquid_Outreach::$url . '/assets/bower/blockUI/jquery.blockUI.js' );
 		}
 		
 		/**

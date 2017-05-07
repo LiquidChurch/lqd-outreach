@@ -71,7 +71,7 @@
          * @since 0.0.5
          * @var Lo_Ccb_api_event_profiles
          */
-        public $lo_ccb_api_event_profiles;
+	    protected $lo_ccb_api_event_profiles;
         
         /**
          * Instance of Lo_Ccb_api_individual_profile
@@ -79,7 +79,7 @@
          * @since 0.1.3
          * @var Lo_Ccb_api_individual_profile
          */
-        public $lo_ccb_api_individual_profile;
+	    protected $lo_ccb_api_individual_profile;
         
         /**
          * Instance of Lo_Ccb_api_attendance_profile
@@ -87,7 +87,7 @@
          * @since 0.1.4
          * @var Lo_Ccb_api_attendance_profile
          */
-        public $lo_ccb_api_attendance_profile;
+	    protected $lo_ccb_api_attendance_profile;
         
         /**
          * URL of plugin directory.
@@ -95,21 +95,24 @@
          * @var    string
          * @since  0.0.0
          */
-        public $url = '';
+	    public static $url = '';
+        
         /**
          * Path of plugin directory.
          *
          * @var    string
          * @since  0.0.0
          */
-        protected $path = '';
+	    public static $path = '';
+        
         /**
          * Plugin basename.
          *
          * @var    string
          * @since  0.0.0
          */
-        protected $basename = '';
+	    public static $basename = '';
+        
         /**
          * Detailed activation error messages.
          *
@@ -117,20 +120,23 @@
          * @since  0.0.0
          */
         protected $activation_errors = array();
+        
         /**
          * Instance of LO_Ccb_Events
          *
          * @since 0.0.1
          * @var LO_Ccb_Events
          */
-        protected $ccb_events;
+        protected $lo_ccb_events;
+        
         /**
          * Instance of LO_Ccb_Event_Partners
          *
          * @since 0.0.2
          * @var LO_Ccb_Event_Partners
          */
-        protected $ccb_event_partners;
+        protected $lo_ccb_event_partners;
+        
         /**
          * Instance of LO_Ccb_Events_Sync
          *
@@ -145,7 +151,15 @@
 	     * @since 0.2.0
 	     * @var LO_Shortcodes
 	     */
-	    protected $shortcodes;
+	    protected $lo_shortcodes;
+	    
+	    /**
+	     * Instance of LO_Ccb_Event_Categories
+	     *
+	     * @since 0.2.1
+	     * @var LO_Ccb_Event_Categories
+	     */
+	    protected $lo_ccb_event_categories;
         
         /**
          * Sets up our plugin.
@@ -154,9 +168,9 @@
          */
         protected function __construct()
         {
-            $this->basename = plugin_basename(__FILE__);
-            $this->url = plugin_dir_url(__FILE__);
-            $this->path = plugin_dir_path(__FILE__);
+            self::$basename = plugin_basename(__FILE__);
+	        self::$url = plugin_dir_url(__FILE__);
+	        self::$path = plugin_dir_path(__FILE__);
         }
         
         /**
@@ -304,7 +318,7 @@
             
             // Load translated strings for plugin.
             load_plugin_textdomain('liquid-outreach', false,
-                dirname($this->basename) . '/languages/');
+                dirname(self::$basename) . '/languages/');
             
             // Initialize plugin classes.
             $this->plugin_classes();
@@ -320,10 +334,10 @@
             
             $this->add_dev_classes();
             
-            $this->ccb_events = new LO_Ccb_Events($this);
-            $this->ccb_event_partners = new LO_Ccb_Event_Partners($this);
-            $this->ccb_event_categories = new LO_Ccb_Event_Categories($this);
-            $this->shortcodes = new LO_Shortcodes($this);
+            $this->lo_ccb_events = new LO_Ccb_Events($this);
+            $this->lo_ccb_event_partners = new LO_Ccb_Event_Partners($this);
+            $this->lo_ccb_event_categories = new LO_Ccb_Event_Categories($this);
+            $this->lo_shortcodes = new LO_Shortcodes($this);
             
             if (is_admin()) {
                 $this->lo_ccb_api_event_profiles = new Lo_Ccb_api_event_profiles($this);
@@ -362,7 +376,7 @@
             // We do a check for deactivate_plugins before calling it, to protect
             // any developers from accidentally calling it too early and breaking things.
             if (function_exists('deactivate_plugins')) {
-                deactivate_plugins($this->basename);
+                deactivate_plugins(self::$basename);
             }
         }
         
@@ -411,12 +425,14 @@
             switch ($field) {
                 case 'version':
                     return self::VERSION;
-                case 'basename':
-                case 'url':
-                case 'path':
-                case 'ccb_events':
-                case 'ccb_event_partners':
+                case 'lo_ccb_events':
+                case 'lo_ccb_event_partners':
+                case 'lo_ccb_event_categories':
                 case 'lo_ccb_events_sync':
+                case 'lo_shortcodes':
+                case 'lo_ccb_api_event_profiles':
+                case 'lo_ccb_api_individual_profile':
+                case 'lo_ccb_api_attendance_profile':
                     return $this->$field;
                 default:
                     throw new Exception('Invalid ' . __CLASS__ . ' property: ' . $field);

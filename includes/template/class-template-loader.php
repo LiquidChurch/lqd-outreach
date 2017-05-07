@@ -153,8 +153,8 @@
 			$locations = apply_filters( "template_locations_for_{$this->template}", array(
 				STYLESHEETPATH . '/liquid-outreach/assets/css/',
 				TEMPLATEPATH . '/liquid-outreach/',
-				GC_Sermons_Plugin::$path . 'templates/',
-				GC_Sermons_Plugin::$path . 'templates/assets/css/'
+				Liquid_Outreach::$path . 'templates/',
+				Liquid_Outreach::$path . 'templates/assets/css/'
 			), $this );
 			
 			$located = '';

@@ -14,7 +14,7 @@ class LO_Shortcodes_Event_Search extends LO_Shortcodes_Base {
 	 * @return void
 	 */
 	public function __construct( $plugin ) {
-		$this->run   = new LO_Shortcodes_Event_Search_Run( $plugin->ccb_events, $plugin->ccb_event_partners, $plugin->ccb_event_categories );
+		$this->run   = new LO_Shortcodes_Event_Search_Run( $plugin->lo_ccb_events, $plugin->lo_ccb_event_partners, $plugin->lo_ccb_event_categories );
 		$this->admin = new LO_Shortcodes_Event_Search_Admin( $this->run );
 
 		parent::hooks();
@@ -51,7 +51,7 @@ class LO_Shortcodes_Event_Search_Run extends LO_Shortcodes_Run_Base {
 	 * @since 0.2.1
 	 */
 	public function shortcode() {
-		return 'worked';
+		return LO_Template_Loader::get_template( 'search', array() );
 	}
 
 }
