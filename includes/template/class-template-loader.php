@@ -151,10 +151,10 @@
 			$theme_file_path = '/liquid-outreach/' . $template;
 			
 			$locations = apply_filters( "template_locations_for_{$this->template}", array(
-				STYLESHEETPATH . '/liquid-outreach/assets/css/',
 				TEMPLATEPATH . '/liquid-outreach/',
+				STYLESHEETPATH . '/liquid-outreach/assets/css/',
 				Liquid_Outreach::$path . 'templates/',
-				Liquid_Outreach::$path . 'templates/assets/css/'
+				Liquid_Outreach::$path . 'assets/css/'
 			), $this );
 			
 			$located = '';

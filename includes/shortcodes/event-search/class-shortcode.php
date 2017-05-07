@@ -51,7 +51,10 @@ class LO_Shortcodes_Event_Search_Run extends LO_Shortcodes_Run_Base {
 	 * @since 0.2.1
 	 */
 	public function shortcode() {
-		return LO_Template_Loader::get_template( 'search', array() );
+		$content = '';
+		$content .= LO_Style_Loader::get_template('lc-plugin');
+		$content .= LO_Template_Loader::get_template( 'search', array() );
+		return $content;
 	}
 
 }

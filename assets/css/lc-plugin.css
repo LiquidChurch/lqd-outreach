@@ -91,7 +91,7 @@ background: #e0e0e0;
     padding-right:10px;
 }
 #pref-search{
-	width:75%;
+	width:90%;
 }
 /*****************************
 Search result page style*********
@@ -209,4 +209,10 @@ custom breadcrumb style********
 .project-table-head{
    padding-right:2em
    
+}
+.text-align-left {
+    text-align: left !important;
+}
+.event-search-btn, .event-search-label, .event-search-input {
+    margin-top:10px;
 }
