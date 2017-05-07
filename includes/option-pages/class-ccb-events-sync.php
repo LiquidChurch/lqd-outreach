@@ -657,7 +657,7 @@
 						
 					} else {
 						$event_post_data['meta_input'][ $event_post_meta_prefix . 'openings' ]
-							= 'event-expired';
+							= 'expired';
 					}
 					
 					if ( empty( $ccb_event_datum['wp_post_id'] ) ) {

@@ -14,6 +14,13 @@ class LO_Events_Post {
 	 * @since 0.2.3
 	 */
 	protected $post;
+	
+	/**
+	 * event categoroes object
+	 *
+	 * @since 0.2.5
+	 */
+	protected $event_categories;
 
 	/**
 	 * Constructor
@@ -135,6 +142,45 @@ class LO_Events_Post {
 	 */
 	public function get_meta( $key ) {
 		return get_post_meta( $this->ID, $key, 1 );
+	}
+	
+	/**
+	 * Get all categories for this event
+	 *
+	 * @since  0.2.5
+	 *
+	 * @param  array  Args to pass to LO_Ccb_Event_Categories::get()
+	 *
+	 * @return WP_Term|false Event_Category term object.
+	 */
+	public function get_event_categories( $args = array() ) {
+		$categories = null;
+		if ( empty( $this->event_categories ) ) {
+			$categories = $this->event_categories = $this->init_taxonomy( 'lo_ccb_event_categories' );
+		}
+		if ( empty( $categories ) ) {
+			return false;
+		}
+		$category = array();
+		foreach($categories as $key => $val) {
+			$category[] = liquid_outreach()->lo_ccb_event_categories->get( $val, $args );
+		}
+		
+		return $category;
+	}
+	
+	/**
+	 * Initate the taxonomy.
+	 *
+	 * @since  0.2.5
+	 *
+	 * @param  string  $taxonomy Taxonomy to initiate
+	 *
+	 * @return array  Array of terms for this taxonomy.
+	 */
+	protected function init_taxonomy( $taxonomy_class ) {
+		$tax_slug = liquid_outreach()->{$taxonomy_class}->taxonomy();
+		return get_the_terms( $this->ID, $tax_slug );
 	}
 
 	/**

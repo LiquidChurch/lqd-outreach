@@ -1,6 +1,6 @@
 <?php
-	$events     = $this->get( 'events' );
-	$pagination = $this->get( 'pagination' );
+	$events      = $this->get( 'events' );
+	$pagination  = $this->get( 'pagination' );
 	$meta_prefix = 'lo_ccb_events_';
 ?>
 <div class="container">
@@ -24,14 +24,34 @@
                 <tbody>
 				<?php
 					foreach ( $events as $key => $event ) {
+						$meta_start_date = $event->get_meta( $meta_prefix . 'start_date' );
 						?>
                         <tr>
-                            <td><?php echo date('Y-m-d H:i:s', $event->get_meta($meta_prefix . 'start_date')) ?></td>
-                            <td><?php echo $event->title() ?></td>
-                            <td>hands on</td>
-                            <td>12</td>
-                            <td>carolina</td>
-                            <td>Closed</td>
+                            <td><?php echo date( 'Y-m-d H:i:s', $meta_start_date ) ?></td>
+                            <td><a href="<?php echo $event->permalink() ?>"><?php echo $event->title() ?></a></td>
+                            <td>
+								<?php
+									$categories = $event->get_event_categories();
+									if ( ! empty( $categories ) ) {
+										echo implode( ', ', wp_list_pluck( $categories, 'name' ) );
+									}
+								?>
+                            </td>
+                            <td><?php echo date( 'l', $meta_start_date ) ?></td>
+                            <td><?php echo ucwords( $event->get_meta( $meta_prefix .
+							                                          'city' ) ) ?></td>
+                            <td>
+								<?php
+									$openings = $event->get_meta( $meta_prefix . 'openings' );
+									if ( $openings == '0' ) {
+										echo 'Closed';
+									} elseif ( $openings == 'no-limit' ) {
+										echo '<span style="font-size: 24px;">&infin;</span>';
+									} else {
+										echo ucwords( str_replace( '-', ' ', $openings ) );
+									}
+								?>
+                            </td>
                         </tr>
 						<?php
 					}
@@ -42,15 +62,15 @@
         <div class="col-lg-12">
             <div class="page-nation">
                 <ul class="pagination pagination-large">
-                    <?php
-                    if(!empty($pagination['prev_link'])) {
-	                    echo '<li class="">'.$pagination['prev_link'].'</li>';
-                    }
-                    
-                    if(!empty($pagination['next_link'])) {
-                     echo '<li class="next">'.$pagination['next_link'].'</li>';
-                    }
-                    ?>
+					<?php
+						if ( ! empty( $pagination['prev_link'] ) ) {
+							echo '<li class="">' . $pagination['prev_link'] . '</li>';
+						}
+						
+						if ( ! empty( $pagination['next_link'] ) ) {
+							echo '<li class="next">' . $pagination['next_link'] . '</li>';
+						}
+					?>
                 </ul>
             </div>
         </div>

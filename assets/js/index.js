@@ -1,10 +1,11 @@
 jQuery(function () {
     jQuery(".VanderTable").VanderTable({
         //showRowOrder : true,
-        allowTableSort: true,
+        'allowTableSort': false,
+        'disableColReordering': false,
+        'disableRowReordering': false,
         onMoveCol: function (obj, pos) {
             jQuery(obj).css('background-color', '#BF360C !important');
-            alert('Old Position: ' + pos.old + 'New Position: ' + pos.new);
         }
     });
 

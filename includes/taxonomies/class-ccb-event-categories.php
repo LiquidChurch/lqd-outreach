@@ -31,6 +31,24 @@
          * @since  0.1.1
          */
         protected $plugin = null;
+	
+	    /**
+	     * The image meta key for this taxonomy, if applicable
+	     *
+	     * @var string
+	     * @since  0.2.5
+	     */
+	    protected $image_meta_key = '';
+	
+	    /**
+	     * The default args array for self::get()
+	     *
+	     * @var array
+	     * @since  0.2.5
+	     */
+	    protected $term_get_args_defaults = array(
+		    'image_size' => 64,
+	    );
         
         /**
          * Constructor.
@@ -113,6 +131,49 @@
             
             return new_cmb2_box(apply_filters("lo_cmb2_box_args_{$this->id}_{$cmb_id}", $args));
         }
+	
+	    /**
+	     * Get a single term object
+	     *
+	     * @since  0.2.5
+	     *
+	     * @param  object|int $term  Term id or object
+	     * @param  array $args  Array of arguments.
+	     *
+	     * @return WP_Term|false  Term object or false
+	     */
+	    public function get( $term, $args = array() ) {
+		    $term = isset( $term->term_id ) ? $term : get_term_by( 'id', $term, $this->taxonomy() );
+		    if ( ! isset( $term->term_id ) ) {
+			    return false;
+		    }
+		
+		    $args = wp_parse_args( $args, $this->term_get_args_defaults );
+		    $args = apply_filters( "lo_get_{$this->id}_single_args", $args, $term, $this );
+		
+		    $term->term_link = get_term_link( $term );
+		    $term = $this->extra_term_data( $term, $args );
+		
+		    return $term;
+	    }
+	
+	    /**
+	     * Sets extra term data on the the term object, including the image, if applicable
+	     *
+	     * @since  0.2.5
+	     *
+	     * @param  WP_Term $term Term object
+	     * @param  array   $args Array of arguments.
+	     *
+	     * @return WP_Term|false
+	     */
+	    protected function extra_term_data( $term, $args ) {
+		    if ( $this->image_meta_key ) {
+			    $term = $this->add_image( $term, $args['image_size'] );
+		    }
+		
+		    return $term;
+	    }
         
         /**
          * Magic getter for our object. Allows getting but not setting.
