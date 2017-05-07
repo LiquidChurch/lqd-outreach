@@ -252,3 +252,9 @@ custom breadcrumb style********
 .lo-event-search-btn, .lo-event-search-label, .lo-event-search-input {
     margin-top: 10px;
 }
+.lo-event-form-advanced-option-btn {
+    font-size: 14px;
+}
+.lo-event-form-advanced-option {
+    display: none;
+}

@@ -9,7 +9,8 @@
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <button type="button" class="lo-navbar-toggle navbar-toggle collapsed" data-toggle="collapse"
+            <button type="button" class="lo-navbar-toggle navbar-toggle collapsed"
+                    data-toggle="collapse"
                     data-target="#lo-events-navbar" aria-expanded="false">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
@@ -21,7 +22,8 @@
         <div class="collapse navbar-collapse" id="lo-events-navbar">
             <ul class="nav navbar-nav lo-navbar-nav">
                 <li>
-                    <a href="#">Search Projects</a>
+                    <a href="<?php echo get_permalink( get_page_by_path( 'search-projects' ) ) ?>">Search
+                        Projects</a>
                 </li>
                 <li>
                     <a href="#">Project Categories</a>
@@ -68,59 +70,71 @@
                     <hr/>
 
                     <div class="form-horizontal">
-                        <div class="form-group col-sm-12">
-                            <label class="lo-filter-col col-sm-2 control-label lo-text-align-left"
-                                   style="margin-right:0;" for="lo-event-ptype">Project
-                                Types</label>
-                            <div class="col-sm-8">
-                                <select id="lo-event-ptype" name="lo-event-ptype"
-                                        class="form-control">
-                                    <option value="all">All Project Types</option>
-                                    <option value="all">Project Category</option>
-                                    <option value="all">Project Location</option>
-                                    <option value="all">Project Day</option>
-                                    <option value="all">Project Organization</option>
-                                </select>
+                        <div id="lo-event-form-advanced-option" class="lo-event-form-advanced-option">
+                            <div class="form-group col-sm-12">
+                                <label class="lo-filter-col col-sm-2 control-label lo-text-align-left"
+                                       style="margin-right:0;" for="lo-event-ptype">Project
+                                    Types</label>
+                                <div class="col-sm-8">
+                                    <select id="lo-event-ptype" name="lo-event-ptype"
+                                            class="form-control">
+                                        <option value="all">All Project Types</option>
+                                        <option value="all">Project Category</option>
+                                        <option value="all">Project Location</option>
+                                        <option value="all">Project Day</option>
+                                        <option value="all">Project Organization</option>
+                                    </select>
+                                </div>
+                            </div> <!-- form group [order by] -->
+                            <div class="form-group col-sm-12">
+                                <label class="lo-filter-col col-sm-2 control-label lo-text-align-left"
+                                       style="margin-right:0;"
+                                       for="lo-event-org">Organizations</label>
+                                <div class="col-sm-8">
+                                    <select id="lo-event-org" name="lo-event-org"
+                                            class="form-control">
+                                        <option value="all">Project Category</option>
+                                        <option>Project Category</option>
+                                        <option>Project Location</option>
+                                        <option>Project Day</option>
+                                        <option>Project Organization</option>
+                                    </select>
+                                </div>
+                            </div> <!-- form group [order by] -->
+                            <div class="form-group col-sm-12">
+                                <label class="lo-filter-col col-sm-2 control-label lo-text-align-left"
+                                       style="margin-right:0;"
+                                       for="lo-event-day">Days</label>
+                                <div class="col-sm-8">
+                                    <select id="lo-event-day" name="lo-event-day"
+                                            class="form-control">
+                                        <option value="all">Project Category</option>
+                                        <option>Project Location</option>
+                                        <option>Project Day</option>
+                                        <option>Project Organization</option>
+                                    </select>
+                                </div>
+                            </div> <!-- form group [order by] -->
+                            <div class="form-group col-sm-12">
+                                <label class="lo-filter-col col-sm-2 control-label lo-text-align-left"
+                                       style="margin-right:0;" for="lo-event-loc">Locations</label>
+                                <div class="col-sm-8">
+                                    <select id="lo-event-loc" name="lo-event-loc"
+                                            class="form-control">
+                                        <option value="all">Project Category</option>
+                                        <option>Project Location</option>
+                                        <option>Project Day</option>
+                                        <option>Project Organization</option>
+                                    </select>
+                                </div>
+                            </div> <!-- form group [order by] -->
+                        </div>
+                        <div class="form-group col-sm-12" style="margin-bottom: 0;">
+                            <div class="col-sm-2 col-sm-offset-10 text-center">
+                                <span id="lo-event-form-advanced-option-btn"
+                                      class="lo-event-form-advanced-option-btn">Show Advanced Options</span>
                             </div>
-                        </div> <!-- form group [order by] -->
-                        <div class="form-group col-sm-12">
-                            <label class="lo-filter-col col-sm-2 control-label lo-text-align-left"
-                                   style="margin-right:0;" for="lo-event-org">Organizations</label>
-                            <div class="col-sm-8">
-                                <select id="lo-event-org" name="lo-event-org" class="form-control">
-                                    <option value="all">Project Category</option>
-                                    <option>Project Category</option>
-                                    <option>Project Location</option>
-                                    <option>Project Day</option>
-                                    <option>Project Organization</option>
-                                </select>
-                            </div>
-                        </div> <!-- form group [order by] -->
-                        <div class="form-group col-sm-12">
-                            <label class="lo-filter-col col-sm-2 control-label lo-text-align-left"
-                                   style="margin-right:0;"
-                                   for="lo-event-day">Days</label>
-                            <div class="col-sm-8">
-                                <select id="lo-event-day" name="lo-event-day" class="form-control">
-                                    <option value="all">Project Category</option>
-                                    <option>Project Location</option>
-                                    <option>Project Day</option>
-                                    <option>Project Organization</option>
-                                </select>
-                            </div>
-                        </div> <!-- form group [order by] -->
-                        <div class="form-group col-sm-12">
-                            <label class="lo-filter-col col-sm-2 control-label lo-text-align-left"
-                                   style="margin-right:0;" for="lo-event-loc">Locations</label>
-                            <div class="col-sm-8">
-                                <select id="lo-event-loc" name="lo-event-loc" class="form-control">
-                                    <option value="all">Project Category</option>
-                                    <option>Project Location</option>
-                                    <option>Project Day</option>
-                                    <option>Project Organization</option>
-                                </select>
-                            </div>
-                        </div> <!-- form group [order by] -->
+                        </div>
                     </div>
                 </form>
             </div>
