@@ -122,30 +122,3 @@
         </form>
     </div>
 </div>
-<!--Category lists small-->
-<div class="row">
-    <div class="col-md-1">
-    </div>
-    <div class="col-md-10">
-        <a href="#">
-				<span class="lo-cat-button">
-					<span class="lo-icon-cat"><img src="<?php echo Liquid_Outreach::$url .
-					                                               '/assets/css/img/HandsOn.png' ?>"
-                                                   width="25px"/></span>
-					<span class="lo-cat-name">Hands on</span>
-				</span>
-        </a>
-
-        <a href="#">
-				<span class="lo-cat-button">
-					<span class="lo-icon-cat"><img src="<?php echo Liquid_Outreach::$url .
-					                                               '/assets/css/img/HandsOn.png' ?>"
-                                                   width="25px"/></span>
-					<span class="lo-cat-name">Hands on</span>
-				</span>
-        </a>
-
-    </div>
-    <div class="col-md-1">
-    </div>
-</div>

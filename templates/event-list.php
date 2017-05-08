@@ -5,7 +5,7 @@
 ?>
 <div class="container">
     <div class="row">
-        <h1>Upcoming Projects</h1>
+        <h1 style="margin-top: 30px; margin-bottom: 0;">Upcoming Projects</h1>
     </div>
     <div class="row">
         <div class="col-md-12">

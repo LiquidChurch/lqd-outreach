@@ -37,7 +37,8 @@
 		 * @var string
 		 * @since  0.2.5
 		 */
-		protected $image_meta_key = '';
+		protected $image_meta_key = 'lo_ccb_event_category_image';
+		protected $btn_color_meta_key = 'lo_ccb_event_category_btn_color';
 		
 		/**
 		 * The default args array for self::get()
@@ -47,7 +48,7 @@
 		 */
 		protected $term_get_args_defaults
 			= array(
-				'image_size' => 64,
+				'image_size' => 25,
 			);
 		
 		/**
@@ -125,8 +126,16 @@
 						'id'   => $prefix . 'image',
 						'type' => 'file'
 					),
+					'btn_color' => array(
+						'id'   => $prefix . 'btn_color',
+						'name' => __( 'Button Color', 'liquid-outreach' ),
+						'desc' => __( '', 'liquid-outreach' ),
+						'type' => 'colorpicker',
+						'default' => '#A5CD66'
+					)
 				),
 			) );
+			
 		}
 		
 		/**
@@ -236,6 +245,63 @@
 			if ( $this->image_meta_key ) {
 				$term = $this->add_image( $term, $args['image_size'] );
 			}
+			if ( $this->btn_color_meta_key ) {
+				$term = $this->add_btn_color( $term );
+			}
+			
+			return $term;
+		}
+		
+		/**
+		 * @param $term
+		 *
+		 * @return mixed
+		 * @since 0.2.8
+		 */
+		protected function add_btn_color( $term ) {
+			if ( ! $this->btn_color_meta_key ) {
+				return $term;
+			}
+			
+			$term->btn_color = get_term_meta( $term->term_id, $this->btn_color_meta_key, 1 );
+			$term->btn_color = empty($term->btn_color) ? '#A5CD66' : $term->btn_color;
+			
+			return $term;
+		}
+		
+		/**
+		 * Add term's image
+		 *
+		 * @since  0.2.8
+		 *
+		 * @param  WP_Term $term Term object
+		 * @param  string  $size Size of the image to retrieve
+		 *
+		 * @return mixed         URL if successful or set
+		 */
+		protected function add_image( $term, $size = '' ) {
+			if ( ! $this->image_meta_key ) {
+				return $term;
+			}
+			
+			$term->image_id = get_term_meta( $term->term_id, $this->image_meta_key . '_id', 1 );
+			if ( ! $term->image_id ) {
+				
+				$term->image_url = get_term_meta( $term->term_id, $this->image_meta_key, 1 );
+				
+				$term->image = $term->image_url ? '<img src="'. esc_url( $term->image_url ) .'" alt="'. $term->name .'"/>' : '';
+				
+				return $term;
+			}
+			
+			if ( $size ) {
+				$size = is_numeric( $size ) ? array( $size, $size ) : $size;
+			}
+			
+			$term->image = wp_get_attachment_image( $term->image_id, $size ? $size : 'thumbnail' );
+			
+			$src = wp_get_attachment_image_src( $term->image_id, $size ? $size : 'thumbnail' );
+			$term->image_url = isset( $src[0] ) ? $src[0] : '';
 			
 			return $term;
 		}

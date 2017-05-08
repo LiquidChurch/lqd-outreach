@@ -412,13 +412,14 @@ new style addition and fixes on 7th May
 }
 
 .lo-cat-button {
-    display: inline-block;
     padding: 2px 5px;
     background-color: #333;
     border-radius: 4px;
-
+    display: inline-block;
+    *display: inline;
 }
 
 .lo-cat-name {
     color: #fff;
+    font-size:12px;
 }

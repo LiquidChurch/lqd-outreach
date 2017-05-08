@@ -19,6 +19,11 @@
 			'partners'   => $this->get( 'partners' ),
 			'cities' => $this->get( 'cities' ),
 		] ) ?>
+        
+        <!--event-category-list-small-->
+		<?php LO_Template_Loader::output_template( 'event-category-list-small', [
+			'categories' => $this->get( 'categories' ),
+		] ) ?>
 
         <!--event-list-->
 		<?php LO_Template_Loader::output_template( 'event-list', 'event-list', [
@@ -27,7 +32,7 @@
 		] ) ?>
 
         <!--category-list-->
-		<?php LO_Template_Loader::output_template( 'event-category-list' ) ?>
+<!--		--><?php //LO_Template_Loader::output_template( 'event-category-list' ) ?>
 
     </div>
 
