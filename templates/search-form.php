@@ -81,7 +81,7 @@
                         <div class="col-sm-8">
                             <select id="lo-event-day" name="lo-event-day"
                                     class="form-control">
-                                <option value="all">All Days</option>
+                                <option value="">All Days</option>
                                 <option value="sunday">Sunday</option>
                                 <option value="monday">Monday</option>
                                 <option value="tuesday">Tuesday</option>
@@ -98,10 +98,16 @@
                         <div class="col-sm-8">
                             <select id="lo-event-loc" name="lo-event-loc"
                                     class="form-control">
-                                <option value="all">Project Category</option>
-                                <option>Project Location</option>
-                                <option>Project Day</option>
-                                <option>Project Organization</option>
+                                <option value="">All Locations</option>
+								<?php
+									if ( ! empty( $this->get( 'cities' ) ) ) {
+										echo '<ul class="dropdown-menu lo-dropdown-menu">';
+										foreach ( $this->get( 'cities' ) as $val ) {
+											echo '<option>' . $val . '</option>';
+										}
+										echo '</ul>';
+									}
+								?>
                             </select>
                         </div>
                     </div> <!-- form group [order by] -->

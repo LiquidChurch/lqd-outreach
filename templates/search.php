@@ -17,6 +17,7 @@
 		<?php LO_Template_Loader::output_template( 'search-form', [
 			'categories' => $this->get( 'categories' ),
 			'partners'   => $this->get( 'partners' ),
+			'cities' => $this->get( 'cities' ),
 		] ) ?>
 
         <!--event-list-->
