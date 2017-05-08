@@ -448,7 +448,99 @@
 		        AND p.post_type = '%s'
 		    ", $this->meta_prefix . 'city', $status, $this->post_type() ) );
 			
-			return array_filter($r);
+			return array_filter( $r );
+		}
+		
+		/**
+		 * @param $args
+		 *
+		 * @return WP_Query
+		 * @since 0.2.9
+		 */
+		public function get_search_result( $args ) {
+			
+			$defaults = $this->query_args;
+			unset( $defaults['posts_per_page'] );
+			unset( $defaults['no_found_rows'] );
+			
+			$search_query = [
+				'key' => isset( $_GET['lo-event-s'] ) ? $_GET['lo-event-s'] : '',
+				'cat' => isset( $_GET['lo-event-cat'] ) ? $_GET['lo-event-cat'] : '',
+				'org' => isset( $_GET['lo-event-org'] ) ? $_GET['lo-event-org'] : '',
+				'day' => isset( $_GET['lo-event-day'] ) ? $_GET['lo-event-day'] : '',
+				'loc' => isset( $_GET['lo-event-loc'] ) ? $_GET['lo-event-loc'] : '',
+			];
+			
+			if ( ! empty( $search_query['key'] ) ) {
+				
+				global $wpdb;
+				$args['post__in']
+					= $wpdb->get_col( "select ID from $wpdb->posts where post_title LIKE '" .
+					                  $search_query['key'] . "%' " );
+			}
+			
+			$args['augment_posts'] = true;
+			
+			if ( ! empty( $search_query['cat'] ) ) {
+				$args['tax_query'] = [
+					[
+						'taxonomy' => liquid_outreach()->lo_ccb_event_categories->taxonomy(),
+						'field'    => 'term_id',
+						'terms'    => (int) $search_query['cat']
+					]
+				];
+			}
+			if ( ! empty( $search_query['org'] ) ) {
+				$args['meta_query'][] = [
+					'key'     => $this->meta_prefix . 'group_id',
+					'value'   => $search_query['org'],
+					'compare' => '='
+				];
+			}
+			if ( ! empty( $search_query['day'] ) ) {
+				$args['meta_query'][] = [
+					'key'     => $this->meta_prefix . 'weekday_name',
+					'value'   => $search_query['day'],
+					'compare' => '='
+				];
+			}
+			if ( ! empty( $search_query['loc'] ) ) {
+				$args['meta_query'][] = [
+					'key'     => $this->meta_prefix . 'city',
+					'value'   => $search_query['loc'],
+					'compare' => '='
+				];
+			}
+			
+			$args['meta_key'] = $this->meta_prefix . 'start_date';
+			$args['orderby']  = 'meta_value_num';
+			$args['order']    = 'ASC';
+			if ( ! empty( $args['meta_query'] ) ) {
+				$args['meta_query']['relation'] = 'AND';
+			}
+			$args['meta_query'][] = [
+				'key'     => $this->meta_prefix . 'start_date',
+				'value'   => time(),
+				'compare' => '>='
+			];
+			$args               = apply_filters( 'lo_get_events_args',
+				wp_parse_args( $args, $defaults ) );
+			
+			$events = new WP_Query( $args );
+			
+			if (
+				isset( $args['augment_posts'] )
+				&& $args['augment_posts']
+				&& $events->have_posts()
+				// Don't augment for queries w/ greater than 100 posts, for perf. reasons.
+				&& $events->post_count < 100
+			) {
+				foreach ( $events->posts as $key => $post ) {
+					$events->posts[ $key ] = new LO_Events_Post( $post );
+				}
+			}
+			
+			return $events;
 		}
 		
 		/**

@@ -1,6 +1,6 @@
 <div class="panel panel-default">
     <div class="panel-body">
-        <form action="" id="lo-event-search-form" method="GET">
+        <form action="<?php echo get_permalink( get_page_by_path( 'search-projects' ) ) ?>" id="lo-event-search-form" method="GET">
             <div class="form-horizontal">
                 <div class="form-group col-sm-12">
                     <label class="lo-filter-col col-sm-2 control-label lo-text-align-left lo-event-search-label"
@@ -24,10 +24,10 @@
                 <div id="lo-event-form-advanced-option" class="lo-event-form-advanced-option">
                     <div class="form-group col-sm-12">
                         <label class="lo-filter-col col-sm-2 control-label lo-text-align-left"
-                               style="margin-right:0;" for="lo-event-ptype">Project
+                               style="margin-right:0;" for="lo-event-cat">Project
                             Types</label>
                         <div class="col-sm-8">
-                            <select id="lo-event-ptype" name="lo-event-ptype"
+                            <select id="lo-event-cat" name="lo-event-cat"
                                     class="form-control">
                                 <option value="">All Project Types</option>
 								<?php
@@ -35,7 +35,7 @@
 										foreach (
 											$this->get( 'categories' ) as $index => $category
 										) {
-											echo '<option value="' . $category->slug . '">' .
+											echo '<option value="' . $category->term_id . '">' .
 											     $category->name . '</option>';
 										}
 									}
@@ -58,12 +58,12 @@
 										) {
 											if ( $partner instanceof WP_Post ) {
 												
-												echo '<option value="' . $partner->post_name .
+												echo '<option value="' . get_post_meta($partner->ID, 'lo_ccb_event_partner_group_id', 1) .
 												     '">' .
 												     $partner->post_title . '</option>';
 											} else {
 												
-												echo '<option value="' . $partner->post->post_name .
+												echo '<option value="' . $partner->get_meta('lo_ccb_event_partner_group_id') .
 												     '">' .
 												     $partner->title() . '</option>';
 											}

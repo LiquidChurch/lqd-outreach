@@ -28,6 +28,7 @@
         <!--event-list-->
 		<?php LO_Template_Loader::output_template( 'event-list', 'event-list', [
 			'events'     => $this->get( 'events' ),
+			'event_empty_msg'     => $this->get( 'event_empty_msg' ),
 			'pagination' => $this->get( 'pagination' )
 		] ) ?>
 
