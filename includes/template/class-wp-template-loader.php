@@ -66,7 +66,16 @@
 			$event_post_type         = liquid_outreach()->lo_ccb_events->post_type();
 			$event_partner_post_type = liquid_outreach()->lo_ccb_event_partners->post_type();
 			
-			if ( is_singular( $event_post_type ) ) {
+			if ( is_post_type_archive( $event_partner_post_type ) ) {
+				
+				$page_template = $this->template = "archive-event-partner{$this->extension}";
+				$file          = $this->template = "{$page_template}";
+				
+				$find[] = "templates/wp-template/$file";
+				$find[] = 'liquid-outreach/' . $base_template;
+				$find[] = 'liquid-outreach/' . $file;
+			}
+			elseif ( is_singular( $event_post_type ) ) {
 				
 				$page_template = $this->template = "single-event{$this->extension}";
 				$file          = $this->template = "{$page_template}";

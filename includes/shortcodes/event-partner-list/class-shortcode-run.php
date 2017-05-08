@@ -1,26 +1,26 @@
 <?php
 	
 	/**
-	 * Liquid Outreach Event Search Shortcode - Run
+	 * Liquid Outreach Event Partner_List Shortcode - Run
 	 *
-	 * @since   0.2.1
+	 * @since   0.3.3
 	 * @package Liquid Outreach
 	 */
-	class LO_Shortcodes_Event_Search_Run extends LO_Shortcodes_Run_Base {
+	class LO_Shortcodes_Event_Partner_List_Run extends LO_Shortcodes_Run_Base {
 		
 		/**
 		 * The Shortcode Tag
 		 *
 		 * @var string
-		 * @since 0.2.1
+		 * @since 0.3.3
 		 */
-		public $shortcode = 'lo_event_search';
+		public $shortcode = 'lo_event_partner_list';
 		
 		/**
 		 * Default attributes applied to the shortcode.
 		 *
 		 * @var array
-		 * @since 0.2.1
+		 * @since 0.3.3
 		 */
 		public $atts_defaults
 			= array();
@@ -28,7 +28,7 @@
 		/**
 		 * Shortcode Output
 		 *
-		 * @since 0.2.1
+		 * @since 0.3.3
 		 */
 		public function shortcode() {
 			
@@ -36,28 +36,6 @@
 			wp_enqueue_script( 'lo-vandertable',
 				Liquid_Outreach::$url . '/assets/js/vandertable.js' );
 			wp_enqueue_script( 'lo-index', Liquid_Outreach::$url . '/assets/js/index.js' );
-			
-			$args = $this->get_initial_query_args();
-			
-			$args = wp_parse_args( $args, array(
-				'post_type'      => liquid_outreach()->lo_ccb_events->post_type(),
-				'posts_per_page' => 10,
-			) );
-			
-			if ( isset( $_GET['lo-event-s'] ) || isset( $_GET['lo-event-loc'] ) || isset( $_GET['lo-event-day'] ) ) {
-				$events = liquid_outreach()->lo_ccb_events->get_search_result( $args );
-				if ( empty( $events->posts ) ) {
-					$event_empty_msg = 'Sorry, No data found for the search criteria.';
-				}
-			} else {
-				$events = liquid_outreach()->lo_ccb_events->get_many( $args );
-				if ( empty( $events->posts ) ) {
-					$event_empty_msg = 'Sorry, No data found.';
-				}
-			}
-			
-			$max        = ! empty( $events->max_num_pages ) ? $events->max_num_pages : 0;
-			$pagination = $this->get_pagination( $max );
 			
 			$categories = liquid_outreach()->lo_ccb_event_categories->get_many( [
 				'hide_empty' => false
@@ -72,10 +50,7 @@
 			$content  = '';
 			$content  .= LO_Style_Loader::get_template( 'lc-plugin' );
 			$content  .= LO_Style_Loader::get_template( 'vandertable' );
-			$content  .= LO_Template_Loader::get_template( 'search', array(
-				'events'     => !empty( $events->posts ) ? $events->posts : [],
-				'event_empty_msg'     => isset( $event_empty_msg ) ? $event_empty_msg : '',
-				'pagination' => $pagination,
+			$content  .= LO_Template_Loader::get_template( 'partner-list', array(
 				'categories' => $categories,
 				'partners'   => ! empty( $partners->posts ) ? $partners->posts : [],
 				'cities'     => $cities,
