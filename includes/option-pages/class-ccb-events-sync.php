@@ -597,6 +597,9 @@
 							'start_date' => strtotime( $ccb_event_datum['start_time'] ),
 							
 							$event_post_meta_prefix .
+							'weekday_name' => strtolower(date('l', strtotime( $ccb_event_datum['start_time'] ))),
+							
+							$event_post_meta_prefix .
 							'address' => ! empty( $ccb_event_datum['address'] ) ? ( is_array( $ccb_event_datum['address'] ) ? ( implode( PHP_EOL,
 								$ccb_event_datum['address'] ) ) : $ccb_event_datum['address'] ) : '',
 							

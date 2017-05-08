@@ -68,7 +68,10 @@ class LO_Shortcodes_Event_Search_Run extends LO_Shortcodes_Run_Base {
 		$max = !empty($events->max_num_pages) ? $events->max_num_pages : 0;
 		$pagination = $this->get_pagination($max);
 		
-		$categories = liquid_outreach()->lo_ccb_event_categories->get_many([]);
+		$categories = liquid_outreach()->lo_ccb_event_categories->get_many([
+			'hide_empty' => false
+		]);
+		$cities = liquid_outreach()->lo_ccb_events->get_all_city_list();
 		
 		$partners = liquid_outreach()->lo_ccb_event_partners->get_many([
 			'post_type' => liquid_outreach()->lo_ccb_event_partners->post_type(),
@@ -84,6 +87,7 @@ class LO_Shortcodes_Event_Search_Run extends LO_Shortcodes_Run_Base {
 			'pagination' => $pagination,
 			'categories' => $categories,
 			'partners' => !empty($partners->posts) ? $partners->posts : [],
+			'cities' => $cities,
 		) );
 		return $content;
 	}

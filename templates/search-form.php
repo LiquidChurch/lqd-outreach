@@ -81,10 +81,14 @@
                         <div class="col-sm-8">
                             <select id="lo-event-day" name="lo-event-day"
                                     class="form-control">
-                                <option value="all">Project Category</option>
-                                <option>Project Location</option>
-                                <option>Project Day</option>
-                                <option>Project Organization</option>
+                                <option value="all">All Days</option>
+                                <option value="sunday">Sunday</option>
+                                <option value="monday">Monday</option>
+                                <option value="tuesday">Tuesday</option>
+                                <option value="wednesday">Wednesday</option>
+                                <option value="thursday">Thursday</option>
+                                <option value="friday">Friday</option>
+                                <option value="saturday">Saturday</option>
                             </select>
                         </div>
                     </div> <!-- form group [order by] -->

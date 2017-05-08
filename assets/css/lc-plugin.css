@@ -23,7 +23,7 @@
 }
 
 .lo-navbar-nav > li > a {
-    font-size: 18px;
+    font-size: 16px;
     color: #666;
 }
 
@@ -271,8 +271,9 @@ new style addition and fixes on 7th May
 }
 
 .lo-dropdown-submenu > .dropdown-menu {
-    top: 0;
-    left: 100%;
+    top: 50px;
+    left: 0%;
+    width: 100%;
     margin-top: -6px;
     margin-left: -1px;
     -webkit-border-radius: 0 6px 6px 6px;
@@ -284,7 +285,7 @@ new style addition and fixes on 7th May
     border-color: transparent transparent transparent #333;
     border-style: solid;
     border-width: 5px 0 5px 5px;
-    content: " ";
+    /*content: " ";*/
     display: block;
     float: right;
     height: 0;
@@ -299,6 +300,14 @@ new style addition and fixes on 7th May
 
 .lo-dropdown-menu > li > a:hover, .dropdown-menu > .active > a:hover {
     text-decoration: underline;
+}
+
+.lo-dropdown-menu > li > a {
+    font-size: 16px !important;
+}
+
+.lo-dropdown-menu > li {
+    list-style: none !important;
 }
 
 .lo-dropdown-menu {
