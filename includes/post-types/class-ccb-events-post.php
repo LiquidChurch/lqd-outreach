@@ -21,6 +21,13 @@ class LO_Events_Post {
 	 * @since 0.2.5
 	 */
 	protected $event_categories;
+	
+	/**
+	 * Image data for the sermon post.
+	 *
+	 * @var array
+	 */
+	protected $images = array();
 
 	/**
 	 * Constructor
@@ -96,13 +103,6 @@ class LO_Events_Post {
 		// Unique id for the passed-in attributes.
 		$id = md5( $attr );
 
-		if ( ! isset( $attr['series_image_fallback'] ) || false !== $attr['series_image_fallback'] ) {
-			$series_image_fallback = true;
-			if ( isset( $attr['series_image_fallback'] ) ) {
-				unset( $attr['series_image_fallback'] );
-			}
-		}
-
 		if ( isset( $this->images[ $size ] ) ) {
 			// If we got it already, then send it back
 			if ( isset( $this->images[ $size ][ $id ] ) ) {
@@ -115,7 +115,7 @@ class LO_Events_Post {
 		}
 
 		$img = get_the_post_thumbnail( $this->ID, $size, $attr );
-		$this->images[ $size ][ $id ] = $img ? $img : $this->series_image( $size, $attr );
+		$this->images[ $size ][ $id ] = $img ? $img : null;
 
 		return $this->images[ $size ][ $id ];
 	}

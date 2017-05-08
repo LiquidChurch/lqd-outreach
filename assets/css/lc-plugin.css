@@ -118,7 +118,7 @@ custom breadcrumb style********
 ********************************/
 .lo-breadcrumb-arrow {
     height: 36px;
-    padding: 0;
+    padding: 0 !important;
     line-height: 36px;
     list-style: none;
     background-color: #e6e9ed
@@ -422,4 +422,7 @@ new style addition and fixes on 7th May
 .lo-cat-name {
     color: #fff;
     font-size:12px;
+}
+.lo-event-register-btn-top {
+    margin-bottom: 10px;
 }

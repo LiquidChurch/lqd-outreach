@@ -266,28 +266,28 @@
 			) );
 			
 			//Event ccb id meta
-			$cmb_additional->add_field( array(
-				'name'       => __( 'CCB Event ID', 'liquid-outreach' ),
-				'desc'       => __( '', 'liquid-outreach' ),
-				'id'         => $prefix . 'ccb_event_id',
-				'type'       => 'text',
-				'attributes' => array(
-					'readonly' => 'readonly',
-					'disabled' => 'disabled',
-				),
-			) );
+//			$cmb_additional->add_field( array(
+//				'name'       => __( 'CCB Event ID', 'liquid-outreach' ),
+//				'desc'       => __( '', 'liquid-outreach' ),
+//				'id'         => $prefix . 'ccb_event_id',
+//				'type'       => 'text',
+//				'attributes' => array(
+//					'readonly' => 'readonly',
+//					'disabled' => 'disabled',
+//				),
+//			) );
 			
 			//Event group id meta
-			$cmb_additional->add_field( array(
-				'name'       => __( 'CCB Group ID', 'liquid-outreach' ),
-				'desc'       => __( '', 'liquid-outreach' ),
-				'id'         => $prefix . 'group_id',
-				'type'       => 'text',
-				'attributes' => array(
-					'readonly' => 'readonly',
-					'disabled' => 'disabled',
-				),
-			) );
+//			$cmb_additional->add_field( array(
+//				'name'       => __( 'CCB Group ID', 'liquid-outreach' ),
+//				'desc'       => __( '', 'liquid-outreach' ),
+//				'id'         => $prefix . 'group_id',
+//				'type'       => 'text',
+//				'attributes' => array(
+//					'readonly' => 'readonly',
+//					'disabled' => 'disabled',
+//				),
+//			) );
 			
 			// Define our metaboxes and fields.
 			$cmb_team_leader = new_cmb2_box( array(
@@ -302,22 +302,22 @@
 			) );
 			
 			//team leader meta
-			$cmb_team_leader->add_field( array(
-				'name'       => esc_html__( 'ID', 'liquid-outreach' ),
-				'desc'       => esc_html__( '', 'liquid-outreach' ),
-				'id'         => $prefix . 'team_lead_id',
-				'type'       => 'text',
-				'attributes' => array(
-					'readonly' => 'readonly',
-					'disabled' => 'disabled',
-				),
-			) );
+//			$cmb_team_leader->add_field( array(
+//				'name'       => esc_html__( 'ID', 'liquid-outreach' ),
+//				'desc'       => esc_html__( '', 'liquid-outreach' ),
+//				'id'         => $prefix . 'team_lead_id',
+//				'type'       => 'text',
+//				'attributes' => array(
+//					'readonly' => 'readonly',
+//					'disabled' => 'disabled',
+//				),
+//			) );
 			
 			//team leader fname meta
 			$cmb_team_leader->add_field( array(
 				'name' => esc_html__( 'First Name', 'liquid-outreach' ),
 				'desc' => esc_html__( '', 'liquid-outreach' ),
-				'id'   => $prefix . 'event_team_lead_fname',
+				'id'   => $prefix . 'team_lead_fname',
 				'type' => 'text',
 				//                'attributes' => array(
 				//                    'readonly' => 'readonly',
@@ -329,7 +329,7 @@
 			$cmb_team_leader->add_field( array(
 				'name' => esc_html__( 'Last Name', 'liquid-outreach' ),
 				'desc' => esc_html__( '', 'liquid-outreach' ),
-				'id'   => $prefix . 'event_team_lead_lname',
+				'id'   => $prefix . 'team_lead_lname',
 				'type' => 'text',
 				//                'attributes' => array(
 				//                    'readonly' => 'readonly',
@@ -341,7 +341,7 @@
 			$cmb_team_leader->add_field( array(
 				'name' => esc_html__( 'Email', 'liquid-outreach' ),
 				'desc' => esc_html__( '', 'liquid-outreach' ),
-				'id'   => $prefix . 'event_team_lead_email',
+				'id'   => $prefix . 'team_lead_email',
 				'type' => 'text',
 				//                'attributes' => array(
 				//                    'readonly' => 'readonly',
@@ -353,7 +353,7 @@
 			$cmb_team_leader->add_field( array(
 				'name' => esc_html__( 'Phone', 'liquid-outreach' ),
 				'desc' => esc_html__( '', 'liquid-outreach' ),
-				'id'   => $prefix . 'event_team_lead_phone',
+				'id'   => $prefix . 'team_lead_phone',
 				'type' => 'text',
 				//                'attributes' => array(
 				//                    'readonly' => 'readonly',

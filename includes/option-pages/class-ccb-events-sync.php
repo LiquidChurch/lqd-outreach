@@ -623,19 +623,19 @@
 					
 					if ( $event_organizer_data['error'] == false ) {
 						$event_post_data['meta_input'][ $event_post_meta_prefix .
-						                                'event_team_lead_fname' ]
+						                                'team_lead_fname' ]
 							= $event_organizer_data['individual_data']['first_name'];
 						
 						$event_post_data['meta_input'][ $event_post_meta_prefix .
-						                                'event_team_lead_lname' ]
+						                                'team_lead_lname' ]
 							= $event_organizer_data['individual_data']['last_name'];
 						
 						$event_post_data['meta_input'][ $event_post_meta_prefix .
-						                                'event_team_lead_email' ]
+						                                'team_lead_email' ]
 							= $event_organizer_data['individual_data']['phone'];
 						
 						$event_post_data['meta_input'][ $event_post_meta_prefix .
-						                                'event_team_lead_phone' ]
+						                                'team_lead_phone' ]
 							= $event_organizer_data['individual_data']['email'];
 					}
 					
@@ -693,7 +693,7 @@
 						$update_post = wp_update_post( [
 							'ID'           => $ccb_event_datum['wp_post_id'],
 							'post_title'   => $event_post_data['title'],
-							'post_content' => $event_post_data['content'],
+//							'post_content' => $event_post_data['content'],
 							'post_type'    => 'lo-events',
 							'meta_input'   => $event_post_data['meta_input'],
 						] );
