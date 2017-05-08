@@ -79,25 +79,25 @@
 		</div>
 		
 		<div class="col-md-11">
-			<span class="search-heading">Hands On</span>
-			<ol class="breadcrumb breadcrumb-arrow">
+			<span class="lo-search-heading">Hands On</span>
+			<ol class="breadcrumb lo-breadcrumb-arrow">
 				<li><a href="#">Home</a></li>
 				<li><a href="#">Category</a></li>
-				<li class="active"><span>Upcoming Projects</span></li>
+				<li class="lo-active"><span>Upcoming Projects</span></li>
 			</ol>
 		</div>
 	</div>
 	<!-- /.row -->
 </div>
 <!-- /.container -->
-<div class="container">
-	<div class="row no-margin">
+<div class="container lo-custom-container">
+	<div class="row lo-no-margin">
 		<!--Details column-->
-		<div class="col-md-8 panel panel-custom">
-			<span class="search-heading">Game Night or Craft Night – Aegis Senior Living Home</span>
+		<div class="col-md-8 panel lo-panel-custom">
+			<span class="lo-search-heading">Game Night or Craft Night – Aegis Senior Living Home</span>
 			<button class="btn btn-primary pull-right">Register Now</button>
 			<hr/>
-			<p class="description">
+			<p class="lo-description">
 				<img src="<?php echo Liquid_Outreach::$url . '/assets/css/img/detailsimg.jpg' ?>" width="100%" height="300"/>
 			<hr/>
 			Aegis Living Senior Home is a special and unique community that treats their senior residents with the respect and dignity they deserve. These residents have been affected by memory issues but absolutely LOVE interaction with anyone outside the home, including young families and children.
@@ -121,53 +121,68 @@
 			<strong>Additional Information</strong>
 			<hr/>
 			<div class="row">
-				<div class="col-md-5 add-info-label">Date & Time</div>
+				<div class="col-md-5 lo-add-info-label">Date & Time</div>
 				<div class="col-md-1">&#8594 </div>
 				<div class="col-md-6">Thursday 12th May 2017 from 10am to 6pm</div>
 			</div>
 			<div class="row">
-				<div class="col-md-5 add-info-label">Cost</div>
+				<div class="col-md-5 lo-add-info-label">Cost</div>
 				<div class="col-md-1">&#8594 </div>
 				<div class="col-md-6">$100</div>
 			</div>
 			<div class="row">
-				<div class="col-md-5 add-info-label">Openings</div>
+				<div class="col-md-5 lo-add-info-label">Openings</div>
 				<div class="col-md-1">&#8594 </div>
 				<div class="col-md-6">12</div>
 			</div>
 			<div class="row">
-				<div class="col-md-5 add-info-label">Kid friendly</div>
+				<div class="col-md-5 lo-add-info-label">Categories</div>
+				<div class="col-md-1">&#8594 </div>
+				<div class="col-md-6">
+				<div class="lo-cat-img">
+						<img src="<?php echo Liquid_Outreach::$url . '/assets/css/img/HandsOn.png' ?>" width="25px"/>
+					</div>
+					<div class="lo-cat-img">
+						<img src="<?php echo Liquid_Outreach::$url . '/assets/css/img/HandsOn.png' ?>" width="25px"/>
+				</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-5 lo-add-info-label">Kid friendly</div>
 				<div class="col-md-1">&#8594 </div>
 				<div class="col-md-6">Yes</div>
 			</div>
 			<!--team leader block-->
 			<div class="row">
-				<div class="col-md-5 add-info-label">Team Leader</div>
-				<div class="col-md-7 add-info-label"><br/></div>
+				<div class="col-md-5 lo-add-info-label">Team Leader</div>
+				<div class="col-md-7 lo-add-info-label"><br/></div>
 				
-				<div class="col-md-5 add-info-label-2">Name</div>
+				<div class="col-md-5 lo-add-info-label-2">Name</div>
 				<div class="col-md-1">&#8594 </div>
 				<div class="col-md-6">John Doe</div>
 				
-				<div class="col-md-5 add-info-label-2">Email</div>
+				<div class="col-md-5 lo-add-info-label-2">Email</div>
 				<div class="col-md-1">&#8594 </div>
 				<div class="col-md-6">JohnDoe@gmail.co.uk</div>
 				
-				<div class="col-md-5 add-info-label-2">Phone</div>
+				<div class="col-md-5 lo-add-info-label-2">Phone</div>
 				<div class="col-md-1">&#8594 </div>
 				<div class="col-md-6">+44-225-566</div>
 			</div>
 			<!--/team leader block-->
 			<br/>
 			<div class="row">
-				<div class="col-md-5 add-info-label">Partner organization</div>
+				<div class="col-md-5 lo-add-info-label">Partner organization</div>
 				<div class="col-md-1">&#8594 </div>
 				<div class="col-md-6">ABC company, liquidchurch</div>
 			</div>
 			<div class="row">
-				<div class="col-md-5 add-info-label">Address</div>
+				<div class="col-md-5 lo-add-info-label">Address</div>
 				<div class="col-md-1">&#8594 </div>
 				<div class="col-md-6">some address</div>
+			</div>
+			<div class="row">
+					<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3682.9756853490367!2d88.41061141444428!3d22.6173831370264!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f89e1c998b806b%3A0x261de3892096fcf2!2sNosyworld+Solution+Pvt.+Ltd.!5e0!3m2!1sen!2sin!4v1494178462570" width="350" height="350" frameborder="0" style="border:0" allowfullscreen></iframe>
 			</div>
 		</div>
 	</div><!--/.row-->

@@ -233,6 +233,7 @@ custom breadcrumb style********
 
 .lo-panel-custom {
     padding: 25px;
+    border: 1px solid #e2e2e2;
 }
 
 .lo-no-margin {
@@ -252,9 +253,163 @@ custom breadcrumb style********
 .lo-event-search-btn, .lo-event-search-label, .lo-event-search-input {
     margin-top: 10px;
 }
+
 .lo-event-form-advanced-option-btn {
     font-size: 14px;
 }
+
 .lo-event-form-advanced-option {
     display: none;
+}
+
+/**********************************
+new style addition and fixes on 7th May
+**********************************/
+
+.lo-dropdown-submenu {
+    position: relative;
+}
+
+.lo-dropdown-submenu > .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.lo-dropdown-submenu > a:after {
+    border-color: transparent transparent transparent #333;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    content: " ";
+    display: block;
+    float: right;
+    height: 0;
+    margin-right: -10px;
+    margin-top: 5px;
+    width: 0;
+}
+
+.lo-dropdown-submenu:hover > a:after {
+    border-left-color: #555;
+}
+
+.lo-dropdown-menu > li > a:hover, .dropdown-menu > .active > a:hover {
+    text-decoration: underline;
+}
+
+.lo-dropdown-menu {
+    min-width: 195px !important;
+}
+
+@media (max-width: 767px) {
+    .lo-navbar-nav {
+        display: inline;
+    }
+
+    .lo-navbar-default .navbar-brand {
+        display: inline;
+    }
+
+    .lo-navbar-default .navbar-toggle .icon-bar {
+        background-color: #fff;
+    }
+
+    .lo-navbar-default .navbar-nav .dropdown-menu > li > a {
+        color: red;
+        background-color: #ccc;
+        border-radius: 4px;
+        margin-top: 2px;
+    }
+
+    .lo-navbar-default .navbar-nav .open .dropdown-menu > li > a {
+        color: #333;
+    }
+
+    .lo-navbar-default .navbar-nav .open .dropdown-menu > li > a:hover,
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+        background-color: #ccc;
+    }
+
+    .lo-navbar-nav .open .dropdown-menu {
+        border-bottom: 1px solid white;
+        border-radius: 0;
+    }
+
+    .lo-dropdown-menu {
+        padding-left: 10px;
+    }
+
+    .lo-dropdown-menu .dropdown-menu {
+        padding-left: 20px;
+    }
+
+    .lo-dropdown-menu .dropdown-menu .dropdown-menu {
+        padding-left: 30px;
+    }
+
+    li.lo-dropdown.open {
+        border: 0px solid red;
+    }
+
+}
+
+@media (min-width: 768px) {
+    ul.lo-nav li:hover > ul.lo-dropdown-menu {
+        display: block;
+    }
+
+    #lo-navbar {
+        text-align: center;
+    }
+}
+
+.lo-custom-container {
+    font-size: 14px;
+    line-height: 2;
+}
+
+.lo-description {
+    padding: 0 !important;
+}
+
+.lo-date-cal {
+    width: 75px;
+    height: 60px;
+    border: 1px solid #333;
+    background-color: #f2f2f2;
+}
+
+.lo-month {
+    width: 100%;
+    height: 45%;
+    background-color: #2186eb;
+    font-size: 14px;
+    text-align: center;
+    color: #fff;
+}
+
+.lo-date {
+    font-size: 28px;
+    text-align: center;
+}
+
+.lo-cat-img {
+    width: 30px;
+    display: inline;
+}
+
+.lo-cat-button {
+    display: inline-block;
+    padding: 2px 5px;
+    background-color: #333;
+    border-radius: 4px;
+
+}
+
+.lo-cat-name {
+    color: #fff;
 }

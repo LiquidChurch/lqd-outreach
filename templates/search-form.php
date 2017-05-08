@@ -51,24 +51,26 @@
                             <select id="lo-event-org" name="lo-event-org"
                                     class="form-control">
                                 <option value="">All Project Partners</option>
-	                            <?php
-		                            if ( ! empty( $this->get( 'partners' ) ) ) {
-			                            foreach (
-				                            $this->get( 'partners' ) as $index => $partner
-			                            ) {
-			                                if($partner instanceof WP_Post) {
-			                                 
-				                                echo '<option value="' . $partner->post_name . '">' .
-				                                     $partner->post_title . '</option>';
-                                            } else {
-			                                    
-				                                echo '<option value="' . $partner->post->post_name . '">' .
-				                                     $partner->title() . '</option>';
-                                            }
-				                            
-			                            }
-		                            }
-	                            ?>
+								<?php
+									if ( ! empty( $this->get( 'partners' ) ) ) {
+										foreach (
+											$this->get( 'partners' ) as $index => $partner
+										) {
+											if ( $partner instanceof WP_Post ) {
+												
+												echo '<option value="' . $partner->post_name .
+												     '">' .
+												     $partner->post_title . '</option>';
+											} else {
+												
+												echo '<option value="' . $partner->post->post_name .
+												     '">' .
+												     $partner->title() . '</option>';
+											}
+											
+										}
+									}
+								?>
                             </select>
                         </div>
                     </div> <!-- form group [order by] -->
@@ -108,5 +110,32 @@
                 </div>
             </div>
         </form>
+    </div>
+</div>
+<!--Category lists small-->
+<div class="row">
+    <div class="col-md-1">
+    </div>
+    <div class="col-md-10">
+        <a href="#">
+				<span class="lo-cat-button">
+					<span class="lo-icon-cat"><img src="<?php echo Liquid_Outreach::$url .
+					                                               '/assets/css/img/HandsOn.png' ?>"
+                                                   width="25px"/></span>
+					<span class="lo-cat-name">Hands on</span>
+				</span>
+        </a>
+
+        <a href="#">
+				<span class="lo-cat-button">
+					<span class="lo-icon-cat"><img src="<?php echo Liquid_Outreach::$url .
+					                                               '/assets/css/img/HandsOn.png' ?>"
+                                                   width="25px"/></span>
+					<span class="lo-cat-name">Hands on</span>
+				</span>
+        </a>
+
+    </div>
+    <div class="col-md-1">
     </div>
 </div>

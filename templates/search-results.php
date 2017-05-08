@@ -107,33 +107,81 @@
 				</thead>
 				<tbody>
 				<tr>
-					<td>24/12/2017</td>
+					<td>
+					<div class="lo-date-cal">
+						<div class="lo-month">May</div>
+						<div class="lo-date">7</div>
+					</div>
+					</td>
 					<td>Get help for my kids tuition</td>
-					<td>hands on</td>
+					<td>
+					<div class="lo-cat-img">
+						<img src="<?php echo Liquid_Outreach::$url . '/assets/css/img/HandsOn.png' ?>" width="25px"/>
+					</div>
+					<div class="lo-cat-img">
+						<img src="<?php echo Liquid_Outreach::$url . '/assets/css/img/HandsOn.png' ?>" width="25px"/>
+					</div>
+					</td>
 					<td>12</td>
 					<td>carolina</td>
 					<td>Closed</td>
 				</tr>
 				<tr>
-					<td>23/12/2017</td>
+					<td>
+					<div class="lo-date-cal">
+						<div class="lo-month">May</div>
+						<div class="lo-date">7</div>
+					</div>
+					</td>
 					<td>Get help for my kids tuition</td>
-					<td>hands on</td>
+					<td>
+					<div class="lo-cat-img">
+						<img src="<?php echo Liquid_Outreach::$url . '/assets/css/img/HandsOn.png' ?>" width="25px"/>
+					</div>
+					<div class="lo-cat-img">
+						<img src="<?php echo Liquid_Outreach::$url . '/assets/css/img/HandsOn.png' ?>" width="25px"/>
+					</div>
+					</td>
 					<td>8</td>
 					<td>carolina</td>
 					<td>open</td>
 				</tr>
 				<tr>
-					<td>21/12/2017</td>
+					<td>
+					<div class="lo-date-cal">
+						<div class="lo-month">May</div>
+						<div class="lo-date">7</div>
+					</div>
+					</td>
 					<td>Get help for my kids tuition</td>
-					<td>hands on</td>
+					<td>
+					<div class="lo-cat-img">
+						<img src="<?php echo Liquid_Outreach::$url . '/assets/css/img/HandsOn.png' ?>" width="25px"/>
+					</div>
+					<div class="lo-cat-img">
+						<img src="<?php echo Liquid_Outreach::$url . '/assets/css/img/HandsOn.png' ?>" width="25px"/>
+					</div>
+					</td>
 					<td>5</td>
 					<td>carolina</td>
 					<td>open</td>
 				</tr>
 				<tr>
-					<td>26/12/2017</td>
+					<td>
+					<div class="lo-date-cal">
+						<div class="lo-month">May</div>
+						<div class="lo-date">7</div>
+					</div>
+					</td>
 					<td>Get help for my kids tuition</td>
-					<td>hands on</td>
+					<td>
+					<div class="lo-cat-img">
+						<img src="<?php echo Liquid_Outreach::$url . '/assets/css/img/HandsOn.png' ?>" width="25px"/>
+					</div>
+					<div class="lo-cat-img">
+						<img src="<?php echo Liquid_Outreach::$url . '/assets/css/img/HandsOn.png' ?>" width="25px"/>
+					</div>
+					</td>
 					<td>6</td>
 					<td>carolina</td>
 					<td>open</td>

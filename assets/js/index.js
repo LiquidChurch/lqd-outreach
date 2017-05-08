@@ -1,9 +1,9 @@
 jQuery(function () {
     jQuery(".VanderTable").VanderTable({
         //showRowOrder : true,
-        'allowTableSort': false,
-        'disableColReordering': false,
-        'disableRowReordering': false,
+        'allowTableSort': true,
+        'disableColReordering': true,
+        'disableRowReordering': true,
         onMoveCol: function (obj, pos) {
             jQuery(obj).css('background-color', '#BF360C !important');
         }

@@ -27,13 +27,30 @@
 						$meta_start_date = $event->get_meta( $meta_prefix . 'start_date' );
 						?>
                         <tr>
-                            <td><?php echo date( 'Y-m-d H:i:s', $meta_start_date ) ?></td>
-                            <td><a href="<?php echo $event->permalink() ?>"><?php echo $event->title() ?></a></td>
+                            <td>
+                                <div class="lo-date-cal">
+                                    <div class="lo-month"><?php echo date( 'M',
+											$meta_start_date ) ?></div>
+                                    <div class="lo-date"><?php echo date( 'd',
+											$meta_start_date ) ?></div>
+                                </div>
+                            </td>
+                            <td>
+                                <a href="<?php echo $event->permalink() ?>"><?php echo $event->title() ?></a>
+                            </td>
                             <td>
 								<?php
 									$categories = $event->get_event_categories();
 									if ( ! empty( $categories ) ) {
-										echo implode( ', ', wp_list_pluck( $categories, 'name' ) );
+										foreach ( $categories as $category ) {
+											?>
+                                            <div class="lo-cat-img">
+                                                <img src="<?php echo Liquid_Outreach::$url .
+												                     '/assets/css/img/HandsOn.png' ?>"
+                                                     width="25px"/>
+                                            </div>
+											<?php
+										}
 									}
 								?>
                             </td>
