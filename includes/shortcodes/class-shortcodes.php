@@ -25,6 +25,7 @@ class LO_Shortcodes {
 	public function __construct( $plugin ) {
 		$this->event_search    = new LO_Shortcodes_Event_Search( $plugin );
 		$this->event_single    = new LO_Shortcodes_Event_Single( $plugin );
+		$this->event_category_single    = new LO_Shortcodes_Event_Category_Single( $plugin );
 	}
 
 	/**

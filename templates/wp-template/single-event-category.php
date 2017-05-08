@@ -19,7 +19,8 @@
         <article id="" class="">
             <div class="entry-content">
 				<?php
-					echo do_shortcode( '[lo_event_search]' );
+					$category_id = get_queried_object()->term_id;;
+					echo do_shortcode( '[lo_event_category_single event_cat_id=' . $category_id . ']' );
 				?>
             </div>
         </article>
