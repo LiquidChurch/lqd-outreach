@@ -44,7 +44,7 @@
 				'posts_per_page' => 10,
 			) );
 			
-			if ( isset( $_GET['lo-event-s'] ) ) {
+			if ( isset( $_GET['lo-event-s'] ) || isset( $_GET['lo-event-loc'] ) || isset( $_GET['lo-event-day'] ) ) {
 				$events = liquid_outreach()->lo_ccb_events->get_search_result( $args );
 				if ( empty( $events->posts ) ) {
 					$event_empty_msg = 'Sorry, No data found for the search criteria.';

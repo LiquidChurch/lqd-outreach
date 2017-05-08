@@ -448,7 +448,10 @@
 		        AND p.post_type = '%s'
 		    ", $this->meta_prefix . 'city', $status, $this->post_type() ) );
 			
-			return array_filter( $r );
+			$filter_r = array_filter( array_unique($r) );
+			sort($filter_r);
+			
+			return array_filter( array_unique($filter_r) );
 		}
 		
 		/**
