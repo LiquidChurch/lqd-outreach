@@ -44,14 +44,16 @@
                                     </td>
                                     <td>
 										<?php
-											$categories = $event->get_event_categories();
+											$categories = $event->get_event_categories([
+											        'image_size' => 40
+                                            ]);
 											if ( ! empty( $categories ) ) {
 												foreach ( $categories as $category ) {
 													?>
                                                     <div class="lo-cat-img">
-                                                        <img src="<?php echo Liquid_Outreach::$url .
-														                     '/assets/css/img/HandsOn.png' ?>"
-                                                             width="25px"/>
+                                                        <?php
+                                                        echo $category->image;
+                                                        ?>
                                                     </div>
 													<?php
 												}
