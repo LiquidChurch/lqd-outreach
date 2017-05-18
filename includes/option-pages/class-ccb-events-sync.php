@@ -84,7 +84,7 @@
 		 */
 		public function __construct( $plugin ) {
 			// Set our title.
-			$this->title = esc_attr__( 'Liquid Outreach Ccb Events Sync', 'liquid-outreach' );
+			$this->title = esc_attr__( 'Outreach Events Sync', 'liquid-outreach' );
 			
 			parent::__construct( $plugin );
 		}
