@@ -81,8 +81,8 @@
 			parent::__construct(
 			// Should be an array with Singular, Plural, and Registered name.
 				array(
-					__( 'Event Category', 'liquid-outreach' ),
-					__( 'Event Categories', 'liquid-outreach' ),
+					__( 'Outreach Category', 'liquid-outreach' ),
+					__( 'Outreach Categories', 'liquid-outreach' ),
 					'event-category',
 				),
 				// Register taxonomy arguments.

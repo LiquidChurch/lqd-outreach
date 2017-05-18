@@ -85,8 +85,8 @@
             // First parameter should be an array with Singular, Plural, and Registered name.
             parent::__construct(
                 array(
-                    esc_html__('Event Partner', 'liquid-outreach'),
-                    esc_html__('Event Partners', 'liquid-outreach'),
+                    esc_html__('Outreach Partner', 'liquid-outreach'),
+                    esc_html__('Outreach Partners', 'liquid-outreach'),
                     'lo-event-partners',
                 ),
                 array(
