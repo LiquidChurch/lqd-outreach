@@ -151,7 +151,14 @@
 	     * @since 0.2.0
 	     * @var LO_Shortcodes
 	     */
-	    protected $lo_shortcodes;
+	    
+	    /**
+	     * Instance of LO_Ccb_Events_Info_Setings
+	     *
+	     * @since 0.3.4
+	     * @var LO_Ccb_Events_Info_Setings
+	     */
+	    protected $lo_ccb_events_info_setings;
 	    
 	    /**
 	     * Instance of LO_Ccb_Event_Categories
@@ -339,13 +346,13 @@
             $this->lo_ccb_event_partners = new LO_Ccb_Event_Partners($this);
             $this->lo_ccb_event_categories = new LO_Ccb_Event_Categories($this);
             $this->lo_shortcodes = new LO_Shortcodes($this);
+	        $this->lo_ccb_events_info_setings = new LO_Ccb_Events_Info_Setings();
             
             if (is_admin()) {
                 $this->lo_ccb_api_event_profiles = new Lo_Ccb_api_event_profiles($this);
                 $this->lo_ccb_api_individual_profile = new Lo_Ccb_api_individual_profile($this);
                 $this->lo_ccb_api_attendance_profile = new Lo_Ccb_api_attendance_profile($this);
                 $this->lo_ccb_events_sync = new LO_Ccb_Events_Sync($this);
-                $this->lo_ccb_events_info_setings = new LO_Ccb_Events_Info_Setings($this);
             } else {
                 $this->lo_wp_template_loader = new LO_WP_Template_Loader();
             }
@@ -435,6 +442,7 @@
                 case 'lo_ccb_api_event_profiles':
                 case 'lo_ccb_api_individual_profile':
                 case 'lo_ccb_api_attendance_profile':
+                case 'lo_ccb_events_info_setings':
                     return $this->$field;
                 default:
                     throw new Exception('Invalid ' . __CLASS__ . ' property: ' . $field);
