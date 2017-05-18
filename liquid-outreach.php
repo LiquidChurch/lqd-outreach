@@ -217,6 +217,7 @@
             }
             
             // Make sure any rewrite functionality has been loaded.
+            $this->init();
             flush_rewrite_rules();
         }
     
