@@ -75,7 +75,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="<?php echo home_url('event-partners') ?>">Partner Organizations</a>
+                    <a href="<?php echo home_url('outreach-partners') ?>">Partner Organizations</a>
                 </li>
             </ul>
         </div>

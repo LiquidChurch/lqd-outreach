@@ -103,7 +103,7 @@
                     ),
                     'map_meta_cap' => true,
                     'show_in_menu' => 'edit.php?post_type=lo-events',
-                    'rewrite' => array('slug' => 'event-partners'),
+                    'rewrite' => array('slug' => 'outreach-partners'),
                 )
             );
         }
