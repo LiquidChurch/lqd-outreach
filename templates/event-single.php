@@ -43,7 +43,7 @@
             <hr/>
 			
 			<?php
-				if ( ! empty( $info_settings['lo_events_info_date_time'] ) ) {
+				if ( ! empty( $info_settings['lo_events_info_date_time'] ) || ! isset( $info_settings['lo_events_info_date_time'] ) ) {
 					?>
                     <div class="row">
                         <div class="col-md-5 " style="vertical-align: top;">Date & Time</div>
@@ -56,7 +56,7 @@
 			?>
 			
 			<?php
-				if ( ! empty( $info_settings['lo_events_info_cost'] ) ) {
+				if ( ! empty( $info_settings['lo_events_info_cost'] ) || ! isset( $info_settings['lo_events_info_cost'] ) ) {
 					?>
                     <div class="row">
                         <div class="col-md-5 ">Cost</div>
@@ -69,7 +69,7 @@
 			?>
 			
 			<?php
-				if ( ! empty( $info_settings['lo_events_info_openings'] ) ) {
+				if ( ! empty( $info_settings['lo_events_info_openings'] ) || ! isset( $info_settings['lo_events_info_openings'] ) ) {
 					?>
                     <div class="row">
                         <div class="col-md-5 ">Openings</div>
@@ -93,7 +93,7 @@
 			?>
 			
 			<?php
-				if ( ! empty( $info_settings['lo_events_info_categories'] ) ) {
+				if ( ! empty( $info_settings['lo_events_info_categories'] ) || ! isset( $info_settings['lo_events_info_categories'] ) ) {
 					?>
                     <div class="row">
                         <div class="col-md-5 ">Categories</div>
@@ -120,7 +120,7 @@
 			?>
 			
 			<?php
-				if ( ! empty( $info_settings['lo_events_info_kid_friendly'] ) ) {
+				if ( ! empty( $info_settings['lo_events_info_kid_friendly'] ) || ! isset( $info_settings['lo_events_info_kid_friendly'] ) ) {
 					?>
                     <div class="row">
                         <div class="col-md-5 ">Kid friendly</div>
@@ -135,7 +135,7 @@
             <br/>
 			
 			<?php
-				if ( ! empty( $info_settings['lo_events_info_team_leader'] ) ) {
+				if ( ! empty( $info_settings['lo_events_info_team_leader'] ) || ! isset( $info_settings['lo_events_info_team_leader'] ) ) {
 					?>
                     <!--team leader block-->
                     <div class="row">
@@ -144,7 +144,7 @@
                     </div>
 					
 					<?php
-					if ( ! empty( $info_settings['lo_events_info_team_leader_name'] ) ) {
+					if ( ! empty( $info_settings['lo_events_info_team_leader_name'] ) || ! isset( $info_settings['lo_events_info_team_leader_name'] ) ) {
 						?>
                         <div class="row">
                             <div class="col-md-5 -2">Name</div>
@@ -161,7 +161,7 @@
 					?>
 					
 					<?php
-					if ( ! empty( $info_settings['lo_events_info_team_leader_email'] ) ) {
+					if ( ! empty( $info_settings['lo_events_info_team_leader_email'] ) || ! isset( $info_settings['lo_events_info_team_leader_email'] ) ) {
 						?>
                         <div class="row">
                             <div class="col-md-5 -2">Email</div>
@@ -176,7 +176,7 @@
 					?>
 					
 					<?php
-					if ( ! empty( $info_settings['lo_events_info_team_leader_phone'] ) ) {
+					if ( ! empty( $info_settings['lo_events_info_team_leader_phone'] ) || ! isset( $info_settings['lo_events_info_team_leader_phone'] ) ) {
 						?>
                         <div class="row">
                             <div class="col-md-5 -2">Phone</div>
@@ -196,7 +196,7 @@
 			?>
 			
 			<?php
-				if ( ! empty( $info_settings['lo_events_info_partner_organization'] ) ) {
+				if ( ! empty( $info_settings['lo_events_info_partner_organization'] ) || ! isset( $info_settings['lo_events_info_partner_organization'] ) ) {
 					?>
                     <div class="row">
 						<?php
@@ -228,7 +228,7 @@
 			?>
 			
 			<?php
-				if ( ! empty( $info_settings['lo_events_info_address'] ) ) {
+				if ( ! empty( $info_settings['lo_events_info_address'] ) || ! isset( $info_settings['lo_events_info_address'] ) ) {
 					?>
                     <div class="row">
                         <div class="col-md-5 ">Address</div>
