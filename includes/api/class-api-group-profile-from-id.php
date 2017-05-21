@@ -1,24 +1,24 @@
 <?php
 
 /**
- * Liquid Outreach API Group Profiles
+ * Liquid Outreach API Group Profile from ID
  *
  * @since 0.3.5
  * @package Liquid_Outreach
  */
-class Lo_Ccb_api_group_profiles extends Lo_Ccb_api_main
+class Lo_Ccb_api_group_profile_from_id extends Lo_Ccb_api_main
 {
     /**
      * @var string
      * @since 0.3.5
      */
-    protected $api_name    = "group_profiles";
+    protected $api_name    = "group_profile_from_id";
     
     /**
      * @var string
      * @since 0.3.5
      */
-    protected $api_req_str = "srv=group_profiles";
+    protected $api_req_str = "srv=group_profile_from_id";
     
     /**
      * @var string
@@ -49,7 +49,7 @@ class Lo_Ccb_api_group_profiles extends Lo_Ccb_api_main
      */
     public function api_map($data = [])
     {
-        $this->map_fields();
+        $this->map_fields($data);
         $this->mod_req_str();
         $this->call_ccb_api();
         $this->process_api_response();
@@ -68,26 +68,17 @@ class Lo_Ccb_api_group_profiles extends Lo_Ccb_api_main
      * @return WP_Error
      * @since 0.3.5
      */
-    public function map_fields()
+    public function map_fields($api_data)
     {
         $post_fields = [
-            'modified_since' => !empty($_POST['modified_since']) ? date('Y-m-d', strtotime($_POST['modified_since'])) : ''
+            'id' => !empty($_POST['group_id']) ? $_POST['group_id'] : (!empty($api_data['group_id']) ? $api_data['group_id'] : null)
         ];
 
         $this->api_fields = [
-            'page' => !empty($_POST['page']) ? $_POST['page'] : 1,
-            'per_page' => !empty($_POST['per_page']) ? $_POST['per_page'] : 100
+            'id' => $post_fields['id'],
+            'include_image_link' => !empty($_POST['per_page']) ? $_POST['include_image_link'] : false
         ];
         
-        if(!empty($post_fields['modified_since'])) {
-            $this->api_fields['modified_since'] = $post_fields['modified_since'];
-        }
-	    if(!empty($_POST['include_participants'])) {
-		    $this->api_fields['include_participants'] = !empty($_POST['include_participants']) ? true : false;
-	    }
-	    if(!empty($_POST['include_image_link'])) {
-		    $this->api_fields['include_image_link'] = !empty($_POST['include_image_link']) ? true : false;
-	    }
     }
     
     /**

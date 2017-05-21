@@ -76,7 +76,8 @@ class Lo_Ccb_api_event_profiles extends Lo_Ccb_api_main
 
         $this->api_fields = [
             'page' => !empty($_POST['page']) ? $_POST['page'] : 1,
-            'per_page' => !empty($_POST['per_page']) ? $_POST['per_page'] : 100
+            'per_page' => !empty($_POST['per_page']) ? $_POST['per_page'] : 100,
+            'include_image_link' => !empty($_POST['per_page']) ? $_POST['include_image_link'] : false
         ];
         
         if(!empty($post_fields['modified_since'])) {

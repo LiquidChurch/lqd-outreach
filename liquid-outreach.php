@@ -74,6 +74,14 @@
 	    protected $lo_ccb_api_event_profiles;
         
         /**
+         * Instance of lo_ccb_api_group_profiles
+         *
+         * @since 0.3.5
+         * @var lo_ccb_api_group_profiles
+         */
+	    protected $lo_ccb_api_group_profile_from_id;
+        
+        /**
          * Instance of Lo_Ccb_api_individual_profile
          *
          * @since 0.1.3
@@ -144,7 +152,7 @@
          * @var LO_Ccb_Events_Sync
          */
         protected $lo_ccb_events_sync;
-	
+        
 	    /**
 	     * Instance of LO_Shortcodes
 	     *
@@ -350,6 +358,7 @@
             
             if (is_admin()) {
                 $this->lo_ccb_api_event_profiles = new Lo_Ccb_api_event_profiles($this);
+                $this->lo_ccb_api_group_profile_from_id = new Lo_Ccb_api_group_profile_from_id($this);
                 $this->lo_ccb_api_individual_profile = new Lo_Ccb_api_individual_profile($this);
                 $this->lo_ccb_api_attendance_profile = new Lo_Ccb_api_attendance_profile($this);
                 $this->lo_ccb_events_sync = new LO_Ccb_Events_Sync($this);
@@ -440,6 +449,7 @@
                 case 'lo_ccb_events_sync':
                 case 'lo_shortcodes':
                 case 'lo_ccb_api_event_profiles':
+                case 'lo_ccb_api_group_profile_from_id':
                 case 'lo_ccb_api_individual_profile':
                 case 'lo_ccb_api_attendance_profile':
                 case 'lo_ccb_events_info_setings':
