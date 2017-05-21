@@ -77,6 +77,16 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
     private $form_handle_status = false;
 
     /**
+     * transient key list
+     * @since 0.3.6
+     * @var array
+     */
+    private $transient_key = [
+        'groups_list' => 'ccb_groups_api_data_groups_list',
+        'department_list' => 'ccb_groups_api_data_departments_list',
+    ];
+
+    /**
      * Constructor.
      *
      * @since  0.0.3
@@ -272,6 +282,8 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
     protected function show_sync_details()
     {
         $sync_data = $this->check_sync_data();
+        $group_list = $this->get_group_list();
+        $department_list = $this->get_department_list();
         if (empty($sync_data['num_rows'])) {
             return false;
         }
@@ -283,8 +295,57 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
             <div class="cmb2-wrap form-table">
                 <div class="cmb-row">
                     <div class="cmb-th">
-                        <label for=""><?php echo esc_html__('Fetched Data Details',
+                        <h2><?php echo esc_html__('Fetched Data Details',
+                                'liquid-outreach') ?></h2>
+                    </div>
+                </div>
+                <div class="cmb-row">
+                    <div class="cmb-th">
+                        <label for=""><?php echo esc_html__('Filter By',
                                 'liquid-outreach') ?></label>
+                    </div>
+                    <div class="cmb-th">
+                        <select id="ccb-sync-filter-by">
+                            <option value=""> --- Any ---</option>
+                            <option value="groups">Groups</option>
+                            <option value="departments">Departments</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="cmb-row ccb-sync-filter-by-group-row" style="display: none;">
+                    <div class="cmb-th">
+                        <label for=""><?php echo esc_html__('Select Group',
+                                'liquid-outreach') ?></label>
+                    </div>
+                    <div class="cmb-th">
+                        <select id="ccb-sync-filter-by-group">
+                            <option value=""> --- Any ---</option>
+                            <?php
+                            if (!empty($group_list)) {
+                                foreach ($group_list as $index => $item) {
+                                    echo '<option value="' . $index . '">' . $item . '</option>';
+                                }
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="cmb-row ccb-sync-filter-by-dep-row" style="display: none;">
+                    <div class="cmb-th">
+                        <label for=""><?php echo esc_html__('Select Department',
+                                'liquid-outreach') ?></label>
+                    </div>
+                    <div class="cmb-th">
+                        <select id="ccb-sync-filter-by-dep">
+                            <option value=""> --- Any ---</option>
+                            <?php
+                            if (!empty($department_list)) {
+                                foreach ($department_list as $index => $item) {
+                                    echo '<option value="' . $index . '">' . $item . '</option>';
+                                }
+                            }
+                            ?>
+                        </select>
                     </div>
                 </div>
                 <div class="cmb-row" style="text-align: center;">
@@ -394,7 +455,10 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                             'nonce': nonce,
                             'offset': offset,
                             'limit': limit,
-                            'data': ccb_data_chunk
+                            'data': ccb_data_chunk,
+                            'filter': $("#ccb-sync-filter-by").val(),
+                            'filter_group': $("#ccb-sync-filter-by-group").val(),
+                            'filter_dep': $("#ccb-sync-filter-by-dep").val()
                         };
 
                         $(blockui_msg_event_sync[2]).find('span.lo-sync-span').html((offset + 1) + ' - ' + (offset + limit) + ' of ' + total_data);
@@ -445,6 +509,30 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                         });
                     }
 
+                    /**
+                     * filter dropdown select elements
+                     */
+                    $("#ccb-sync-filter-by").change(function (e) {
+
+                        var self = $(this);
+                        $("#ccb-sync-filter-by-group").val('');
+                        $("#ccb-sync-filter-by-dep").val('');
+
+                        if ('groups' == self.val()) {
+
+                            $(".ccb-sync-filter-by-dep-row").hide();
+                            $(".ccb-sync-filter-by-group-row").show();
+                        } else if ('departments' == self.val()) {
+
+                            $(".ccb-sync-filter-by-group-row").hide();
+                            $(".ccb-sync-filter-by-dep-row").show();
+                        } else if ('' == self.val()) {
+
+                            $(".ccb-sync-filter-by-group-row").hide();
+                            $(".ccb-sync-filter-by-dep-row").hide();
+                        }
+                    });
+
                 });
 
             })(jQuery);
@@ -461,8 +549,10 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
     {
         global $wpdb;
         $results
-            = $wpdb->get_results('SELECT `id`, `ccb_event_id`, `wp_post_id`, `data`, `md5_hash`, `last_modified`, `last_synced` FROM ' .
-            $wpdb->prefix . 'lo_ccb_events_api_data', ARRAY_A);
+            = $wpdb->get_results(
+            'SELECT `id`, `ccb_event_id`, `ccb_group_id`, `ccb_dep_id`, `wp_post_id`, `data`, `md5_hash`, 
+                                  `last_modified`, `last_synced` FROM ' . $wpdb->prefix . 'lo_ccb_events_api_data',
+            ARRAY_A);
 
         $data = [
             'all_data' => [],
@@ -482,6 +572,8 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
 
                 $val = [
                     'ccb_event_id' => $result['ccb_event_id'],
+                    'group_id' => (isset($api_data['group']['id'])) ? $api_data['group']['id'] : null,
+                    'department_id' => (isset($result['ccb_dep_id'])) ? $result['ccb_dep_id'] : null,
                     'wp_post_id' => $result['wp_post_id'],
                     'title' => $api_data['name'],
                     'description' => (isset($api_data['description']) &&
@@ -493,7 +585,6 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                     'registration_limit' => (isset($api_data['registration']['limit'])) ? $api_data['registration']['limit'] : null,
                     'start_time' => (isset($api_data['start_datetime'])) ? $api_data['start_datetime'] : null,
                     'end_time' => (isset($api_data['end_datetime'])) ? $api_data['end_datetime'] : null,
-                    'group_id' => (isset($api_data['group']['id'])) ? $api_data['group']['id'] : null,
                     'group_name' => (isset($api_data['group']['value'])) ? $api_data['group']['value'] : null,
                     'address' => (isset($api_data['location']) &&
                         !empty($api_data['location'])) ? $api_data['location'] : null,
@@ -525,6 +616,54 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
             'num_rows' => $wpdb->num_rows,
             'data' => $data,
         ];
+    }
+
+    /**
+     * get group list for filter
+     * @return array|mixed|null|object|ø
+     * @since 0.3.6
+     */
+    public function get_group_list()
+    {
+        $transient_key = $this->transient_key['groups_list'];
+        $data = get_transient($transient_key);
+
+        if (empty($data)) {
+
+            global $wpdb;
+            $data = $wpdb->get_results("SELECT `ccb_group_id`, `ccb_group_name` FROM `" . $wpdb->prefix . 'lo_ccb_groups_api_data`', ARRAY_A);
+            $data = wp_list_pluck($data, 'ccb_group_name', 'ccb_group_id');
+            $data = array_filter(array_unique($data));
+            asort($data);
+
+            set_transient($transient_key, $data, 60 * 60 * 24);
+        }
+
+        return $data;
+    }
+
+    /**
+     * get department list for filter
+     * @return array|mixed|null|object|ø
+     * @since 0.3.6
+     */
+    public function get_department_list()
+    {
+        $transient_key = $this->transient_key['department_list'];
+        $data = get_transient($transient_key);
+
+        if (empty($data)) {
+
+            global $wpdb;
+            $data = $wpdb->get_results("SELECT `ccb_dep_id`, `ccb_dep_name` FROM `" . $wpdb->prefix . 'lo_ccb_groups_api_data`', ARRAY_A);
+            $data = wp_list_pluck($data, 'ccb_dep_name', 'ccb_dep_id');
+            $data = array_filter(array_unique($data));
+            asort($data);
+
+            set_transient($transient_key, $data, 60 * 60 * 24);
+        }
+
+        return $data;
     }
 
     /**
@@ -571,12 +710,30 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
         global $wpdb;
         $inserted = 0;
         $updated = 0;
+        $skipped = 0;
         $event_post_meta_prefix = 'lo_ccb_events_';
         $ccb_event_data = $_POST['data'];
+        $filter = !empty($_POST['filter']) ? $_POST['filter'] : null;
+        $filter_group = !empty($_POST['filter_group']) ? $_POST['filter_group'] : null;
+        $filter_dep = !empty($_POST['filter_dep']) ? $_POST['filter_dep'] : null;
 
         if (!empty($ccb_event_data)) {
 
             foreach ($ccb_event_data as $index => $ccb_event_datum) {
+
+                if(!empty($filter)) {
+                    if($filter == 'groups') {
+                        if(!empty($filter_group) && $ccb_event_datum['group_id'] != $filter_group) {
+                            $skipped++;
+                            continue;
+                        }
+                    } elseif($filter == 'departments') {
+                        if(!empty($filter_dep) && $ccb_event_datum['department_id'] != $filter_dep) {
+                            $skipped++;
+                            continue;
+                        }
+                    }
+                }
 
                 $this->create_partner_post($ccb_event_datum);
 
@@ -714,10 +871,16 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
         echo json_encode([
             'inserted' => $inserted,
             'updated' => $updated,
+            'skipped' => $skipped,
         ]);
         die();
     }
 
+    /**
+     * create partner post when syncing events
+     * @param $ccb_event_datum
+     * @since 0.3.6
+     */
     public function create_partner_post($ccb_event_datum)
     {
         $eventPartner_post_meta_prefix = 'lo_ccb_event_partner_';
@@ -955,36 +1118,44 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                 $table_name = $wpdb->prefix . 'lo_ccb_events_api_data';
 
                 foreach ($response['events']['event'] as $index => $event) {
+
                     $exist = $wpdb->get_row("SELECT * FROM $table_name WHERE ccb_event_id = " .
                         $event['id'],
                         ARRAY_A);
 
+                    $group_sync_result = null;
+                    $group_sync_status[] = $group_sync_result = $this->save_ccb_groups_temp_table($event);
+
                     if (null !== $exist) {
 
-                        if ($exist['md5_hash'] != md5(json_encode($event))) {
-                            $wpdb->replace(
+//                        if ($exist['md5_hash'] != md5(json_encode($event))) {
+                            $wpdb->update(
                                 $table_name,
                                 array(
-                                    'ccb_event_id' => $event['id'],
+                                    'ccb_group_id' => $event['group']['id'],
+                                    'ccb_dep_id' => !empty($group_sync_result['ccb_dep_id']) ? $group_sync_result['ccb_dep_id'] : null,
                                     'data' => $json_event = json_encode($event),
                                     'md5_hash' => md5($json_event),
                                     'last_modified' => date('Y-m-d H:i:s', time()),
+                                ),
+                                array(
+                                    'ccb_event_id' => $event['id']
                                 )
                             );
-                        }
+//                        }
 
                     } else {
 
                         $wpdb->insert($table_name, array(
                             'ccb_event_id' => $event['id'],
+                            'ccb_group_id' => $event['group']['id'],
+                            'ccb_dep_id' => !empty($group_sync_result['ccb_dep_id']) ? $group_sync_result['ccb_dep_id'] : null,
                             'data' => $json_event = json_encode($event),
                             'md5_hash' => md5($json_event),
                             'created' => date('Y-m-d H:i:s', time()),
                             'last_modified' => date('Y-m-d H:i:s', time()),
                         ));
                     }
-
-                    $group_sync_status[] = $this->save_ccb_groups_temp_table($event);
                 }
             }
 
@@ -1008,6 +1179,8 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
             );
         }
 
+        delete_transient($this->transient_key['groups_list']);
+        delete_transient($this->transient_key['department_list']);
         die();
     }
 
@@ -1048,12 +1221,23 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                 'details' => 'No group id found in event object.',
             ];
 
-        $this->plugin->lo_ccb_api_group_profile_from_id->api_map(['group_id' => $event['group']['id']]);
-        $api_error = $this->plugin->lo_ccb_api_group_profile_from_id->api_error;
+        $cached_data = get_transient('ccb_group_' . $event['group']['id'] . '_profile');
 
-        if (empty($api_error)) {
+        if (empty($cached_data)) {
 
-            $response = $this->plugin->lo_ccb_api_group_profile_from_id->api_response_arr['ccb_api']['response'];
+            $this->plugin->lo_ccb_api_group_profile_from_id->api_map(['group_id' => $event['group']['id']]);
+            $api_error = $this->plugin->lo_ccb_api_group_profile_from_id->api_error;
+        }
+
+        if (empty($api_error) || !empty($cached_data)) {
+
+            if (empty($cached_data)) {
+                $response = $this->plugin->lo_ccb_api_group_profile_from_id->api_response_arr['ccb_api']['response'];
+                set_transient('ccb_group_' . $event['group']['id'] . '_profile', $response, 60 * 60);
+            } else {
+                $response = $cached_data;
+            }
+
             $response_groups = $response['groups'];
 
             if (empty($response_groups['count'])) {
@@ -1072,17 +1256,19 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
 
             if (null !== $exist) {
 
-                if ($exist['md5_hash'] != md5(json_encode($response_groups))) {
-                    $wpdb->replace(
+//                if ($exist['md5_hash'] != md5(json_encode($response_groups))) {
+                    $wpdb->update(
                         $table_name,
                         array(
-                            'ccb_group_id' => $response_groups['group']['id'],
                             'data' => $json_group = json_encode($response_groups),
                             'md5_hash' => md5($json_group),
                             'last_modified' => date('Y-m-d H:i:s', time()),
+                        ),
+                        array(
+                            'ccb_group_id' => $response_groups['group']['id']
                         )
                     );
-                }
+//                }
 
             } else {
 
@@ -1101,6 +1287,8 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
             return [
                 'error' => !empty($api_error),
                 'success' => empty($api_error),
+                'ccb_group_id' => $response_groups['group']['id'],
+                'ccb_dep_id' => $response_groups['group']['department']['id'],
             ];
 
         } else {
