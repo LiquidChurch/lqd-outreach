@@ -372,7 +372,7 @@ final class Liquid_Outreach
 
         $current_db_version = get_option('liquid_outreach_db_version');
 
-        if ((empty($current_db_version) || $current_db_version < 2.0)) {
+        if (empty($current_db_version) || $current_db_version < 2.0) {
 
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
@@ -383,37 +383,41 @@ final class Liquid_Outreach
 
             if ($wpdb->get_var("SHOW TABLES LIKE '$event_table_name'") == $event_table_name) {
 
-                $sql = "
-                              ALTER TABLE `$event_table_name` 
-                              ADD COLUMN `ccb_group_id` bigint(20) unsigned   NULL after `ccb_event_id` , 
-                              ADD COLUMN `ccb_dep_id` bigint(20) unsigned   NULL after `ccb_group_id` , 
-                              CHANGE `wp_post_id` `wp_post_id` bigint(20) unsigned   NULL after `ccb_dep_id`;
-                            ";
+                $sql = "CREATE TABLE `$event_table_name` (  
+                        `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,  
+                        `ccb_event_id` bigint(20) unsigned NOT NULL,  
+                        `ccb_group_id` bigint(20) unsigned DEFAULT NULL,  
+                        `ccb_dep_id` bigint(20) unsigned DEFAULT NULL,  
+                        `wp_post_id` bigint(20) unsigned DEFAULT NULL,  
+                        `data` text COLLATE utf8mb4_unicode_520_ci NOT NULL,  
+                        `md5_hash` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,  
+                        `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,  
+                        `last_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,  
+                        `last_synced` timestamp NULL DEFAULT NULL,  PRIMARY KEY (`id`)
+                    ) $charset_collate;";
                 dbDelta($sql);
             }
 
             if ($wpdb->get_var("SHOW TABLES LIKE '$group_table_name'") != $group_table_name) {
 
-                $sql = "
-                              CREATE TABLE `$group_table_name`(
-                                    `id` bigint(20) unsigned NOT NULL  auto_increment , 
-                                    `ccb_group_id` bigint(20) unsigned NOT NULL  , 
-                                    `ccb_group_name` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL  , 
-                                    `ccb_dep_id` bigint(20) unsigned NULL  , 
-                                    `ccb_dep_name` varchar(255) COLLATE utf8mb4_unicode_520_ci NULL  , 
-                                    `wp_post_id` bigint(20) unsigned NULL  , 
-                                    `data` text COLLATE utf8mb4_unicode_520_ci NOT NULL  , 
-                                    `md5_hash` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL  , 
-                                    `created` timestamp NOT NULL  DEFAULT CURRENT_TIMESTAMP , 
-                                    `last_modified` timestamp NOT NULL  DEFAULT CURRENT_TIMESTAMP , 
-                                    `last_synced` timestamp NULL  , 
-                                    PRIMARY KEY (`id`) 
-                                ) $charset_collate;
-                            ";
+                $sql = "CREATE TABLE `$group_table_name`(
+                            `id` bigint(20) unsigned NOT NULL  auto_increment , 
+                            `ccb_group_id` bigint(20) unsigned NOT NULL  , 
+                            `ccb_group_name` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL  , 
+                            `ccb_dep_id` bigint(20) unsigned NULL  , 
+                            `ccb_dep_name` varchar(255) COLLATE utf8mb4_unicode_520_ci NULL  , 
+                            `wp_post_id` bigint(20) unsigned NULL  , 
+                            `data` text COLLATE utf8mb4_unicode_520_ci NOT NULL  , 
+                            `md5_hash` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL  , 
+                            `created` timestamp NOT NULL  DEFAULT CURRENT_TIMESTAMP , 
+                            `last_modified` timestamp NOT NULL  DEFAULT CURRENT_TIMESTAMP , 
+                            `last_synced` timestamp NULL  , 
+                            PRIMARY KEY (`id`) 
+                        ) $charset_collate;";
                 dbDelta($sql);
             }
 
-            update_option('liquid_outreach_db_version', 2.0);
+            return update_option('liquid_outreach_db_version', 2.0);
         }
 
         return false;
