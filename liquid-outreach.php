@@ -223,16 +223,23 @@ final class Liquid_Outreach
      */
     public function _activate()
     {
-        $this->create_required_db_table();
-
         // Bail early if requirements aren't met.
         if (!$this->check_requirements()) {
             return;
         }
 
+        $this->create_required_db_table();
+        $this->update_required_user_role();
+
         // Make sure any rewrite functionality has been loaded.
         $this->init();
         flush_rewrite_rules();
+    }
+
+    public function update_required_user_role() {
+        $role_class = new LO_Ccb_Outreach_Editor_Role();
+        $role_class->add_role();
+        $role_class->modify_existing_role();
     }
 
     /**
@@ -475,6 +482,8 @@ final class Liquid_Outreach
     public function _deactivate()
     {
         // Add deactivation cleanup functionality here.
+        $role_class = new LO_Ccb_Outreach_Editor_Role();
+        $role_class->delete_role();
     }
 
     /**
