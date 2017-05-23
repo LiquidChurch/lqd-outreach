@@ -64,6 +64,7 @@ final class Liquid_Outreach
      */
     const VERSION = '0.3.8';
     const DB_VERSION = 2.0;
+
     /**
      * URL of plugin directory.
      *
@@ -71,6 +72,7 @@ final class Liquid_Outreach
      * @since  0.0.0
      */
     public static $url = '';
+
     /**
      * Path of plugin directory.
      *
@@ -78,6 +80,7 @@ final class Liquid_Outreach
      * @since  0.0.0
      */
     public static $path = '';
+
     /**
      * Plugin basename.
      *
@@ -85,6 +88,7 @@ final class Liquid_Outreach
      * @since  0.0.0
      */
     public static $basename = '';
+
     /**
      * Singleton instance of plugin.
      *
@@ -92,6 +96,7 @@ final class Liquid_Outreach
      * @since  0.0.0
      */
     protected static $single_instance = null;
+
     /**
      * Instance of Lo_Ccb_api_event_profiles
      *
@@ -99,13 +104,15 @@ final class Liquid_Outreach
      * @var Lo_Ccb_api_event_profiles
      */
     protected $lo_ccb_api_event_profiles;
+
     /**
      * Instance of lo_ccb_api_group_profiles
      *
      * @since 0.3.5
-     * @var lo_ccb_api_group_profiles
+     * @var Lo_Ccb_api_group_profile_from_id
      */
     protected $lo_ccb_api_group_profile_from_id;
+
     /**
      * Instance of Lo_Ccb_api_individual_profile
      *
@@ -113,6 +120,7 @@ final class Liquid_Outreach
      * @var Lo_Ccb_api_individual_profile
      */
     protected $lo_ccb_api_individual_profile;
+
     /**
      * Instance of Lo_Ccb_api_attendance_profile
      *
@@ -120,6 +128,7 @@ final class Liquid_Outreach
      * @var Lo_Ccb_api_attendance_profile
      */
     protected $lo_ccb_api_attendance_profile;
+
     /**
      * Detailed activation error messages.
      *
@@ -174,6 +183,18 @@ final class Liquid_Outreach
      * @var LO_Ccb_Event_Categories
      */
     protected $lo_ccb_event_categories;
+
+    /**
+     * @var LO_Shortcodes
+     * @since 0.4.1
+     */
+    protected $lo_shortcodes;
+
+    /**
+     * @var LO_WP_Template_Loader
+     * @since 0.4.1
+     */
+    protected $lo_wp_template_loader;
 
     /**
      * Sets up our plugin.
@@ -236,10 +257,45 @@ final class Liquid_Outreach
         flush_rewrite_rules();
     }
 
-    public function update_required_user_role() {
-        $role_class = new LO_Ccb_Outreach_Editor_Role();
-        $role_class->add_role();
-        $role_class->modify_existing_role();
+    /**
+     * Check if the plugin meets requirements and
+     * disable it if they are not present.
+     *
+     * @since  0.0.0
+     *
+     * @return boolean True if requirements met, false if not.
+     */
+    public function check_requirements()
+    {
+
+        // Bail early if plugin meets requirements.
+        if ($this->meets_requirements()) {
+            return true;
+        }
+
+        // Add a dashboard notice.
+        add_action('all_admin_notices', array($this, 'requirements_not_met_notice'));
+
+        // Deactivate our plugin.
+        add_action('admin_init', array($this, 'deactivate_me'));
+
+        // Didn't meet the requirements.
+        return false;
+    }
+
+    /**
+     * Check that all plugin requirements are met.
+     *
+     * @since  0.0.0
+     *
+     * @return boolean True if requirements are met.
+     */
+    public function meets_requirements()
+    {
+
+        // Do checks for required classes / functions or similar.
+        // Add detailed messages to $this->activation_errors array.
+        return true;
     }
 
     /**
@@ -249,15 +305,13 @@ final class Liquid_Outreach
      */
     public function create_required_db_table()
     {
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         global $wpdb;
         $event_table_name = $wpdb->prefix . 'lo_ccb_events_api_data';
         $group_table_name = $wpdb->prefix . 'lo_ccb_events_api_data';
+        $charset_collate = $wpdb->get_charset_collate();
 
         if ($wpdb->get_var("SHOW TABLES LIKE '$event_table_name'") != $event_table_name) {
-
-            require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-
-            $charset_collate = $wpdb->get_charset_collate();
 
             $event_sql
                 = "CREATE TABLE `$event_table_name` (  
@@ -299,48 +353,18 @@ final class Liquid_Outreach
 
         }
 
-        update_option('liquid_outreach_db_version', SELF::DB_VERSION);
+        update_option('liquid_outreach_db_version', self::DB_VERSION);
     }
 
     /**
-     * Check if the plugin meets requirements and
-     * disable it if they are not present.
-     *
-     * @since  0.0.0
-     *
-     * @return boolean True if requirements met, false if not.
+     * Update user role method for plugin activation
+     * @since 0.3.8
      */
-    public function check_requirements()
+    public function update_required_user_role()
     {
-
-        // Bail early if plugin meets requirements.
-        if ($this->meets_requirements()) {
-            return true;
-        }
-
-        // Add a dashboard notice.
-        add_action('all_admin_notices', array($this, 'requirements_not_met_notice'));
-
-        // Deactivate our plugin.
-        add_action('admin_init', array($this, 'deactivate_me'));
-
-        // Didn't meet the requirements.
-        return false;
-    }
-
-    /**
-     * Check that all plugin requirements are met.
-     *
-     * @since  0.0.0
-     *
-     * @return boolean True if requirements are met.
-     */
-    public function meets_requirements()
-    {
-
-        // Do checks for required classes / functions or similar.
-        // Add detailed messages to $this->activation_errors array.
-        return true;
+        $role_class = new LO_Ccb_Outreach_Editor_Role();
+        $role_class->add_role();
+        $role_class->modify_existing_role();
     }
 
     /**
