@@ -17,7 +17,6 @@ class WP_Logging {
      * @since 1.0
      *
      * @access public
-     * @return void
      */
     function __construct() {
 
@@ -202,7 +201,8 @@ class WP_Logging {
      * @since       1.0
      *
      *
-     * @return     array
+     * @param $type
+     * @return array
      */
 
     private static function valid_type( $type ) {
@@ -219,9 +219,13 @@ class WP_Logging {
      * @access      private
      * @since       1.0
      *
-     * @uses 		self::insert_log()
+     * @uses        self::insert_log()
      *
-     * @return      int The ID of the new log entry
+     * @param string $title
+     * @param string $message
+     * @param int $parent
+     * @param null $type
+     * @return int The ID of the new log entry
      */
 
     public static function add( $title = '', $message = '', $parent = 0, $type = null ) {
@@ -244,13 +248,15 @@ class WP_Logging {
      * @access      private
      * @since       1.0
      *
-     * @uses 		wp_parse_args()
-     * @uses 		wp_insert_post()
-     * @uses 		update_post_meta()
-     * @uses 		wp_set_object_terms()
-     * @uses 		sanitize_key()
+     * @uses        wp_parse_args()
+     * @uses        wp_insert_post()
+     * @uses        update_post_meta()
+     * @uses        wp_set_object_terms()
+     * @uses        sanitize_key()
      *
-     * @return      int The ID of the newly created log item
+     * @param array $log_data
+     * @param array $log_meta
+     * @return int The ID of the newly created log item
      */
 
     public static function insert_log( $log_data = array(), $log_meta = array() ) {
@@ -296,11 +302,13 @@ class WP_Logging {
      * @access      private
      * @since       1.0
      *
-     * @uses 		wp_parse_args()
-     * @uses 		wp_update_post()
-     * @uses 		update_post_meta()
+     * @uses        wp_parse_args()
+     * @uses        wp_update_post()
+     * @uses        update_post_meta()
      *
-     * @return      bool True if successful, false otherwise
+     * @param array $log_data
+     * @param array $log_meta
+     * @return bool True if successful, false otherwise
      */
     public static function update_log( $log_data = array(), $log_meta = array() ) {
 
@@ -335,9 +343,12 @@ class WP_Logging {
      * @access      private
      * @since       1.0
      *
-     * @uses 		self::get_connected_logs()
+     * @uses        self::get_connected_logs()
      *
-     * @return      array
+     * @param int $object_id
+     * @param null $type
+     * @param null $paged
+     * @return array
      */
 
     public static function get_logs( $object_id = 0, $type = null, $paged = null ) {
@@ -352,14 +363,15 @@ class WP_Logging {
      * Used for retrieving logs related to particular items, such as a specific purchase.
      *
      * @access  private
-     * @since 	1.0
+     * @since    1.0
      *
-     * @uses 	wp_parse_args()
-     * @uses 	get_posts()
-     * @uses 	get_query_var()
-     * @uses 	self::valid_type()
+     * @uses    wp_parse_args()
+     * @uses    get_posts()
+     * @uses    get_query_var()
+     * @uses    self::valid_type()
      *
-     * @return  array / false
+     * @param array $args
+     * @return array / false
      */
 
     public static function get_connected_logs( $args = array() ) {
@@ -402,12 +414,15 @@ class WP_Logging {
      * Retrieves number of log entries connected to particular object ID
      *
      * @access  private
-     * @since 	1.0
+     * @since    1.0
      *
-     * @uses 	WP_Query()
-     * @uses 	self::valid_type()
+     * @uses    WP_Query()
+     * @uses    self::valid_type()
      *
-     * @return  int
+     * @param int $object_id
+     * @param null $type
+     * @param null $meta_query
+     * @return int
      */
 
     public static function get_log_count( $object_id = 0, $type = null, $meta_query = null ) {
