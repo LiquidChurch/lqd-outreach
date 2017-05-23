@@ -11,6 +11,10 @@ All notable changes to this project will be documented in this file.
 
 ### Removed
 
+### Deprecated
+
+### Security
+
 ## [0.3.8] - 2015-05-22
 ### Added
 - Stable release of the plugin functionality
