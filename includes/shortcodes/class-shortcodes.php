@@ -15,16 +15,16 @@ class LO_Shortcodes {
 	 */
 	protected $event_search;
 
-	/**
-	 * Constructor
-	 *
-	 * @since  0.2.0
-	 * @param  object $plugin Main plugin object.
-	 * @return void
-	 */
+    /**
+     * Constructor
+     *
+     * @since  0.2.0
+     * @param  object $plugin Main plugin object.
+     */
 	public function __construct( $plugin ) {
 		$this->event_search    = new LO_Shortcodes_Event_Search( $plugin );
 		$this->event_single    = new LO_Shortcodes_Event_Single( $plugin );
+		$this->event_categories    = new LO_Shortcodes_Event_Categories( $plugin );
 		$this->event_category_single    = new LO_Shortcodes_Event_Category_Single( $plugin );
 		$this->event_partner_list    = new LO_Shortcodes_Event_Partner_List( $plugin );
 	}

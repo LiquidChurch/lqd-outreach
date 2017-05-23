@@ -32,9 +32,6 @@
 			'pagination' => $this->get( 'pagination' )
 		] ) ?>
 
-        <!--category-list-->
-<!--		--><?php //LO_Template_Loader::output_template( 'event-category-list' ) ?>
-
     </div>
 
 </div>

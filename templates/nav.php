@@ -15,63 +15,65 @@
         <div class="collapse navbar-collapse" id="lo-events-navbar">
             <ul class="nav navbar-nav lo-navbar-nav">
                 <li>
-                    <a href="<?php echo get_permalink( get_page_by_path( 'search-projects' ) ) ?>">Search
+                    <a href="<?php echo get_permalink(get_page_by_path('search-projects')) ?>">Search
                         Projects</a>
                 </li>
                 <li class="dropdown lo-dropdown-submenu">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                    <a href="<?php echo get_permalink(get_page_by_path('project-categories')) ?>"
+                       onclick="location.href = '<?php echo get_permalink(get_page_by_path('project-categories')) ?>'"
+                       class="dropdown-toggle" data-toggle="dropdown" role="button"
                        aria-haspopup="true" aria-expanded="false">Project Categories <span
                                 class="caret"></span></a>
-					<?php
-						if ( ! empty( $this->get( 'categories' ) ) ) {
-							echo '<ul class="dropdown-menu lo-dropdown-menu">';
-							foreach ( $this->get( 'categories' ) as $val ) {
-								echo '<li><a href="' . $val->term_link . '">' . $val->name .
-								     '</a></li>';
-							}
-							echo '</ul>';
-						}
-					?>
+                    <?php
+                    if (!empty($this->get('categories'))) {
+                        echo '<ul class="dropdown-menu lo-dropdown-menu">';
+                        foreach ($this->get('categories') as $val) {
+                            echo '<li><a href="' . $val->term_link . '">' . $val->name .
+                                '</a></li>';
+                        }
+                        echo '</ul>';
+                    }
+                    ?>
                 </li>
                 <li class="dropdown lo-dropdown-submenu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                        aria-haspopup="true" aria-expanded="false">Projects by City <span
                                 class="caret"></span></a>
-					<?php
-						if ( ! empty( $this->get( 'cities' ) ) ) {
-							echo '<ul class="dropdown-menu lo-dropdown-menu">';
-							foreach ( $this->get( 'cities' ) as $val ) {
-								echo '<li><a href="' .
-								     get_permalink( get_page_by_path( 'search-projects' ) ) .
-								     '?lo-event-loc=' . $val . '">' .
-								     ucwords( $val ) . '</a></li>';
-							}
-							echo '</ul>';
-						}
-					?>
+                    <?php
+                    if (!empty($this->get('cities'))) {
+                        echo '<ul class="dropdown-menu lo-dropdown-menu">';
+                        foreach ($this->get('cities') as $val) {
+                            echo '<li><a href="' .
+                                get_permalink(get_page_by_path('search-projects')) .
+                                '?lo-event-loc=' . $val . '">' .
+                                ucwords($val) . '</a></li>';
+                        }
+                        echo '</ul>';
+                    }
+                    ?>
                 </li>
                 <li class="dropdown lo-dropdown-submenu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                        aria-haspopup="true" aria-expanded="false">Days of the Week <span
                                 class="caret"></span></a>
                     <ul class="dropdown-menu lo-dropdown-menu">
-						<?php
-							$weekdays = [
-								'Sunday',
-								'Monday',
-								'Tuesday',
-								'Wednesday',
-								'Thursday',
-								'Friday',
-								'Saturday',
-							];
-							
-							foreach ( $weekdays as $weekday ) {
-								echo '<li><a href="' .
-								     get_permalink( get_page_by_path( 'search-projects' ) ) .
-								     '?lo-event-day=' . $weekday . '">' . $weekday . '</a></li>';
-							}
-						?>
+                        <?php
+                        $weekdays = [
+                            'Sunday',
+                            'Monday',
+                            'Tuesday',
+                            'Wednesday',
+                            'Thursday',
+                            'Friday',
+                            'Saturday',
+                        ];
+
+                        foreach ($weekdays as $weekday) {
+                            echo '<li><a href="' .
+                                get_permalink(get_page_by_path('search-projects')) .
+                                '?lo-event-day=' . $weekday . '">' . $weekday . '</a></li>';
+                        }
+                        ?>
                     </ul>
                 </li>
                 <li>

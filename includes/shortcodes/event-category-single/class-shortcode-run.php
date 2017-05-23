@@ -64,11 +64,10 @@
 				'posts_per_page' => - 1,
 			] );
 			
-			$template = isset( $_GET['template'] ) ? $_GET['template'] : 'search';
 			$content  = '';
 			$content  .= LO_Style_Loader::get_template( 'lc-plugin' );
 			$content  .= LO_Style_Loader::get_template( 'vandertable' );
-			$content  .= LO_Template_Loader::get_template( $template, array(
+			$content  .= LO_Template_Loader::get_template( 'search', array(
 				'events'          => ! empty( $events->posts ) ? $events->posts : [],
 				'event_empty_msg' => isset( $event_empty_msg ) ? $event_empty_msg : '',
 				'pagination'      => $pagination,
@@ -112,7 +111,7 @@
 			
 			if ( ! $this->bool_att( 'remove_pagination' ) ) {
 				$nav['prev_link'] = get_previous_posts_link( __( '<span>&larr;</span> Previous',
-					'liquid-outreach' ), $total_pages );
+					'liquid-outreach' ) );
 				$nav['next_link'] = get_next_posts_link( __( 'Next <span>&rarr;</span>',
 					'liquid-outreach' ), $total_pages );
 			}
