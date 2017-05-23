@@ -3,11 +3,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### Added
+- Event Category Shortcode
 
 ### Changed
 
 ### Fixed
 - Submenu auto open when hover
+- Code Fixes
 
 ### Removed
 
