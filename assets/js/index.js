@@ -19,6 +19,14 @@ jQuery(function () {
             }
         });
     });
+
+    jQuery('ul.nav li.dropdown').hover(function() {
+        jQuery(this).addClass('open');
+        jQuery(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
+    }, function() {
+        jQuery(this).removeClass('open');
+        jQuery(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
+    });
 });
 
  

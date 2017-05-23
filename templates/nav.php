@@ -18,7 +18,7 @@
                     <a href="<?php echo get_permalink( get_page_by_path( 'search-projects' ) ) ?>">Search
                         Projects</a>
                 </li>
-                <li class="lo-dropdown-submenu">
+                <li class="dropdown lo-dropdown-submenu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                        aria-haspopup="true" aria-expanded="false">Project Categories <span
                                 class="caret"></span></a>
@@ -33,7 +33,7 @@
 						}
 					?>
                 </li>
-                <li class="lo-dropdown-submenu">
+                <li class="dropdown lo-dropdown-submenu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                        aria-haspopup="true" aria-expanded="false">Projects by City <span
                                 class="caret"></span></a>
@@ -50,7 +50,7 @@
 						}
 					?>
                 </li>
-                <li class="lo-dropdown-submenu">
+                <li class="dropdown lo-dropdown-submenu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                        aria-haspopup="true" aria-expanded="false">Days of the Week <span
                                 class="caret"></span></a>
