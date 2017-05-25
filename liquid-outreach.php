@@ -21,7 +21,7 @@
 
 require __DIR__ . '/plugin-update-checker/plugin-update-checker.php';
 $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
-    'http://team.scripterz.in/products/liquidchurch/wp-plugin/lqd-outreach/meta.json',
+    'http://team.scripterz.in/products/wp-update-server/?action=get_metadata&slug=lqd-outreach',
     __FILE__,
     'liquid-outreach'
 );

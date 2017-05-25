@@ -27,10 +27,19 @@ Outreach and CCB API integration.
 
 ## Changelog ##
 
-### 0.3.8 ###
-* First release
+## 0.4.5 - 2015-05-26
+### Added
+- Event Category Shortcode
 
-## Upgrade Notice ##
+### Changed
+- Sync modified_since field is required now
+- Confirm alert for sync buttons
+- Sync filter for start_date and end_date
 
-### 0.3.8 ###
-First Release
+### Fixed
+- Submenu auto open when hover
+- Code Fixes
+
+## 0.3.8 - 2015-05-22
+### Added
+- Stable release of the plugin functionality
