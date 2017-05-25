@@ -187,6 +187,9 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
             .hide-obj {
                 display: none !important;
             }
+            #ccb_event_sync_to_post_metabox input[name='submit-cmb'] {
+                display: none;
+            }
         </style>
 
         <div class="wrap cmb2-options-page <?php echo esc_attr($this->key); ?>">
@@ -295,13 +298,13 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
             <div class="cmb2-wrap form-table">
                 <div class="cmb-row">
                     <div class="cmb-th">
-                        <h2><?php echo esc_html__('Fetched Data Details',
+                        <h2><?php echo esc_html__('Fetched Data Sync Filter',
                                 'liquid-outreach') ?></h2>
                     </div>
                 </div>
                 <div class="cmb-row">
                     <div class="cmb-th">
-                        <label for=""><?php echo esc_html__('Filter By',
+                        <label for=""><?php echo esc_html__('Filter by',
                                 'liquid-outreach') ?></label>
                     </div>
                     <div class="cmb-th">
@@ -312,6 +315,7 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                         </select>
                     </div>
                 </div>
+
                 <div class="cmb-row ccb-sync-filter-by-group-row" style="display: none;">
                     <div class="cmb-th">
                         <label for=""><?php echo esc_html__('Select Group',
@@ -330,6 +334,7 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                         </select>
                     </div>
                 </div>
+
                 <div class="cmb-row ccb-sync-filter-by-dep-row" style="display: none;">
                     <div class="cmb-th">
                         <label for=""><?php echo esc_html__('Select Department',
@@ -348,6 +353,11 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                         </select>
                     </div>
                 </div>
+
+                <?php
+                cmb2_metabox_form('ccb_event_sync_to_post_metabox', 'ccb_event_sync_to_post_key');
+                ?>
+
                 <div class="cmb-row" style="text-align: center;">
                     <div class="cmb-th">
                         <label for="">
@@ -431,7 +441,7 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                         e.preventDefault();
 
                         var confirm_sync = confirm('Are you sure want to process this sync?');
-                        if(!confirm_sync) {
+                        if (!confirm_sync) {
                             return;
                         }
 
@@ -463,7 +473,9 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                             'data': ccb_data_chunk,
                             'filter': $("#ccb-sync-filter-by").val(),
                             'filter_group': $("#ccb-sync-filter-by-group").val(),
-                            'filter_dep': $("#ccb-sync-filter-by-dep").val()
+                            'filter_dep': $("#ccb-sync-filter-by-dep").val(),
+                            'start_date': $("#start_date").val(),
+                            'end_date': $("#end_date").val()
                         };
 
                         $(blockui_msg_event_sync[2]).find('span.lo-sync-span').html((offset + 1) + ' - ' + (offset + limit) + ' of ' + total_data);
@@ -537,6 +549,13 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                             $(".ccb-sync-filter-by-dep-row").hide();
                         }
                     });
+
+                    $("#ccb_event_sync_to_post_metabox").on('submit', function(e){
+                        e.preventDefault();
+                        return false;
+                    });
+
+                    $("#ccb_event_sync_to_post_metabox input[name='submit-cmb']").remove();
 
                 });
 
@@ -721,23 +740,36 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
         $filter = !empty($_POST['filter']) ? $_POST['filter'] : null;
         $filter_group = !empty($_POST['filter_group']) ? $_POST['filter_group'] : null;
         $filter_dep = !empty($_POST['filter_dep']) ? $_POST['filter_dep'] : null;
+        $start_date_filter = !empty($_POST['start_date']) ? strtotime($_POST['start_date']) : null;
+        $end_date_filter = !empty($_POST['end_date']) ? strtotime($_POST['end_date']) : null;
 
         if (!empty($ccb_event_data)) {
 
             foreach ($ccb_event_data as $index => $ccb_event_datum) {
 
-                if(!empty($filter)) {
-                    if($filter == 'groups') {
-                        if(!empty($filter_group) && $ccb_event_datum['group_id'] != $filter_group) {
+                $start_timestamp = strtotime($ccb_event_datum['start_time']);
+                $end_timestamp = strtotime($ccb_event_datum['end_time']);
+
+                if (!empty($filter)) {
+                    if ($filter == 'groups') {
+                        if (!empty($filter_group) && $ccb_event_datum['group_id'] != $filter_group) {
                             $skipped++;
                             continue;
                         }
-                    } elseif($filter == 'departments') {
-                        if(!empty($filter_dep) && $ccb_event_datum['department_id'] != $filter_dep) {
+                    } elseif ($filter == 'departments') {
+                        if (!empty($filter_dep) && $ccb_event_datum['department_id'] != $filter_dep) {
                             $skipped++;
                             continue;
                         }
                     }
+                }
+
+                if(!empty($start_date_filter) && ($start_timestamp < $start_date_filter)) {
+                    continue;
+                }
+
+                if(!empty($end_date_filter) && ($start_timestamp > $end_date_filter)) {
+                    continue;
                 }
 
                 $this->create_partner_post($ccb_event_datum);
@@ -1038,7 +1070,6 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
         // Add our CMB2 metabox.
         $cmb = new_cmb2_box(array(
             'id' => $this->metabox_id,
-            'object_types' => array('post'),
             'hookup' => false,
             'save_fields' => false,
             'cmb_styles' => false,
@@ -1055,6 +1086,29 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
             'attributes' => [
                 'required' => 'required'
             ]
+        ));
+
+        $cmb_box_sync_post_form = new_cmb2_box(array(
+            'id' => 'ccb_event_sync_to_post_metabox',
+            'hookup' => false,
+            'save_fields' => false,
+            'cmb_styles' => false,
+        ));
+        $cmb_box_sync_post_form->add_field(array(
+            'name' => __('Filter by Start Date', 'liquid-outreach'),
+            'desc' => __('',
+                'liquid-outreach'),
+            'id' => 'start_date', // No prefix needed.
+            'type' => 'text_date',
+            'default' => !empty($_POST['start_date']) ? $_POST['start_date'] : '',
+        ));
+        $cmb_box_sync_post_form->add_field(array(
+            'name' => __('Filter by End Date', 'liquid-outreach'),
+            'desc' => __('',
+                'liquid-outreach'),
+            'id' => 'end_date', // No prefix needed.
+            'type' => 'text_date',
+            'default' => !empty($_POST['end_date']) ? $_POST['end_date'] : '',
         ));
 
     }
@@ -1137,19 +1191,19 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                     if (null !== $exist) {
 
 //                        if ($exist['md5_hash'] != md5(json_encode($event))) {
-                            $wpdb->update(
-                                $table_name,
-                                array(
-                                    'ccb_group_id' => $event['group']['id'],
-                                    'ccb_dep_id' => !empty($group_sync_result['ccb_dep_id']) ? $group_sync_result['ccb_dep_id'] : null,
-                                    'data' => $json_event = json_encode($event),
-                                    'md5_hash' => md5($json_event),
-                                    'last_modified' => date('Y-m-d H:i:s', time()),
-                                ),
-                                array(
-                                    'ccb_event_id' => $event['id']
-                                )
-                            );
+                        $wpdb->update(
+                            $table_name,
+                            array(
+                                'ccb_group_id' => $event['group']['id'],
+                                'ccb_dep_id' => !empty($group_sync_result['ccb_dep_id']) ? $group_sync_result['ccb_dep_id'] : null,
+                                'data' => $json_event = json_encode($event),
+                                'md5_hash' => md5($json_event),
+                                'last_modified' => date('Y-m-d H:i:s', time()),
+                            ),
+                            array(
+                                'ccb_event_id' => $event['id']
+                            )
+                        );
 //                        }
 
                     } else {
@@ -1265,17 +1319,17 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
             if (null !== $exist) {
 
 //                if ($exist['md5_hash'] != md5(json_encode($response_groups))) {
-                    $wpdb->update(
-                        $table_name,
-                        array(
-                            'data' => $json_group = json_encode($response_groups),
-                            'md5_hash' => md5($json_group),
-                            'last_modified' => date('Y-m-d H:i:s', time()),
-                        ),
-                        array(
-                            'ccb_group_id' => $response_groups['group']['id']
-                        )
-                    );
+                $wpdb->update(
+                    $table_name,
+                    array(
+                        'data' => $json_group = json_encode($response_groups),
+                        'md5_hash' => md5($json_group),
+                        'last_modified' => date('Y-m-d H:i:s', time()),
+                    ),
+                    array(
+                        'ccb_group_id' => $response_groups['group']['id']
+                    )
+                );
 //                }
 
             } else {
