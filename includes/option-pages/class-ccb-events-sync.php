@@ -430,6 +430,11 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
 
                         e.preventDefault();
 
+                        var confirm_sync = confirm('Are you sure want to process this sync?');
+                        if(!confirm_sync) {
+                            return;
+                        }
+
                         var ccb_events_data = {
                             'all': <?php echo json_encode($sync_data['data']['all_data']) ?>,
                             'synced': <?php echo json_encode($sync_data['data']['synced_data']) ?>,
@@ -1046,7 +1051,10 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                 'liquid-outreach'),
             'id' => 'modified_since', // No prefix needed.
             'type' => 'text_date',
-            'default' => !empty($_POST['modified_since']) ? $_POST['modified_since'] : ''
+            'default' => !empty($_POST['modified_since']) ? $_POST['modified_since'] : '',
+            'attributes' => [
+                'required' => 'required'
+            ]
         ));
 
     }
