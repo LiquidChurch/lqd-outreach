@@ -45,7 +45,7 @@ class LO_Shortcodes_Event_Categories_Run extends LO_Shortcodes_Run_Base
 
         $content_arr = [];
 
-        $content_arr['cities'] = $disable = [
+        $content_arr['disable'] = $disable = [
             'header' => (bool)$this->att('disable_header') == '1' || $this->att('disable_header') == 'true' ? 1 : 0,
             'nav' => (bool)$this->att('disable_nav') == '1' || $this->att('disable_nav') == 'true' ? 1 : 0,
             'search' => (bool)$this->att('disable_search') == '1' || $this->att('disable_search') == 'true' ? 1 : 0
@@ -57,10 +57,11 @@ class LO_Shortcodes_Event_Categories_Run extends LO_Shortcodes_Run_Base
 
         if(!$disable['nav'] || !$disable['search']) {
             $content_arr['cities'] = $cities = liquid_outreach()->lo_ccb_events->get_all_city_list();
-            $content_arr['partners'] = $partners = liquid_outreach()->lo_ccb_event_partners->get_many([
+            $partners = liquid_outreach()->lo_ccb_event_partners->get_many([
                 'post_type' => liquid_outreach()->lo_ccb_event_partners->post_type(),
                 'posts_per_page' => -1,
             ]);
+            $content_arr['partners'] = !empty($partners->posts) ? $partners->posts : [];
         }
 
         $content = '';
