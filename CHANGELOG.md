@@ -1,9 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 0.6.3
+## [Unreleased] - 0.6.4
 ### Added
 - Event categories shortcode btn fields
+- Event categories single shortcode btn fields
 
 ### Changed
 - Project menu item in nav menu
