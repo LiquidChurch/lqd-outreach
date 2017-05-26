@@ -43,31 +43,30 @@ class LO_Shortcodes_Event_Categories_Run extends LO_Shortcodes_Run_Base
             Liquid_Outreach::$url . '/assets/js/vandertable.js');
         wp_enqueue_script('lo-index', Liquid_Outreach::$url . '/assets/js/index.js');
 
-        $disable = [
+        $content_arr = [];
+
+        $content_arr['cities'] = $disable = [
             'header' => (bool)$this->att('disable_header') == '1' || $this->att('disable_header') == 'true' ? 1 : 0,
             'nav' => (bool)$this->att('disable_nav') == '1' || $this->att('disable_nav') == 'true' ? 1 : 0,
             'search' => (bool)$this->att('disable_search') == '1' || $this->att('disable_search') == 'true' ? 1 : 0
         ];
 
-        $categories = liquid_outreach()->lo_ccb_event_categories->get_many([
+        $content_arr['categories'] = $categories = liquid_outreach()->lo_ccb_event_categories->get_many([
             'hide_empty' => false
         ]);
 
-        $cities = liquid_outreach()->lo_ccb_events->get_all_city_list();
-        $partners = liquid_outreach()->lo_ccb_event_partners->get_many([
-            'post_type' => liquid_outreach()->lo_ccb_event_partners->post_type(),
-            'posts_per_page' => -1,
-        ]);
+        if(!$disable['nav'] || !$disable['search']) {
+            $content_arr['cities'] = $cities = liquid_outreach()->lo_ccb_events->get_all_city_list();
+            $content_arr['partners'] = $partners = liquid_outreach()->lo_ccb_event_partners->get_many([
+                'post_type' => liquid_outreach()->lo_ccb_event_partners->post_type(),
+                'posts_per_page' => -1,
+            ]);
+        }
 
         $content = '';
         $content .= LO_Style_Loader::get_template('lc-plugin');
         $content .= LO_Style_Loader::get_template('vandertable');
-        $content .= LO_Template_Loader::get_template('event-category-page', array(
-            'categories' => $categories,
-            'partners' => !empty($partners->posts) ? $partners->posts : [],
-            'cities' => $cities,
-            'disable' => $disable,
-        ));
+        $content .= LO_Template_Loader::get_template('event-category-page', $content_arr);
 
         return $content;
     }
