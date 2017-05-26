@@ -27,6 +27,9 @@ class LO_Shortcodes {
 		$this->event_categories    = new LO_Shortcodes_Event_Categories( $plugin );
 		$this->event_category_single    = new LO_Shortcodes_Event_Category_Single( $plugin );
 		$this->event_partner_list    = new LO_Shortcodes_Event_Partner_List( $plugin );
+		$this->header_element    = new LO_Shortcodes_Header_Element( $plugin );
+		$this->nav_element    = new LO_Shortcodes_Nav_Element( $plugin );
+		$this->categories_element    = new LO_Shortcodes_Categories_Element( $plugin );
 	}
 
 	/**

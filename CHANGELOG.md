@@ -1,7 +1,20 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 0.6.11
+## [Unreleased]
+### Added
+
+### Changed
+
+### Fixed
+
+### Removed
+
+### Deprecated
+
+### Security
+
+## [0.7.0] - 2015-05-27
 ### Added
 - Event categories shortcode btn fields
 - Event categories single shortcode btn fields
@@ -9,6 +22,7 @@ All notable changes to this project will be documented in this file.
 - Event search shortcode btn fields
 - Event single btn fields
 - Event categories single shortcode btn field event_category
+- New shortcode for some elements (header, nav, categories list large)
 
 ### Changed
 - Project menu item in nav menu
@@ -22,12 +36,6 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Single event page time display format fix
 - Nav menu css fix
-
-### Removed
-
-### Deprecated
-
-### Security
 
 ## [0.5.0] - 2015-05-26
 ### Changed
@@ -55,7 +63,8 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Stable release of the plugin functionality
 
-[Unreleased]: https://github.com/LiquidChurch/lqd-outreach/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/LiquidChurch/lqd-outreach/compare/v0.7.0...HEAD
+[0.7.0]: https://github.com/LiquidChurch/lqd-outreach/compare/v0.5.0...v0.7.0
 [0.5.0]: https://github.com/LiquidChurch/lqd-outreach/compare/v0.4.5...v0.5.0
 [0.4.5]: https://github.com/LiquidChurch/lqd-outreach/compare/v0.3.8...v0.4.5
 [0.3.8]: https://github.com/LiquidChurch/lqd-outreach/compare/0.0.0...v0.3.8
