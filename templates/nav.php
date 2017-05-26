@@ -15,6 +15,9 @@
         <div class="collapse navbar-collapse" id="lo-events-navbar">
             <ul class="nav navbar-nav lo-navbar-nav">
                 <li>
+                    <a href="<?php echo get_permalink(get_page_by_path('projects')) ?>">Projects</a>
+                </li>
+                <li>
                     <a href="<?php echo get_permalink(get_page_by_path('search-projects')) ?>">Search
                         Projects</a>
                 </li>

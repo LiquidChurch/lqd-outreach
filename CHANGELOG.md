@@ -6,9 +6,11 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - Add attributes for shortcodes to hide different parts in the front-end
+- Added Project menu item in nav menu
 
 ### Fixed
 - Single event page time display format fix
+- Nav menu css fix
 
 ### Removed
 
