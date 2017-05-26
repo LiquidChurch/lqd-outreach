@@ -5,12 +5,14 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Event categories shortcode btn fields
 - Event categories single shortcode btn fields
+- Event partner list shortcode btn fields
 
 ### Changed
 - Project menu item in nav menu
 - Attributes for shortcodes to hide different parts in the front-end
 - Conditions for shortcode atts events_category
 - Conditions for shortcode atts events_category_single
+- Conditions for shortcode atts events_partner_list
 
 ### Fixed
 - Single event page time display format fix
