@@ -228,16 +228,16 @@
             ));
             
             //group_id meta
-            $cmb_additional->add_field(array(
-                'name' => __('CCB Group ID', 'liquid-outreach'),
-                'desc' => __('', 'liquid-outreach'),
-                'id'   => $prefix . 'group_id',
-                'type' => 'text',
-                'attributes' => array(
-	                'readonly' => 'readonly',
-	                'disabled' => 'disabled',
-                ),
-            ));
+//            $cmb_additional->add_field(array(
+//                'name' => __('CCB Group ID', 'liquid-outreach'),
+//                'desc' => __('', 'liquid-outreach'),
+//                'id'   => $prefix . 'group_id',
+//                'type' => 'text',
+//                'attributes' => array(
+//	                'readonly' => 'readonly',
+//	                'disabled' => 'disabled',
+//                ),
+//            ));
         }
         
         /**

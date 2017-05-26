@@ -83,6 +83,7 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
      */
     private $transient_key = [
         'groups_list' => 'ccb_groups_api_data_groups_list',
+        'group_type_list' => 'ccb_groups_api_data_group_type_list',
         'department_list' => 'ccb_groups_api_data_departments_list',
     ];
 
@@ -286,6 +287,7 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
     {
         $sync_data = $this->check_sync_data();
         $group_list = $this->get_group_list();
+        $group_type_list = $this->get_group_type_list();
         $department_list = $this->get_department_list();
         if (empty($sync_data['num_rows'])) {
             return false;
@@ -311,18 +313,19 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                         <select id="ccb-sync-filter-by">
                             <option value=""> --- Any ---</option>
                             <option value="groups">Groups</option>
+                            <option value="group_type">Group Type</option>
                             <option value="departments">Departments</option>
                         </select>
                     </div>
                 </div>
 
-                <div class="cmb-row ccb-sync-filter-by-group-row" style="display: none;">
+                <div class="cmb-row ccb-sync-filter-by-group-row ccb-sync-filter-by-child" style="display: none;">
                     <div class="cmb-th">
                         <label for=""><?php echo esc_html__('Select Group',
                                 'liquid-outreach') ?></label>
                     </div>
                     <div class="cmb-th">
-                        <select id="ccb-sync-filter-by-group">
+                        <select id="ccb-sync-filter-by-group" class="ccb-sync-filter-by-select">
                             <option value=""> --- Any ---</option>
                             <?php
                             if (!empty($group_list)) {
@@ -335,13 +338,32 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                     </div>
                 </div>
 
-                <div class="cmb-row ccb-sync-filter-by-dep-row" style="display: none;">
+                <div class="cmb-row ccb-sync-filter-by-group-type-row ccb-sync-filter-by-child" style="display: none;">
+                    <div class="cmb-th">
+                        <label for=""><?php echo esc_html__('Select Group Type',
+                                'liquid-outreach') ?></label>
+                    </div>
+                    <div class="cmb-th">
+                        <select id="ccb-sync-filter-by-group-type" class="ccb-sync-filter-by-select">
+                            <option value=""> --- Any ---</option>
+                            <?php
+                            if (!empty($group_type_list)) {
+                                foreach ($group_type_list as $index => $item) {
+                                    echo '<option value="' . $index . '">' . $item . '</option>';
+                                }
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="cmb-row ccb-sync-filter-by-dep-row ccb-sync-filter-by-child" style="display: none;">
                     <div class="cmb-th">
                         <label for=""><?php echo esc_html__('Select Department',
                                 'liquid-outreach') ?></label>
                     </div>
                     <div class="cmb-th">
-                        <select id="ccb-sync-filter-by-dep">
+                        <select id="ccb-sync-filter-by-dep" class="ccb-sync-filter-by-select">
                             <option value=""> --- Any ---</option>
                             <?php
                             if (!empty($department_list)) {
@@ -473,6 +495,7 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                             'data': ccb_data_chunk,
                             'filter': $("#ccb-sync-filter-by").val(),
                             'filter_group': $("#ccb-sync-filter-by-group").val(),
+                            'filter_group_type': $("#ccb-sync-filter-by-group-type").val(),
                             'filter_dep': $("#ccb-sync-filter-by-dep").val(),
                             'start_date': $("#start_date").val(),
                             'end_date': $("#end_date").val()
@@ -532,21 +555,15 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                     $("#ccb-sync-filter-by").change(function (e) {
 
                         var self = $(this);
-                        $("#ccb-sync-filter-by-group").val('');
-                        $("#ccb-sync-filter-by-dep").val('');
+                        $(".ccb-sync-filter-by-child").hide();
+                        $(".ccb-sync-filter-by-select").val('');
 
                         if ('groups' == self.val()) {
-
-                            $(".ccb-sync-filter-by-dep-row").hide();
                             $(".ccb-sync-filter-by-group-row").show();
                         } else if ('departments' == self.val()) {
-
-                            $(".ccb-sync-filter-by-group-row").hide();
                             $(".ccb-sync-filter-by-dep-row").show();
-                        } else if ('' == self.val()) {
-
-                            $(".ccb-sync-filter-by-group-row").hide();
-                            $(".ccb-sync-filter-by-dep-row").hide();
+                        } else if ('group_type' == self.val()) {
+                            $(".ccb-sync-filter-by-group-type-row").show();
                         }
                     });
 
@@ -574,7 +591,7 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
         global $wpdb;
         $results
             = $wpdb->get_results(
-            'SELECT `id`, `ccb_event_id`, `ccb_group_id`, `ccb_dep_id`, `wp_post_id`, `data`, `md5_hash`, 
+            'SELECT `id`, `ccb_event_id`, `ccb_group_id`, `ccb_dep_id`, `ccb_group_type_id`, `wp_post_id`, `data`, `md5_hash`, 
                                   `last_modified`, `last_synced` FROM ' . $wpdb->prefix . 'lo_ccb_events_api_data',
             ARRAY_A);
 
@@ -598,6 +615,7 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                     'ccb_event_id' => $result['ccb_event_id'],
                     'group_id' => (isset($api_data['group']['id'])) ? $api_data['group']['id'] : null,
                     'department_id' => (isset($result['ccb_dep_id'])) ? $result['ccb_dep_id'] : null,
+                    'ccb_group_type_id' => (isset($result['ccb_group_type_id'])) ? $result['ccb_group_type_id'] : null,
                     'wp_post_id' => $result['wp_post_id'],
                     'title' => $api_data['name'],
                     'description' => (isset($api_data['description']) &&
@@ -657,6 +675,30 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
             global $wpdb;
             $data = $wpdb->get_results("SELECT `ccb_group_id`, `ccb_group_name` FROM `" . $wpdb->prefix . 'lo_ccb_groups_api_data`', ARRAY_A);
             $data = wp_list_pluck($data, 'ccb_group_name', 'ccb_group_id');
+            $data = array_filter(array_unique($data));
+            asort($data);
+
+            set_transient($transient_key, $data, 60 * 60 * 24);
+        }
+
+        return $data;
+    }
+
+    /**
+     * get group type list for filter
+     * @return array|mixed|null|object|ø
+     * @since 0.5.0
+     */
+    public function get_group_type_list()
+    {
+        $transient_key = $this->transient_key['group_type_list'];
+        $data = get_transient($transient_key);
+
+        if (empty($data)) {
+
+            global $wpdb;
+            $data = $wpdb->get_results("SELECT `ccb_group_type_id`, `ccb_group_type_name` FROM `" . $wpdb->prefix . 'lo_ccb_groups_api_data`', ARRAY_A);
+            $data = wp_list_pluck($data, 'ccb_group_type_name', 'ccb_group_type_id');
             $data = array_filter(array_unique($data));
             asort($data);
 
@@ -739,6 +781,7 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
         $ccb_event_data = $_POST['data'];
         $filter = !empty($_POST['filter']) ? $_POST['filter'] : null;
         $filter_group = !empty($_POST['filter_group']) ? $_POST['filter_group'] : null;
+        $filter_group_type = !empty($_POST['filter_group_type']) ? $_POST['filter_group_type'] : null;
         $filter_dep = !empty($_POST['filter_dep']) ? $_POST['filter_dep'] : null;
         $start_date_filter = !empty($_POST['start_date']) ? strtotime($_POST['start_date']) : null;
         $end_date_filter = !empty($_POST['end_date']) ? strtotime($_POST['end_date']) : null;
@@ -758,6 +801,11 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                         }
                     } elseif ($filter == 'departments') {
                         if (!empty($filter_dep) && $ccb_event_datum['department_id'] != $filter_dep) {
+                            $skipped++;
+                            continue;
+                        }
+                    } elseif ($filter == 'group_type') {
+                        if (!empty($filter_group_type) && $ccb_event_datum['ccb_group_type_id'] != $filter_group_type) {
                             $skipped++;
                             continue;
                         }
@@ -931,6 +979,17 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
             $new_partner_post = wp_insert_post([
                 'post_title' => $ccb_event_datum['group_name'],
                 'post_type' => 'lo-event-partners',
+                'meta_input' => [
+                    $eventPartner_post_meta_prefix .
+                    "group_id" => $ccb_event_datum['group_id']
+                ]
+            ]);
+        } else {
+            $partner_query->the_post();
+            global $post;
+            $update_partner_post = wp_update_post([
+                'ID' => $post->ID,
+                'post_title' => $ccb_event_datum['group_name'],
                 'meta_input' => [
                     $eventPartner_post_meta_prefix .
                     "group_id" => $ccb_event_datum['group_id']
@@ -1196,6 +1255,7 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                             array(
                                 'ccb_group_id' => $event['group']['id'],
                                 'ccb_dep_id' => !empty($group_sync_result['ccb_dep_id']) ? $group_sync_result['ccb_dep_id'] : null,
+                                'ccb_group_type_id' => !empty($group_sync_result['ccb_group_type_id']) ? $group_sync_result['ccb_group_type_id'] : null,
                                 'data' => $json_event = json_encode($event),
                                 'md5_hash' => md5($json_event),
                                 'last_modified' => date('Y-m-d H:i:s', time()),
@@ -1242,6 +1302,7 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
         }
 
         delete_transient($this->transient_key['groups_list']);
+        delete_transient($this->transient_key['group_type_list']);
         delete_transient($this->transient_key['department_list']);
         die();
     }
@@ -1318,10 +1379,14 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
 
             if (null !== $exist) {
 
-//                if ($exist['md5_hash'] != md5(json_encode($response_groups))) {
                 $wpdb->update(
                     $table_name,
                     array(
+                        'ccb_group_name' => $response_groups['group']['name'],
+                        'ccb_group_type_id' => !empty($response_groups['group']['group_type']['id']) ? $response_groups['group']['group_type']['id'] : null,
+                        'ccb_group_type_name' => !empty($response_groups['group']['group_type']['value']) ? $response_groups['group']['group_type']['value'] : null,
+                        'ccb_dep_id' => !empty($response_groups['group']['department']['id']) ? $response_groups['group']['department']['id'] : null,
+                        'ccb_dep_name' => !empty($response_groups['group']['department']['value']) ? $response_groups['group']['department']['value'] : null,
                         'data' => $json_group = json_encode($response_groups),
                         'md5_hash' => md5($json_group),
                         'last_modified' => date('Y-m-d H:i:s', time()),
@@ -1330,15 +1395,16 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                         'ccb_group_id' => $response_groups['group']['id']
                     )
                 );
-//                }
 
             } else {
 
                 $wpdb->insert($table_name, array(
                     'ccb_group_id' => $response_groups['group']['id'],
                     'ccb_group_name' => $response_groups['group']['name'],
-                    'ccb_dep_id' => $response_groups['group']['department']['id'],
-                    'ccb_dep_name' => $response_groups['group']['department']['value'],
+                    'ccb_group_type_id' => !empty($response_groups['group']['group_type']['id']) ? $response_groups['group']['group_type']['id'] : null,
+                    'ccb_group_type_name' => !empty($response_groups['group']['group_type']['value']) ? $response_groups['group']['group_type']['value'] : null,
+                    'ccb_dep_id' => !empty($response_groups['group']['department']['id']) ? $response_groups['group']['department']['id'] : null,
+                    'ccb_dep_name' => !empty($response_groups['group']['department']['value']) ? $response_groups['group']['department']['value'] : null,
                     'data' => $json_group = json_encode($response_groups),
                     'md5_hash' => md5($json_group),
                     'created' => date('Y-m-d H:i:s', time()),
@@ -1350,7 +1416,8 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                 'error' => !empty($api_error),
                 'success' => empty($api_error),
                 'ccb_group_id' => $response_groups['group']['id'],
-                'ccb_dep_id' => $response_groups['group']['department']['id'],
+                'ccb_dep_id' => !empty($response_groups['group']['department']['id']) ? $response_groups['group']['department']['id'] : null,
+                'ccb_group_type_id' => !empty($response_groups['group']['group_type']['id']) ? $response_groups['group']['group_type']['id'] : null,
             ];
 
         } else {

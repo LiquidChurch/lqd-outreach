@@ -5,8 +5,12 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 ### Changed
+- DB schema change for group_type filter
+- Group type filter for event sync to wp_post
 
 ### Fixed
+- Hide CCB Group ID meta field from Outreach Partner post type
+- Update Outreach Partner posts when updating Outreach Event posts from sync page
 
 ### Removed
 
