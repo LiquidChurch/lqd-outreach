@@ -45,7 +45,9 @@ class LO_Shortcodes_Event_Category_Single_Run extends LO_Shortcodes_Run_Base
             Liquid_Outreach::$url . '/assets/js/vandertable.js');
         wp_enqueue_script('lo-index', Liquid_Outreach::$url . '/assets/js/index.js');
 
-        $disable = [
+        $content_arr = [];
+
+        $content_arr['disable'] = $disable = [
             'header' => (bool)$this->att('disable_header') == '1' || $this->att('disable_header') == 'true' ? 1 : 0,
             'nav' => (bool)$this->att('disable_nav') == '1' || $this->att('disable_nav') == 'true' ? 1 : 0,
             'search' => (bool)$this->att('disable_search') == '1' || $this->att('disable_search') == 'true' ? 1 : 0,
@@ -60,35 +62,39 @@ class LO_Shortcodes_Event_Category_Single_Run extends LO_Shortcodes_Run_Base
         ));
 
         $events = liquid_outreach()->lo_ccb_events->get_many($args);
+        $content_arr['events'] = !empty($events->posts) ? $events->posts : [];
+
         if (empty($events->posts)) {
             $event_empty_msg = 'Sorry, No data found.';
         }
+        $content_arr['event_empty_msg'] = isset($event_empty_msg) ? $event_empty_msg : '';
 
         $max = !empty($events->max_num_pages) ? $events->max_num_pages : 0;
-        $pagination = $this->get_pagination($max);
+        $content_arr['pagination'] = $this->get_pagination($max);
 
-        $categories = liquid_outreach()->lo_ccb_event_categories->get_many([
-            'hide_empty' => false
-        ]);
-        $cities = liquid_outreach()->lo_ccb_events->get_all_city_list();
+        $categories_required = false;
+        if(!$disable['nav'] || !$disable['search']) {
+            $content_arr['cities'] = $cities = liquid_outreach()->lo_ccb_events->get_all_city_list();
 
-        $partners = liquid_outreach()->lo_ccb_event_partners->get_many([
-            'post_type' => liquid_outreach()->lo_ccb_event_partners->post_type(),
-            'posts_per_page' => -1,
-        ]);
+            $partners = liquid_outreach()->lo_ccb_event_partners->get_many([
+                'post_type' => liquid_outreach()->lo_ccb_event_partners->post_type(),
+                'posts_per_page' => -1,
+            ]);
+            $content_arr['partners'] = !empty($partners->posts) ? $partners->posts : [];
+
+            $categories_required = true;
+        }
+
+        if($categories_required || !$disable['cateogy_list']) {
+            $content_arr['categories'] = $categories = liquid_outreach()->lo_ccb_event_categories->get_many([
+                'hide_empty' => false
+            ]);
+        }
 
         $content = '';
         $content .= LO_Style_Loader::get_template('lc-plugin');
         $content .= LO_Style_Loader::get_template('vandertable');
-        $content .= LO_Template_Loader::get_template('search', array(
-            'events' => !empty($events->posts) ? $events->posts : [],
-            'event_empty_msg' => isset($event_empty_msg) ? $event_empty_msg : '',
-            'pagination' => $pagination,
-            'categories' => $categories,
-            'partners' => !empty($partners->posts) ? $partners->posts : [],
-            'cities' => $cities,
-            'disable' => $disable,
-        ));
+        $content .= LO_Template_Loader::get_template('search', $content_arr);
 
         return $content;
     }
