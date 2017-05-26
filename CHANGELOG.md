@@ -1,13 +1,15 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 0.6.1
+## [Unreleased] - 0.6.3
 ### Added
-- admin categories shortcode btn fields
+- Event categories shortcode btn fields
 
 ### Changed
-- Add attributes for shortcodes to hide different parts in the front-end
-- Added Project menu item in nav menu
+- Project menu item in nav menu
+- Attributes for shortcodes to hide different parts in the front-end
+- Conditions for shortcode atts events_category
+- Conditions for shortcode atts events_category_single
 
 ### Fixed
 - Single event page time display format fix
