@@ -1,12 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 0.6.8
+## [Unreleased] - 0.6.10
 ### Added
 - Event categories shortcode btn fields
 - Event categories single shortcode btn fields
 - Event partner list shortcode btn fields
 - Event search shortcode btn fields
+- Event single btn fields
 
 ### Changed
 - Project menu item in nav menu
@@ -15,6 +16,7 @@ All notable changes to this project will be documented in this file.
 - Conditions for shortcode atts events_category_single
 - Conditions for shortcode atts events_partner_list
 - Conditions for shortcode atts events_search
+- Conditions for shortcode atts events_single
 
 ### Fixed
 - Single event page time display format fix
