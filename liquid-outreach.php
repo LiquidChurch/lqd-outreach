@@ -63,7 +63,7 @@ final class Liquid_Outreach
      * @since  0.0.0
      */
     const VERSION = '0.4.5';
-    const DB_VERSION = 2.0;
+    const DB_VERSION = 2.2;
 
     /**
      * URL of plugin directory.
@@ -309,6 +309,7 @@ final class Liquid_Outreach
         global $wpdb;
         $event_table_name = $wpdb->prefix . 'lo_ccb_events_api_data';
         $group_table_name = $wpdb->prefix . 'lo_ccb_events_api_data';
+        $collate = $wpdb->collate;
         $charset_collate = $wpdb->get_charset_collate();
 
         if ($wpdb->get_var("SHOW TABLES LIKE '$event_table_name'") != $event_table_name) {
@@ -320,8 +321,8 @@ final class Liquid_Outreach
                         `ccb_group_id` bigint(20) unsigned DEFAULT NULL,  
                         `ccb_dep_id` bigint(20) unsigned DEFAULT NULL,  
                         `wp_post_id` bigint(20) unsigned DEFAULT NULL,  
-                        `data` text COLLATE utf8mb4_unicode_520_ci NOT NULL,  
-                        `md5_hash` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,  
+                        `data` text COLLATE $collate NOT NULL,  
+                        `md5_hash` varchar(255) COLLATE $collate NOT NULL,  
                         `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,  
                         `last_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,  
                         `last_synced` timestamp NULL DEFAULT NULL,  PRIMARY KEY (`id`)
@@ -337,12 +338,12 @@ final class Liquid_Outreach
                 = "CREATE TABLE `$group_table_name` (
                         `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
                         `ccb_group_id` bigint(20) unsigned NOT NULL,
-                        `ccb_group_name` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+                        `ccb_group_name` varchar(255) COLLATE $collate NOT NULL,
                         `ccb_dep_id` bigint(20) unsigned DEFAULT NULL,
-                        `ccb_dep_name` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+                        `ccb_dep_name` varchar(255) COLLATE $collate DEFAULT NULL,
                         `wp_post_id` bigint(20) unsigned DEFAULT NULL,
-                        `data` text COLLATE utf8mb4_unicode_520_ci NOT NULL,
-                        `md5_hash` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+                        `data` text COLLATE $collate NOT NULL,
+                        `md5_hash` varchar(255) COLLATE $collate NOT NULL,
                         `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                         `last_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                         `last_synced` timestamp NULL DEFAULT NULL,
@@ -403,52 +404,54 @@ final class Liquid_Outreach
 
         $current_db_version = get_option('liquid_outreach_db_version');
 
-        if (empty($current_db_version) || $current_db_version < 2.0) {
+        global $wpdb;
+
+        if (empty($current_db_version) || $current_db_version < SELF::DB_VERSION) {
 
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
             global $wpdb;
             $charset_collate = $wpdb->get_charset_collate();
+            $collate = $wpdb->collate;
             $event_table_name = $wpdb->prefix . 'lo_ccb_events_api_data';
             $group_table_name = $wpdb->prefix . 'lo_ccb_groups_api_data';
 
-            if ($wpdb->get_var("SHOW TABLES LIKE '$event_table_name'") == $event_table_name) {
-
-                $sql = "CREATE TABLE `$event_table_name` (  
-                        `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,  
-                        `ccb_event_id` bigint(20) unsigned NOT NULL,  
-                        `ccb_group_id` bigint(20) unsigned DEFAULT NULL,  
-                        `ccb_dep_id` bigint(20) unsigned DEFAULT NULL,  
-                        `wp_post_id` bigint(20) unsigned DEFAULT NULL,  
-                        `data` text COLLATE utf8mb4_unicode_520_ci NOT NULL,  
-                        `md5_hash` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,  
-                        `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,  
-                        `last_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,  
-                        `last_synced` timestamp NULL DEFAULT NULL,  PRIMARY KEY (`id`)
-                    ) $charset_collate;";
+            $sql = "CREATE TABLE `$event_table_name` (
+                      `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+                      `ccb_event_id` bigint(20) unsigned NOT NULL,
+                      `ccb_group_id` bigint(20) unsigned DEFAULT NULL,
+                      `ccb_group_type_id` bigint(20) unsigned DEFAULT NULL,
+                      `ccb_dep_id` bigint(20) unsigned DEFAULT NULL,
+                      `wp_post_id` bigint(20) unsigned DEFAULT NULL,
+                      `data` text COLLATE $collate NOT NULL,
+                      `md5_hash` varchar(255) COLLATE $collate NOT NULL,
+                      `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                      `last_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                      `last_synced` timestamp NULL DEFAULT NULL,
+                      `ccb_group_type_id` bigint(20) unsigned DEFAULT NULL,
+                      PRIMARY KEY (`id`)
+                    ) $charset_collate";
                 dbDelta($sql);
-            }
 
-            if ($wpdb->get_var("SHOW TABLES LIKE '$group_table_name'") != $group_table_name) {
-
-                $sql = "CREATE TABLE `$group_table_name`(
-                            `id` bigint(20) unsigned NOT NULL  auto_increment , 
-                            `ccb_group_id` bigint(20) unsigned NOT NULL  , 
-                            `ccb_group_name` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL  , 
-                            `ccb_dep_id` bigint(20) unsigned NULL  , 
-                            `ccb_dep_name` varchar(255) COLLATE utf8mb4_unicode_520_ci NULL  , 
-                            `wp_post_id` bigint(20) unsigned NULL  , 
-                            `data` text COLLATE utf8mb4_unicode_520_ci NOT NULL  , 
-                            `md5_hash` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL  , 
-                            `created` timestamp NOT NULL  DEFAULT CURRENT_TIMESTAMP , 
-                            `last_modified` timestamp NOT NULL  DEFAULT CURRENT_TIMESTAMP , 
-                            `last_synced` timestamp NULL  , 
-                            PRIMARY KEY (`id`) 
-                        ) $charset_collate;";
+                $sql = "CREATE TABLE `$group_table_name` (
+                          `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+                          `ccb_group_id` bigint(20) unsigned NOT NULL,
+                          `ccb_group_name` varchar(255) COLLATE $collate NOT NULL,
+                          `ccb_dep_id` bigint(20) unsigned DEFAULT NULL,
+                          `ccb_dep_name` varchar(255) COLLATE $collate DEFAULT NULL,
+                          `ccb_group_type_id` bigint(20) unsigned DEFAULT NULL,
+                          `ccb_group_type_name` varchar(255) COLLATE $collate DEFAULT NULL,
+                          `wp_post_id` bigint(20) unsigned DEFAULT NULL,
+                          `data` text COLLATE $collate NOT NULL,
+                          `md5_hash` varchar(255) COLLATE $collate NOT NULL,
+                          `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                          `last_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                          `last_synced` timestamp NULL DEFAULT NULL,
+                          PRIMARY KEY (`id`)
+                        ) $charset_collate";
                 dbDelta($sql);
-            }
 
-            return update_option('liquid_outreach_db_version', 2.0);
+            return update_option('liquid_outreach_db_version', SELF::DB_VERSION);
         }
 
         return false;
