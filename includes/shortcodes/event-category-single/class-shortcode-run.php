@@ -25,7 +25,7 @@ class LO_Shortcodes_Event_Category_Single_Run extends LO_Shortcodes_Run_Base
      */
     public $atts_defaults
         = array(
-            'event_cat_id' => 0,
+            'event_cat_slug' => '',
             'disable_header' => false,
             'disable_nav' => false,
             'disable_search' => false,
@@ -107,12 +107,12 @@ class LO_Shortcodes_Event_Category_Single_Run extends LO_Shortcodes_Run_Base
     {
         $paged = (int)get_query_var('paged') ? get_query_var('paged') : 1;
         $offset = (($paged - 1) * 10);
-        $event_cat_id = $this->att('event_cat_id');
+        $event_cat_slug = $this->att('event_cat_slug');
         $tax_query = array(
             array(
                 'taxonomy' => liquid_outreach()->lo_ccb_event_categories->taxonomy(),
-                'field' => 'term_id',
-                'terms' => (int)$event_cat_id,
+                'field' => 'slug',
+                'terms' => $event_cat_slug,
             ),
         );
         return compact('paged', 'offset', 'tax_query');

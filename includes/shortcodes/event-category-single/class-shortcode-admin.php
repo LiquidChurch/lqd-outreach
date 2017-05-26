@@ -43,6 +43,15 @@
 		function fields( $fields, $button_data ) {
 
             $fields[] = array(
+                'name'           => 'Select Event Category',
+                'desc'           => 'Select event category',
+                'id'             => 'event_cat_slug',
+                'taxonomy'       => 'event-category', //Enter Taxonomy Slug
+                'type'           => 'taxonomy_select',
+                'remove_default' => 'true' // Removes the default metabox provided by WP core. Pending release as of Aug-10-16
+            );
+
+            $fields[] = array(
                 'name' => 'Disable Header',
                 'desc' => 'To disable header',
                 'id'   => 'disable_header',
@@ -72,4 +81,5 @@
 			
 			return $fields;
 		}
+
 	}
