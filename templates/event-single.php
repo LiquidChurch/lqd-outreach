@@ -48,7 +48,7 @@
                     <div class="row">
                         <div class="col-md-5 " style="vertical-align: top;">Date & Time</div>
                         <div class="col-md-1">&#8594</div>
-                        <div class="col-md-6"><?php echo date( 'l jS M Y HA',
+                        <div class="col-md-6"><?php echo date( 'l jS M Y h:iA',
 								$event_post->get_meta( $meta_prefix . 'start_date' ) ) ?></div>
                     </div>
 					<?php
