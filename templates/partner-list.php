@@ -1,15 +1,18 @@
 <?php
-	$partners = $this->get( 'partners' );
-?>
-<!-- header -->
-<?php LO_Template_Loader::output_template( 'header' ) ?>
+$disable = $this->get('disable');
+$partners = $this->get( 'partners' );
 
-<!-- /.container -->
-<!-- Navigation -->
-<?php LO_Template_Loader::output_template( 'nav', [
-	'categories' => $this->get( 'categories' ),
-	'cities'     => $this->get( 'cities' ),
-] ) ?>
+if(!isset($disable['header']) || !$disable['header']) {
+    LO_Template_Loader::output_template( 'header' );
+}
+
+if(!isset($disable['nav']) || !$disable['nav']) {
+    LO_Template_Loader::output_template( 'nav', [
+        'categories' => $this->get( 'categories' ),
+        'cities'     => $this->get( 'cities' ),
+    ] );
+}
+?>
 
 <!-- Page Content -->
 <div class="container">

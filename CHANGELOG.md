@@ -1,10 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 0.5.1
+## [Unreleased] - 0.6.0
 ### Added
 
 ### Changed
+- Add attributes for shortcodes to hide different parts in the front-end
 
 ### Fixed
 - Single event page time display format fix
