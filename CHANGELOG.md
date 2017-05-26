@@ -1,12 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [Unreleased - 0.5.1]
 ### Added
 
 ### Changed
 
 ### Fixed
+- Single event page time display format fix
 
 ### Removed
 
