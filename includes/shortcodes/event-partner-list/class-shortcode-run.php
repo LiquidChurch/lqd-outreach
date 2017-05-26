@@ -56,10 +56,11 @@ class LO_Shortcodes_Event_Partner_List_Run extends LO_Shortcodes_Run_Base
 
             $content_arr['cities'] = $cities = liquid_outreach()->lo_ccb_events->get_all_city_list();
 
-            $content_arr['partners'] = $partners = liquid_outreach()->lo_ccb_event_partners->get_many([
+            $partners = liquid_outreach()->lo_ccb_event_partners->get_many([
                 'post_type' => liquid_outreach()->lo_ccb_event_partners->post_type(),
                 'posts_per_page' => -1,
             ]);
+            $content_arr['partners'] = !empty($partners->posts) ? $partners->posts : [];
         }
 
         $content = '';
