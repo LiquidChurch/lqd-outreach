@@ -5,18 +5,23 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 ### Changed
-- DB schema change for group_type filter
-- Group type filter for event sync to wp_post
 
 ### Fixed
-- Hide CCB Group ID meta field from Outreach Partner post type
-- Update Outreach Partner posts when updating Outreach Event posts from sync page
 
 ### Removed
 
 ### Deprecated
 
 ### Security
+
+## [0.5.0] - 2015-05-26
+### Changed
+- DB schema change for group_type filter
+- Group type filter for event sync to wp_post
+
+### Fixed
+- Hide CCB Group ID meta field from Outreach Partner post type
+- Update Outreach Partner posts when updating Outreach Event posts from sync page
 
 ## [0.4.5] - 2015-05-26
 ### Added
@@ -35,6 +40,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Stable release of the plugin functionality
 
-[Unreleased]: https://github.com/LiquidChurch/lqd-outreach/compare/v0.4.5...HEAD
+[Unreleased]: https://github.com/LiquidChurch/lqd-outreach/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/LiquidChurch/lqd-outreach/compare/v0.4.5...v0.5.0
 [0.4.5]: https://github.com/LiquidChurch/lqd-outreach/compare/v0.3.8...v0.4.5
 [0.3.8]: https://github.com/LiquidChurch/lqd-outreach/compare/0.0.0...v0.3.8
