@@ -1,8 +1,9 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 0.6.0
+## [Unreleased] - 0.6.1
 ### Added
+- admin categories shortcode btn fields
 
 ### Changed
 - Add attributes for shortcodes to hide different parts in the front-end

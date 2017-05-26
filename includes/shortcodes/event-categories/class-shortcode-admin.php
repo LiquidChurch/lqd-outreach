@@ -41,7 +41,28 @@
 		 * @return array
 		 */
 		function fields( $fields, $button_data ) {
-			
-			return $fields;
+
+            $fields[] = array(
+                'name' => 'Disable Header',
+                'desc' => 'To disable header',
+                'id'   => 'disable_header',
+                'type' => 'checkbox',
+            );
+
+            $fields[] = array(
+                'name' => 'Disable Nav Bar',
+                'desc' => 'To disable Nav Bar',
+                'id'   => 'disable_nav',
+                'type' => 'checkbox',
+            );
+
+            $fields[] = array(
+                'name' => 'Disable Search',
+                'desc' => 'To disable search',
+                'id'   => 'disable_search',
+                'type' => 'checkbox',
+            );
+
+            return $fields;
 		}
 	}
