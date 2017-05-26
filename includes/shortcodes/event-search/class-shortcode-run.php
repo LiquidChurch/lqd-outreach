@@ -43,7 +43,9 @@ class LO_Shortcodes_Event_Search_Run extends LO_Shortcodes_Run_Base
             Liquid_Outreach::$url . '/assets/js/vandertable.js');
         wp_enqueue_script('lo-index', Liquid_Outreach::$url . '/assets/js/index.js');
 
-        $disable = [
+        $content_arr = [];
+
+        $content_arr['disable'] = $disable = [
             'header' => (bool)$this->att('disable_header') == '1' || $this->att('disable_header') == 'true' ? 1 : 0,
             'nav' => (bool)$this->att('disable_nav') == '1' || $this->att('disable_nav') == 'true' ? 1 : 0,
             'cateogy_list' => (bool)$this->att('disable_cateogy_list') == '1' || $this->att('disable_cateogy_list') == 'true' ? 1 : 0
@@ -71,28 +73,29 @@ class LO_Shortcodes_Event_Search_Run extends LO_Shortcodes_Run_Base
         $max = !empty($events->max_num_pages) ? $events->max_num_pages : 0;
         $pagination = $this->get_pagination($max);
 
-        $categories = liquid_outreach()->lo_ccb_event_categories->get_many([
-            'hide_empty' => false
-        ]);
-        $cities = liquid_outreach()->lo_ccb_events->get_all_city_list();
+        $content_arr['events'] = !empty($events->posts) ? $events->posts : [];
+        $content_arr['event_empty_msg'] = isset($event_empty_msg) ? $event_empty_msg : '';
+        $content_arr['pagination'] = $pagination;
 
-        $partners = liquid_outreach()->lo_ccb_event_partners->get_many([
-            'post_type' => liquid_outreach()->lo_ccb_event_partners->post_type(),
-            'posts_per_page' => -1,
-        ]);
+        if(!$disable['nav'] || !$disable['cateogy_list']) {
+
+            $disable['categories'] = $categories = liquid_outreach()->lo_ccb_event_categories->get_many([
+                'hide_empty' => false
+            ]);
+
+            $disable['cities'] = $cities = liquid_outreach()->lo_ccb_events->get_all_city_list();
+
+            $partners = liquid_outreach()->lo_ccb_event_partners->get_many([
+                'post_type' => liquid_outreach()->lo_ccb_event_partners->post_type(),
+                'posts_per_page' => -1,
+            ]);
+            $content_arr['partners'] = !empty($partners->posts) ? $partners->posts : [];
+        }
 
         $content = '';
         $content .= LO_Style_Loader::get_template('lc-plugin');
         $content .= LO_Style_Loader::get_template('vandertable');
-        $content .= LO_Template_Loader::get_template('search', array(
-            'events' => !empty($events->posts) ? $events->posts : [],
-            'event_empty_msg' => isset($event_empty_msg) ? $event_empty_msg : '',
-            'pagination' => $pagination,
-            'categories' => $categories,
-            'partners' => !empty($partners->posts) ? $partners->posts : [],
-            'cities' => $cities,
-            'disable' => $disable,
-        ));
+        $content .= LO_Template_Loader::get_template('search', $content_arr);
 
         return $content;
     }
