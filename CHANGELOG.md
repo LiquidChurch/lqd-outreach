@@ -1,10 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [Unreleased] - 0.7.1
 ### Added
 
 ### Changed
+- Change Admin Menu Item "All Outreach" to "All Outreach Events"
 
 ### Fixed
 
