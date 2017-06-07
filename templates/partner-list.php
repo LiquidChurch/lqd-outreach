@@ -27,8 +27,14 @@ if (!isset($disable['nav']) || !$disable['nav']) {
             if ($count % 6 == 1) {
                 echo '<div class="row">';
             }
+
+            $lo_events_page_settings = lo_get_option('page', 'all');
+            $projects_srch_link = !empty($lo_events_page_settings['lo_events_page_lo_search_page'])
+                ? get_permalink($lo_events_page_settings['lo_events_page_lo_search_page'])
+                : get_permalink(get_page_by_path('search-projects'));
+
             ?>
-            <a href="<?php echo get_permalink(get_page_by_path('search-projects')) . '?lo-event-org=' . get_post_meta($partner->ID, 'lo_ccb_event_partner_group_id', true) ?>">
+            <a href="<?php echo $projects_srch_link . '?lo-event-org=' . get_post_meta($partner->ID, 'lo_ccb_event_partner_group_id', true) ?>">
                 <div class="col-md-2 lo-city-holder-box">
                     <div class="lo-city-name"><?php echo $partner->post_title ?></div>
                 </div>

@@ -1,6 +1,12 @@
 <div class="panel panel-default">
     <div class="panel-body">
-        <form action="<?php echo get_permalink( get_page_by_path( 'search-projects' ) ) ?>" id="lo-event-search-form" method="GET">
+        <?php
+        $lo_events_page_settings = lo_get_option('page', 'all');
+        $projects_srch_link = !empty($lo_events_page_settings['lo_events_page_lo_search_page'])
+            ? get_permalink($lo_events_page_settings['lo_events_page_lo_search_page'])
+            : get_permalink(get_page_by_path('search-projects'));
+        ?>
+        <form action="<?php echo $projects_srch_link ?>" id="lo-event-search-form" method="GET">
             <div class="form-horizontal">
                 <div class="form-group col-sm-12">
                     <label class="lo-filter-col col-sm-2 control-label lo-text-align-left lo-event-search-label"
