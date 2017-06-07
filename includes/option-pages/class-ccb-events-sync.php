@@ -188,6 +188,7 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
             .hide-obj {
                 display: none !important;
             }
+
             #ccb_event_sync_to_post_metabox input[name='submit-cmb'] {
                 display: none;
             }
@@ -304,22 +305,8 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                                 'liquid-outreach') ?></h2>
                     </div>
                 </div>
-                <div class="cmb-row">
-                    <div class="cmb-th">
-                        <label for=""><?php echo esc_html__('Filter by',
-                                'liquid-outreach') ?></label>
-                    </div>
-                    <div class="cmb-th">
-                        <select id="ccb-sync-filter-by">
-                            <option value=""> --- Any ---</option>
-                            <option value="groups">Groups</option>
-                            <option value="group_type">Group Type</option>
-                            <option value="departments">Departments</option>
-                        </select>
-                    </div>
-                </div>
 
-                <div class="cmb-row ccb-sync-filter-by-group-row ccb-sync-filter-by-child" style="display: none;">
+                <div class="cmb-row ccb-sync-filter-by-group-row ccb-sync-filter-by-child">
                     <div class="cmb-th">
                         <label for=""><?php echo esc_html__('Select Group',
                                 'liquid-outreach') ?></label>
@@ -338,7 +325,7 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                     </div>
                 </div>
 
-                <div class="cmb-row ccb-sync-filter-by-group-type-row ccb-sync-filter-by-child" style="display: none;">
+                <div class="cmb-row ccb-sync-filter-by-group-type-row ccb-sync-filter-by-child">
                     <div class="cmb-th">
                         <label for=""><?php echo esc_html__('Select Group Type',
                                 'liquid-outreach') ?></label>
@@ -357,7 +344,7 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                     </div>
                 </div>
 
-                <div class="cmb-row ccb-sync-filter-by-dep-row ccb-sync-filter-by-child" style="display: none;">
+                <div class="cmb-row ccb-sync-filter-by-dep-row ccb-sync-filter-by-child">
                     <div class="cmb-th">
                         <label for=""><?php echo esc_html__('Select Department',
                                 'liquid-outreach') ?></label>
@@ -493,7 +480,6 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                             'offset': offset,
                             'limit': limit,
                             'data': ccb_data_chunk,
-                            'filter': $("#ccb-sync-filter-by").val(),
                             'filter_group': $("#ccb-sync-filter-by-group").val(),
                             'filter_group_type': $("#ccb-sync-filter-by-group-type").val(),
                             'filter_dep': $("#ccb-sync-filter-by-dep").val(),
@@ -549,25 +535,7 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                         });
                     }
 
-                    /**
-                     * filter dropdown select elements
-                     */
-                    $("#ccb-sync-filter-by").change(function (e) {
-
-                        var self = $(this);
-                        $(".ccb-sync-filter-by-child").hide();
-                        $(".ccb-sync-filter-by-select").val('');
-
-                        if ('groups' == self.val()) {
-                            $(".ccb-sync-filter-by-group-row").show();
-                        } else if ('departments' == self.val()) {
-                            $(".ccb-sync-filter-by-dep-row").show();
-                        } else if ('group_type' == self.val()) {
-                            $(".ccb-sync-filter-by-group-type-row").show();
-                        }
-                    });
-
-                    $("#ccb_event_sync_to_post_metabox").on('submit', function(e){
+                    $("#ccb_event_sync_to_post_metabox").on('submit', function (e) {
                         e.preventDefault();
                         return false;
                     });
@@ -779,7 +747,6 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
         $skipped = 0;
         $event_post_meta_prefix = 'lo_ccb_events_';
         $ccb_event_data = $_POST['data'];
-        $filter = !empty($_POST['filter']) ? $_POST['filter'] : null;
         $filter_group = !empty($_POST['filter_group']) ? $_POST['filter_group'] : null;
         $filter_group_type = !empty($_POST['filter_group_type']) ? $_POST['filter_group_type'] : null;
         $filter_dep = !empty($_POST['filter_dep']) ? $_POST['filter_dep'] : null;
@@ -793,30 +760,24 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                 $start_timestamp = strtotime($ccb_event_datum['start_time']);
                 $end_timestamp = strtotime($ccb_event_datum['end_time']);
 
-                if (!empty($filter)) {
-                    if ($filter == 'groups') {
-                        if (!empty($filter_group) && $ccb_event_datum['group_id'] != $filter_group) {
-                            $skipped++;
-                            continue;
-                        }
-                    } elseif ($filter == 'departments') {
-                        if (!empty($filter_dep) && $ccb_event_datum['department_id'] != $filter_dep) {
-                            $skipped++;
-                            continue;
-                        }
-                    } elseif ($filter == 'group_type') {
-                        if (!empty($filter_group_type) && $ccb_event_datum['ccb_group_type_id'] != $filter_group_type) {
-                            $skipped++;
-                            continue;
-                        }
-                    }
+                if (!empty($filter_group) && $ccb_event_datum['group_id'] != $filter_group) {
+                    $skipped++;
+                    continue;
                 }
-
-                if(!empty($start_date_filter) && ($start_timestamp < $start_date_filter)) {
+                if (!empty($filter_dep) && $ccb_event_datum['department_id'] != $filter_dep) {
+                    $skipped++;
+                    continue;
+                }
+                if (!empty($filter_group_type) && $ccb_event_datum['ccb_group_type_id'] != $filter_group_type) {
+                    $skipped++;
                     continue;
                 }
 
-                if(!empty($end_date_filter) && ($start_timestamp > $end_date_filter)) {
+                if (!empty($start_date_filter) && ($start_timestamp < $start_date_filter)) {
+                    continue;
+                }
+
+                if (!empty($end_date_filter) && ($start_timestamp > $end_date_filter)) {
                     continue;
                 }
 
