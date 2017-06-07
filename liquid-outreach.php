@@ -177,6 +177,14 @@ final class Liquid_Outreach
     protected $lo_ccb_events_info_setings;
 
     /**
+     * Instance of LO_Ccb_Events_Page_Settings
+     *
+     * @since 0.8.0
+     * @var LO_Ccb_Events_Page_Settings
+     */
+    protected $lo_ccb_events_page_settings;
+
+    /**
      * Instance of LO_Ccb_Event_Categories
      *
      * @since 0.2.1
@@ -472,6 +480,7 @@ final class Liquid_Outreach
         $this->lo_ccb_event_categories = new LO_Ccb_Event_Categories($this);
         $this->lo_shortcodes = new LO_Shortcodes($this);
         $this->lo_ccb_events_info_setings = new LO_Ccb_Events_Info_Setings();
+        $this->lo_ccb_events_page_settings = new LO_Ccb_Events_Page_Settings();
 
         if (is_admin()) {
             $this->lo_ccb_api_event_profiles = new Lo_Ccb_api_event_profiles($this);

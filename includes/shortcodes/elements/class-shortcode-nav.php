@@ -49,7 +49,7 @@ class LO_Shortcodes_Nav_Element_Admin extends LO_Shortcodes_Admin_Base
     function js_button_data()
     {
         return array(
-            'qt_button_text' => __('Nav Element', 'liquid-outreach'),
+            'qt_button_text' => __('LO Nav Element', 'liquid-outreach'),
             'button_tooltip' => __('Nav Element', 'liquid-outreach'),
             'icon' => 'dashicons-media-interactive',
             // 'mceView'        => true, // The future

@@ -150,7 +150,7 @@
 		    	while($event_query->have_posts()) {
 				    $event_query->the_post();
 				    global $post;
-				    echo '<a href="'.get_edit_post_link($post->ID).'" target="_blank">'.$post->post_title.'</a>';
+				    echo '<a href="'.get_edit_post_link($post->ID).'" target="_blank">'.$post->post_title.'</a><br/>';
 			    }
 		    }
 	    }

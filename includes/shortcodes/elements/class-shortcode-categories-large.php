@@ -49,7 +49,7 @@ class LO_Shortcodes_Categories_Element_Admin extends LO_Shortcodes_Admin_Base
     function js_button_data()
     {
         return array(
-            'qt_button_text' => __('Categories Element', 'liquid-outreach'),
+            'qt_button_text' => __('LO Categories Element', 'liquid-outreach'),
             'button_tooltip' => __('Categories Element', 'liquid-outreach'),
             'icon' => 'dashicons-media-interactive',
             // 'mceView'        => true, // The future

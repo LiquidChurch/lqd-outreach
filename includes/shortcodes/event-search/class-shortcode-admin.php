@@ -23,7 +23,7 @@
 		 */
 		function js_button_data() {
 			return array(
-				'qt_button_text' => __( 'Event Search', 'liquid-outreach' ),
+				'qt_button_text' => __( 'LO Event Search', 'liquid-outreach' ),
 				'button_tooltip' => __( 'Event Search', 'liquid-outreach' ),
 				'icon'           => 'dashicons-media-interactive',
 				// 'mceView'        => true, // The future

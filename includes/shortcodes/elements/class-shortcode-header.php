@@ -49,7 +49,7 @@ class LO_Shortcodes_Header_Element_Admin extends LO_Shortcodes_Admin_Base
     function js_button_data()
     {
         return array(
-            'qt_button_text' => __('Header Element', 'liquid-outreach'),
+            'qt_button_text' => __('LO Header Element', 'liquid-outreach'),
             'button_tooltip' => __('Header Element', 'liquid-outreach'),
             'icon' => 'dashicons-media-interactive',
             // 'mceView'        => true, // The future

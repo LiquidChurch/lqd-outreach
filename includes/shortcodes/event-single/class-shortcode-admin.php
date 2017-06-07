@@ -49,7 +49,7 @@ class LO_Shortcodes_Event_Single_Admin extends LO_Shortcodes_Admin_Base
     function js_button_data()
     {
         return array(
-            'qt_button_text' => __('Event Single', 'liquid-outreach'),
+            'qt_button_text' => __('LO Event Single', 'liquid-outreach'),
             'button_tooltip' => __('Event Single', 'liquid-outreach'),
             'icon' => 'dashicons-media-interactive',
             // 'mceView'        => true, // The future

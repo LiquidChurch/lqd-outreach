@@ -202,6 +202,12 @@ class LO_Ccb_Event_Categories extends Taxonomy_Core
                     'id' => $prefix . 'image',
                     'type' => 'file'
                 ),
+                'header_image' => array(
+                    'name' => __('Header Image', 'liquid-outreach'),
+                    'desc' => __('', 'liquid-outreach'),
+                    'id' => $prefix . 'header_image',
+                    'type' => 'file'
+                ),
                 'btn_color' => array(
                     'id' => $prefix . 'btn_color',
                     'name' => __('Button Color', 'liquid-outreach'),

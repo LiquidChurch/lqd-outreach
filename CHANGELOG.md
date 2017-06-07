@@ -1,12 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 0.7.2
+## [Unreleased] - 0.8.1
 ### Added
 
 ### Changed
 - Change Admin Menu Item "All Outreach" to "All Outreach Events"
 - Break Out Single Dropdown for Filtering to Allow Filtering By Any Combination
+- Add Options Page for various page settings
+- Header image option for event categories
 
 ### Fixed
 
