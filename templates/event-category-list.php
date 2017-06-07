@@ -1,25 +1,36 @@
 <?php
-$categories = $this->get( 'categories' );
+$categories = $this->get('categories');
+$disable = $this->get('disable');
+
+if (!isset($disable['animation']) || !$disable['animation']) {
+    ?>
+    <style type="text/css">
+        .lo-f1-container:hover .lo-f1-card {
+            transform: none !important;
+        }
+    </style>
+    <?php
+}
 ?>
 <!-- Page Content -->
 <div class="container">
-	<div class="row">
-		<h1>Select a Project Category</h1>
-	</div>
-	<div class="row">
+    <div class="row">
+        <h1>Select a Project Category</h1>
+    </div>
+    <div class="row">
 
         <?php
-        if ( ! empty( $categories ) ) {
-            foreach ( $categories as $index => $category ) {
+        if (!empty($categories)) {
+            foreach ($categories as $index => $category) {
                 ?>
 
                 <div class="col-md-4 col-sm-12">
-                    <div class="lo-f1-container">
+                    <div class="lo-f1-container" onclick="javascript:window.location = '<?php echo $category->term_link ?>'">
                         <div class="lo-f1-card">
                             <div class="lo-front lo-face">
                                 <?php
-                                if(!empty($category->image_url)) {
-                                    echo '<img src="'.$category->image_url.'" alt="Category Image" width="125" />';
+                                if (!empty($category->image_url)) {
+                                    echo '<img src="' . $category->image_url . '" alt="Category Image" width="125" />';
                                 }
                                 ?>
                                 <span class="lo-project-heading"><?php echo $category->name ?></span>
@@ -27,8 +38,8 @@ $categories = $this->get( 'categories' );
                             <div class="lo-back lo-face center">
                                 <p><span class="lo-project-heading"><?php echo $category->name ?></span></p>
                                 <?php
-                                if(!empty($category->image_url)) {
-                                    echo '<img src="'.$category->image_url.'" alt="Category Image" width="35" style="margin-bottom:5px;" />';
+                                if (!empty($category->image_url)) {
+                                    echo '<img src="' . $category->image_url . '" alt="Category Image" width="35" style="margin-bottom:5px;" />';
                                 }
                                 ?>
                                 <p><?php echo substr($category->description, 0, 150) . '...' ?></p>
@@ -43,7 +54,7 @@ $categories = $this->get( 'categories' );
         }
         ?>
 
-	</div>
-	<!-- /.row -->
+    </div>
+    <!-- /.row -->
 </div>
 <!-- /.container -->

@@ -52,6 +52,7 @@
 .lo-f1-container:hover .lo-f1-card {
     transform: rotateY(180deg);
     box-shadow: -5px 5px 5px #aaa;
+    cursor: pointer;
 }
 
 .lo-face {

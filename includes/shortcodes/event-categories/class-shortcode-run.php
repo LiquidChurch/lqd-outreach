@@ -45,10 +45,13 @@ class LO_Shortcodes_Event_Categories_Run extends LO_Shortcodes_Run_Base
 
         $content_arr = [];
 
+        $lo_events_page_category_animation = lo_get_option( 'page', 'lo_events_page_category_animation' );
+
         $content_arr['disable'] = $disable = [
             'header' => (bool)$this->att('disable_header') == '1' || $this->att('disable_header') == 'true' ? 1 : 0,
             'nav' => (bool)$this->att('disable_nav') == '1' || $this->att('disable_nav') == 'true' ? 1 : 0,
-            'search' => (bool)$this->att('disable_search') == '1' || $this->att('disable_search') == 'true' ? 1 : 0
+            'search' => (bool)$this->att('disable_search') == '1' || $this->att('disable_search') == 'true' ? 1 : 0,
+            'animation' => !empty($lo_events_page_category_animation) ? 1 : 0
         ];
 
         $content_arr['categories'] = $categories = liquid_outreach()->lo_ccb_event_categories->get_many([

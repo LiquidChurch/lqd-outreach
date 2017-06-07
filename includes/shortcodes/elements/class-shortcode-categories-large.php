@@ -112,6 +112,12 @@ class LO_Shortcodes_Categories_Element_Run extends LO_Shortcodes_Run_Base
 
         $content_arr = [];
 
+        $lo_events_page_category_animation = lo_get_option( 'page', 'lo_events_page_category_animation' );
+
+        $content_arr['disable'] = $disable = [
+            'animation' => !empty($lo_events_page_category_animation) ? 1 : 0
+        ];
+
         $content_arr['categories'] = $categories = liquid_outreach()->lo_ccb_event_categories->get_many([
             'hide_empty' => false
         ]);
