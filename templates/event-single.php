@@ -2,7 +2,7 @@
 	$event_post    = $this->get( 'post' );
 	$meta_prefix   = 'lo_ccb_events_';
 	$register_url  = $event_post->get_meta( $meta_prefix . 'register_url' );
-	$info_settings = lo_get_option( 'all' );
+	$info_settings = lo_get_option( 'additional-info', 'all' );
 ?>
 <div class="container lo-custom-container">
     <div class="row lo-no-margin">

@@ -12,15 +12,8 @@
 	 *
 	 * @since 0.8.0
 	 */
-	class LO_Ccb_Events_Page_Settings {
+	class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page {
 		
-		/**
-		 * Holds an instance of the object
-		 *
-		 * @var LO_Ccb_Events_Page_Settings
-		 * @since 0.8.0
-		 */
-		protected static $instance = null;
 		/**
 		 * Option key, and option page slug
 		 *
@@ -61,77 +54,22 @@
 			
 			$this->hooks();
 		}
-		
-		/**
-		 * Returns the running object
-		 *
-		 * @return LO_Ccb_Events_Page_Settings
-		 * @since 0.8.0
-		 */
-		public static function get_instance() {
-			if ( null === self::$instance ) {
-				self::$instance = new self();
-				self::$instance->hooks();
-			}
-			
-			return self::$instance;
-		}
-		
-		/**
-		 * Initiate our hooks
-		 *
-		 * @since 0.8.0
-		 */
-		public function hooks() {
-			add_action( 'admin_init', array( $this, 'init' ) );
-			add_action( 'admin_menu', array( $this, 'add_options_page' ) );
-			add_action( 'cmb2_admin_init', array( $this, 'add_options_page_metabox' ) );
-		}
-		
-		
-		/**
-		 * Register our setting to WP
-		 *
-		 * @since  0.8.0
-		 */
-		public function init() {
-			register_setting( $this->key, $this->key );
-		}
-		
-		/**
-		 * Add menu options page
-		 *
-		 * @since 0.8.0
-		 */
-		public function add_options_page() {
-			$this->options_page = add_submenu_page(
-				'edit.php?post_type=lo-events',
-				$this->title,
-				$this->title,
-				'manage_options',
-				$this->key,
-				array( $this, 'admin_page_display' )
-			);
-			
-			// Include CMB CSS in the head to avoid FOUC
-			add_action( "admin_print_styles-{$this->options_page}",
-				array( 'CMB2_hookup', 'enqueue_cmb_css' ) );
-		}
-		
-		/**
-		 * Admin page markup. Mostly handled by CMB2
-		 *
-		 * @since  0.8.0
-		 */
-		public function admin_page_display() {
-			?>
-            <div class="wrap cmb2-options-page <?php echo $this->key; ?>">
-                <h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
-				<?php cmb2_metabox_form( $this->metabox_id, $this->key ); ?>
-            </div>
-			<?php
-		}
-		
+
+        /**
+         * Returns the running object
+         *
+         * @return LO_Ccb_Events_Info_Setings
+         * @since 0.3.4
+         */
+        public static function get_instance() {
+            if ( null === self::$instance ) {
+                self::$instance = new self();
+                self::$instance->hooks();
+            }
+
+            return self::$instance;
+        }
+
 		/**
 		 * Add the options metabox to the array of metaboxes
 		 *
@@ -156,7 +94,7 @@
 			
 			// Set our CMB2 fields
 			
-			$prefix = 'lo_events_info_';
+			$prefix = 'lo_events_page_';
 			
 			$cmb->add_field( array(
 				'name'    => 'Category Animation',
@@ -205,26 +143,6 @@
 		}
 		
 		/**
-		 * Register settings notices for display
-		 *
-		 * @since  0.8.0
-		 *
-		 * @param  int   $object_id Option key
-		 * @param  array $updated   Array of updated fields
-		 *
-		 * @return void
-		 */
-		public function settings_notices( $object_id, $updated ) {
-			if ( $object_id !== $this->key || empty( $updated ) ) {
-				return;
-			}
-			
-			add_settings_error( $this->key . '-notices', '',
-				__( 'Settings updated.', 'liquid-outreach' ), 'updated' );
-			settings_errors( $this->key . '-notices' );
-		}
-		
-		/**
 		 * Public getter method for retrieving protected/private variables
 		 *
 		 * @since  0.8.0
@@ -241,33 +159,5 @@
 			
 			throw new Exception( 'Invalid property: ' . $field );
 		}
-
-        /**
-         * @since 0.8.0
-         * @return mixed
-         */
-        public static function show_wp_pages()
-        {
-            $query = new WP_Query(
-                $array = array(
-                    'post_type' => 'page',
-                    'post_status' => 'publish',
-                    'posts_per_page' => -1,
-                )
-            );
-
-            $titles[''] = '';
-            if ($query->have_posts()) {
-                while ($query->have_posts()) {
-                    $query->the_post();
-                    $titles[get_the_id()] = get_the_title();
-                }
-            }
-
-            wp_reset_postdata();
-
-            return $titles;
-        }
-
 
     }
