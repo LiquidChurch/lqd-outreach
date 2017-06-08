@@ -42,6 +42,12 @@ class LO_Ccb_Event_Categories extends Taxonomy_Core
     protected $btn_color_meta_key = 'lo_ccb_event_category_btn_color';
 
     /**
+     * @var string
+     * @since 0.8.1
+     */
+    protected $header_image_meta_key = 'lo_ccb_event_category_header_image';
+
+    /**
      * The default args array for self::get()
      *
      * @var array
@@ -330,7 +336,10 @@ class LO_Ccb_Event_Categories extends Taxonomy_Core
     protected function extra_term_data($term, $args)
     {
         if ($this->image_meta_key) {
-            $term = $this->add_image($term, $args['image_size']);
+            $term = $this->add_image($term, $this->image_meta_key, $args['image_size']);
+        }
+        if ($this->header_image_meta_key) {
+            $term = $this->add_image($term, $this->header_image_meta_key, 'full', 'header_');
         }
         if ($this->btn_color_meta_key) {
             $term = $this->add_btn_color($term);
@@ -349,18 +358,19 @@ class LO_Ccb_Event_Categories extends Taxonomy_Core
      *
      * @return mixed         URL if successful or set
      */
-    protected function add_image($term, $size = '')
+    protected function add_image($term, $key, $size = '', $prefix = '')
     {
-        if (!$this->image_meta_key) {
+        if (!$key) {
             return $term;
         }
 
-        $term->image_id = get_term_meta($term->term_id, $this->image_meta_key . '_id', 1);
-        if (!$term->image_id) {
+        $term->{$prefix . 'image_id'} = get_term_meta($term->term_id, $key . '_id', 1);
 
-            $term->image_url = get_term_meta($term->term_id, $this->image_meta_key, 1);
+        if (!$term->{$prefix . 'image_id'}) {
 
-            $term->image = $term->image_url ? '<img src="' . esc_url($term->image_url) . '" alt="' . $term->name . '"/>' : '';
+            $term->{$prefix . 'image_url'} = get_term_meta($term->term_id, $key, 1);
+
+            $term->{$prefix . 'image'} = $term->{$prefix . 'image_url'} ? '<img src="' . esc_url($term->{$prefix . 'image_url'}) . '" alt="' . $term->name . '"/>' : '';
 
             return $term;
         }
@@ -369,10 +379,10 @@ class LO_Ccb_Event_Categories extends Taxonomy_Core
             $size = is_numeric($size) ? array($size, $size) : $size;
         }
 
-        $term->image = wp_get_attachment_image($term->image_id, $size ? $size : 'thumbnail');
+        $term->{$prefix . 'image'} = wp_get_attachment_image($term->{$prefix . 'image_id'}, $size ? $size : 'thumbnail');
 
-        $src = wp_get_attachment_image_src($term->image_id, $size ? $size : 'thumbnail');
-        $term->image_url = isset($src[0]) ? $src[0] : '';
+        $src = wp_get_attachment_image_src($term->{$prefix . 'image_id'}, $size ? $size : 'thumbnail');
+        $term->{$prefix . 'image_url'} = isset($src[0]) ? $src[0] : '';
 
         return $term;
     }
