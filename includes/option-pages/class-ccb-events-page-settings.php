@@ -95,7 +95,13 @@
 			// Set our CMB2 fields
 			
 			$prefix = 'lo_events_page_';
-			
+
+			$default_page = [
+			    'projects' => (get_page_by_path('projects')),
+			    'search' => (get_page_by_path('search-projects')),
+			    'categories' => (get_page_by_path('project-categories')),
+            ];
+
 			$cmb->add_field( array(
 				'name'    => 'Category Animation',
 				'id'      => $prefix . 'category_animation',
@@ -120,6 +126,7 @@
 				'id'      => $prefix . 'lo_home_page',
 				'type'    => 'select',
                 'options_cb' => ['LO_Ccb_Events_Page_Settings', 'show_wp_pages'],
+                'default' => !empty($default_page['projects']) ? $default_page['projects']->ID : ''
 			) );
 
 			$cmb->add_field( array(
@@ -129,6 +136,7 @@
 				'id'      => $prefix . 'lo_search_page',
 				'type'    => 'select',
                 'options_cb' => ['LO_Ccb_Events_Page_Settings', 'show_wp_pages'],
+                'default' => !empty($default_page['search']) ? $default_page['projects']->ID : ''
 			) );
 
 			$cmb->add_field( array(
@@ -138,6 +146,7 @@
 				'id'      => $prefix . 'lo_category_page',
 				'type'    => 'select',
                 'options_cb' => ['LO_Ccb_Events_Page_Settings', 'show_wp_pages'],
+                'default' => !empty($default_page['categories']) ? $default_page['projects']->ID : ''
 			) );
 
 		}
