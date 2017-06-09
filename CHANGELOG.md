@@ -1,7 +1,20 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 0.10.0
+## [Unreleased] - NEXT
+### Added
+
+### Changed
+
+### Fixed
+
+### Removed
+
+### Deprecated
+
+### Security
+
+## [0.10.0] - 2015-06-10
 ### Added
 - Add Options Page for various page settings
 - Header image option for event categories
@@ -19,12 +32,6 @@ All notable changes to this project will be documented in this file.
 - Small Fix: Drop Downs Need More Blank Space
 - Small Fix: Addition Info Not Lining Up
 - Small Fix: Date & Time Customization
-
-### Removed
-
-### Deprecated
-
-### Security
 
 ## [0.7.0] - 2015-05-27
 ### Added
@@ -75,7 +82,8 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Stable release of the plugin functionality
 
-[Unreleased]: https://github.com/LiquidChurch/lqd-outreach/compare/v0.7.0...HEAD
+[Unreleased]: https://github.com/LiquidChurch/lqd-outreach/compare/v0.10.0...HEAD
+[0.10.0]: https://github.com/LiquidChurch/lqd-outreach/compare/v0.7.0...v0.10.0
 [0.7.0]: https://github.com/LiquidChurch/lqd-outreach/compare/v0.5.0...v0.7.0
 [0.5.0]: https://github.com/LiquidChurch/lqd-outreach/compare/v0.4.5...v0.5.0
 [0.4.5]: https://github.com/LiquidChurch/lqd-outreach/compare/v0.3.8...v0.4.5
