@@ -38,9 +38,8 @@
         </div>
         <!--addtnal info column-->
         <div class="col-md-4">
-            <hr/>
-            <strong>Additional Information</strong>
-            <hr/>
+            <strong class="lo-font-24">Additional Information</strong>
+            <hr class="lo-additional-info-blw-hr"/>
 			
 			<?php
 				if ( ! empty( $info_settings['lo_events_info_date_time'] ) || ! isset( $info_settings['lo_events_info_date_time'] ) ) {

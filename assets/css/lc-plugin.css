@@ -458,3 +458,11 @@ city page***************
     padding-left: 39px;
     padding-right: 39px;
 }
+
+.lo-font-24 {
+    font-size:24px;
+}
+
+.lo-additional-info-blw-hr {
+    margin:0 0 10px 0;
+}
