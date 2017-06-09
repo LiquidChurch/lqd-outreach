@@ -398,8 +398,9 @@ final class Liquid_Outreach
             dirname(self::$basename) . '/languages/');
 
         // Initialize plugin classes.
-        $this->cron_job();
         $this->plugin_classes();
+        $this->cron_job();
+
     }
 
     /**
