@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 0.9.0
+## [Unreleased] - 0.9.1
 ### Added
 
 ### Changed
@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 - Add Options Page for various page settings
 - Header image option for event categories
 - Event attendance sync using wp_cron
+- Register url meta name fix for ccb events
 
 ### Fixed
 

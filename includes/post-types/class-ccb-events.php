@@ -272,9 +272,9 @@ class LO_Ccb_Events extends CPT_Core
 
         //Register Button meta
         $cmb_additional->add_field(array(
-            'name' => __('Register Button', 'liquid-outreach'),
+            'name' => __('Register Button URL', 'liquid-outreach'),
             'desc' => __('', 'liquid-outreach'),
-            'id' => $prefix . 'regsiter_url',
+            'id' => $prefix . 'register_url',
             'type' => 'text',
         ));
 
