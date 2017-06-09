@@ -311,6 +311,10 @@ new style addition and fixes on 7th May
     list-style: none !important;
 }
 
+.lo-dropdown-menu > li:first-child {
+    margin-top: 10px;
+}
+
 .lo-dropdown-menu {
     min-width: 195px !important;
 }

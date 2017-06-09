@@ -1,20 +1,21 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 0.9.3
+## [Unreleased] - 0.9.4
 ### Added
+- Add Options Page for various page settings
+- Header image option for event categories
+- Event attendance sync using wp_cron
+- Register url added when sync to wp_post
+- Partner Organization Name Needs Link to Partner Org Page
 
 ### Changed
 - Change Admin Menu Item "All Outreach" to "All Outreach Events"
 - Break Out Single Dropdown for Filtering to Allow Filtering By Any Combination
-- Add Options Page for various page settings
-- Header image option for event categories
-- Event attendance sync using wp_cron
-- Register url meta name fix for ccb events
-- Register url added when sync to wp_post
-- Partner Organization Name Needs Link to Partner Org Page
 
 ### Fixed
+- Register url meta name fix for ccb events
+- Small Fix: Drop Downs Need More Blank Space
 
 ### Removed
 
