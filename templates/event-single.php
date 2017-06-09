@@ -217,7 +217,11 @@
 								?>
                                 <div class="col-md-5 ">Partner organization</div>
                                 <div class="col-md-1">&#8594</div>
-                                <div class="col-md-6"><?php echo $post->post_title ?></div>
+                                <div class="col-md-6">
+                                    <a href="<?php echo home_url("search-projects/?lo-event-org=" . get_post_meta($post->ID, 'lo_ccb_event_partner_group_id', true)) ?>">
+                                        <?php echo $post->post_title ?>
+                                    </a>
+                                </div>
 								<?php
 							}
 						?>

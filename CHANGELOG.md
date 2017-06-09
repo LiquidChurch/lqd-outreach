@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 0.9.2
+## [Unreleased] - 0.9.3
 ### Added
 
 ### Changed
@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 - Event attendance sync using wp_cron
 - Register url meta name fix for ccb events
 - Register url added when sync to wp_post
+- Partner Organization Name Needs Link to Partner Org Page
 
 ### Fixed
 
