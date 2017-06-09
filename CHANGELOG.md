@@ -1,13 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 0.9.6
+## [Unreleased] - 0.10.0
 ### Added
 - Add Options Page for various page settings
 - Header image option for event categories
 - Event attendance sync using wp_cron
 - Register url added when sync to wp_post
 - Partner Organization Name Needs Link to Partner Org Page
+- Auto Setting Categories for Events
 
 ### Changed
 - Change Admin Menu Item "All Outreach" to "All Outreach Events"

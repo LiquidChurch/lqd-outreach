@@ -1,172 +1,205 @@
 <?php
-	/**
-	 * Liquid Outreach Ccb Events Page Settings.
-	 *
-	 * @since   0.8.0
-	 * @package Liquid_Outreach
-	 */
-	
-	
-	/**
-	 * Liquid Outreach Ccb Events Page Settings class.
-	 *
-	 * @since 0.8.0
-	 */
-	class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page {
-		
-		/**
-		 * Option key, and option page slug
-		 *
-		 * @var string
-		 * @since 0.8.0
-		 */
-		protected $key = 'liquid_outreach_ccb_events_page_settings';
-		/**
-		 * Options page metabox id
-		 *
-		 * @var string
-		 * @since 0.8.0
-		 */
-		protected $metabox_id = 'liquid_outreach_ccb_events_page_settings_metabox';
-		/**
-		 * Options Page title
-		 *
-		 * @var string
-		 * @since 0.8.0
-		 */
-		protected $title = '';
-		/**
-		 * Options Page hook
-		 *
-		 * @var string
-		 * @since 0.8.0
-		 */
-		protected $options_page = '';
-		
-		/**
-		 * Constructor
-		 *
-		 * @since 0.8.0
-		 */
-		public function __construct() {
-			// Set our title
-			$this->title = __( 'Outreach Various Page Settings', 'liquid-outreach' );
-			
-			$this->hooks();
-		}
+/**
+ * Liquid Outreach Ccb Events Page Settings.
+ *
+ * @since   0.8.0
+ * @package Liquid_Outreach
+ */
 
-        /**
-         * Returns the running object
-         *
-         * @return LO_Ccb_Events_Info_Setings
-         * @since 0.3.4
-         */
-        public static function get_instance() {
-            if ( null === self::$instance ) {
-                self::$instance = new self();
-                self::$instance->hooks();
-            }
 
-            return self::$instance;
+/**
+ * Liquid Outreach Ccb Events Page Settings class.
+ *
+ * @since 0.8.0
+ */
+class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
+{
+
+    /**
+     * Option key, and option page slug
+     *
+     * @var string
+     * @since 0.8.0
+     */
+    protected $key = 'liquid_outreach_ccb_events_page_settings';
+    /**
+     * Options page metabox id
+     *
+     * @var string
+     * @since 0.8.0
+     */
+    protected $metabox_id = 'liquid_outreach_ccb_events_page_settings_metabox';
+    /**
+     * Options Page title
+     *
+     * @var string
+     * @since 0.8.0
+     */
+    protected $title = '';
+    /**
+     * Options Page hook
+     *
+     * @var string
+     * @since 0.8.0
+     */
+    protected $options_page = '';
+
+    /**
+     * Constructor
+     *
+     * @since 0.8.0
+     */
+    public function __construct()
+    {
+        // Set our title
+        $this->title = __('Outreach Various Page Settings', 'liquid-outreach');
+
+        $this->hooks();
+    }
+
+    /**
+     * Returns the running object
+     *
+     * @return LO_Ccb_Events_Info_Setings
+     * @since 0.3.4
+     */
+    public static function get_instance()
+    {
+        if (null === self::$instance) {
+            self::$instance = new self();
+            self::$instance->hooks();
         }
 
-		/**
-		 * Add the options metabox to the array of metaboxes
-		 *
-		 * @since  0.8.0
-		 */
-		function add_options_page_metabox() {
-			
-			// hook in our save notices
-			add_action( "cmb2_save_options-page_fields_{$this->metabox_id}",
-				array( $this, 'settings_notices' ), 10, 2 );
-			
-			$cmb = new_cmb2_box( array(
-				'id'         => $this->metabox_id,
-				'hookup'     => false,
-				'cmb_styles' => false,
-				'show_on'    => array(
-					// These are important, don't remove
-					'key'   => 'options-page',
-					'value' => array( $this->key, )
-				),
-			) );
-			
-			// Set our CMB2 fields
-			
-			$prefix = 'lo_events_page_';
+        return self::$instance;
+    }
 
-			$default_page = [
-			    'projects' => (get_page_by_path('projects')),
-			    'search' => (get_page_by_path('search-projects')),
-			    'categories' => (get_page_by_path('project-categories')),
-            ];
+    /**
+     * Add the options metabox to the array of metaboxes
+     *
+     * @since  0.8.0
+     */
+    function add_options_page_metabox()
+    {
+        wp_enqueue_style('lc-plugin', Liquid_Outreach::$url . 'assets/css/lc-plugin.css');
 
-			$cmb->add_field( array(
-				'name'    => 'Category Animation',
-				'id'      => $prefix . 'category_animation',
-				'type'    => 'radio_inline',
-				'default' => true,
-				'options' => array(
-					true => __( 'Enable', 'cmb2' ),
-					false => __( 'Disable', 'cmb2' ),
-				),
-			) );
+        // hook in our save notices
+        add_action("cmb2_save_options-page_fields_{$this->metabox_id}",
+            array($this, 'settings_notices'), 10, 2);
 
-			$cmb->add_field( array(
-				'name'    => __('Default Header Image', 'liquid-outreach'),
-				'id'      => $prefix . 'default_header_image',
-				'type'    => 'file',
-			) );
+        $cmb = new_cmb2_box(array(
+            'id' => $this->metabox_id,
+            'hookup' => false,
+            'cmb_styles' => false,
+            'show_on' => array(
+                // These are important, don't remove
+                'key' => 'options-page',
+                'value' => array($this->key,)
+            ),
+        ));
 
-			$cmb->add_field( array(
-				'name'    => __('Select Home Page', 'liquid-outreach'),
-                'desc' => 'Place these shortcodes inside the page content area - ' .
-                    '<br/>[lo_header_element]<br/>[lo_nav_element]<br/>[lo_categories_element]',
-				'id'      => $prefix . 'lo_home_page',
-				'type'    => 'select',
-                'options_cb' => ['LO_Ccb_Events_Page_Settings', 'show_wp_pages'],
-                'default' => !empty($default_page['projects']) ? $default_page['projects']->ID : ''
-			) );
+        // Set our CMB2 fields
 
-			$cmb->add_field( array(
-				'name'    => __('Select Search Page', 'liquid-outreach'),
-                'desc' => 'Place these shortcodes inside the page content area - ' .
-                    '<br/>[lo_event_search]',
-				'id'      => $prefix . 'lo_search_page',
-				'type'    => 'select',
-                'options_cb' => ['LO_Ccb_Events_Page_Settings', 'show_wp_pages'],
-                'default' => !empty($default_page['search']) ? $default_page['projects']->ID : ''
-			) );
+        $prefix = 'lo_events_page_';
 
-			$cmb->add_field( array(
-				'name'    => __('Select Category Page', 'liquid-outreach'),
-                'desc' => 'Place these shortcodes inside the page content area - ' .
-                    '<br/>[lo_event_categories]',
-				'id'      => $prefix . 'lo_category_page',
-				'type'    => 'select',
-                'options_cb' => ['LO_Ccb_Events_Page_Settings', 'show_wp_pages'],
-                'default' => !empty($default_page['categories']) ? $default_page['projects']->ID : ''
-			) );
+        $default_page = [
+            'projects' => (get_page_by_path('projects')),
+            'search' => (get_page_by_path('search-projects')),
+            'categories' => (get_page_by_path('project-categories')),
+        ];
 
-		}
-		
-		/**
-		 * Public getter method for retrieving protected/private variables
-		 *
-		 * @since  0.8.0
-		 *
-		 * @param  string $field Field to retrieve
-		 *
-		 * @return mixed          Field value or exception is thrown
-		 */
-		public function __get( $field ) {
-			// Allowed fields to retrieve
-			if ( in_array( $field, array( 'key', 'metabox_id', 'title', 'options_page' ), true ) ) {
-				return $this->{$field};
-			}
-			
-			throw new Exception( 'Invalid property: ' . $field );
-		}
+        $cmb->add_field(array(
+            'name' => 'Category Animation',
+            'id' => $prefix . 'category_animation',
+            'type' => 'radio_inline',
+            'default' => true,
+            'options' => array(
+                true => __('Enable', 'cmb2'),
+                false => __('Disable', 'cmb2'),
+            ),
+        ));
+
+        $cmb->add_field(array(
+            'name' => __('Default Header Image', 'liquid-outreach'),
+            'id' => $prefix . 'default_header_image',
+            'type' => 'file',
+        ));
+
+        $cmb->add_field(array(
+            'name' => __('Select Home Page', 'liquid-outreach'),
+            'desc' => 'Place these shortcodes inside the page content area - ' .
+                '<br/>[lo_header_element]<br/>[lo_nav_element]<br/>[lo_categories_element]',
+            'id' => $prefix . 'lo_home_page',
+            'type' => 'select',
+            'options_cb' => ['LO_Ccb_Events_Page_Settings', 'show_wp_pages'],
+            'default' => !empty($default_page['projects']) ? $default_page['projects']->ID : ''
+        ));
+
+        $cmb->add_field(array(
+            'name' => __('Select Search Page', 'liquid-outreach'),
+            'desc' => 'Place these shortcodes inside the page content area - ' .
+                '<br/>[lo_event_search]',
+            'id' => $prefix . 'lo_search_page',
+            'type' => 'select',
+            'options_cb' => ['LO_Ccb_Events_Page_Settings', 'show_wp_pages'],
+            'default' => !empty($default_page['search']) ? $default_page['projects']->ID : ''
+        ));
+
+        $cmb->add_field(array(
+            'name' => __('Select Category Page', 'liquid-outreach'),
+            'desc' => 'Place these shortcodes inside the page content area - ' .
+                '<br/>[lo_event_categories]',
+            'id' => $prefix . 'lo_category_page',
+            'type' => 'select',
+            'options_cb' => ['LO_Ccb_Events_Page_Settings', 'show_wp_pages'],
+            'default' => !empty($default_page['categories']) ? $default_page['projects']->ID : ''
+        ));
+
+        $category_mapping_id = $cmb->add_field(array(
+            'name' => __('Category Mapping', 'liquid-outreach'),
+            'id' => $prefix . 'category_mapping',
+            'type' => 'group',
+            'options' => array(
+                'group_title' => esc_html__('Mapping {#}', 'liquid-outreach'),
+                'add_button' => esc_html__('Add Another Mapping', 'liquid-outreach'),
+                'remove_button' => esc_html__('Remove Mapping', 'liquid-outreach'),
+            ),
+        ));
+
+        $cmb->add_group_field($category_mapping_id, array(
+            'name' => esc_html__('Match Title', 'liquid-outreach'),
+            'desc' => '',
+            'id' => 'title',
+            'type' => 'text',
+        ));
+
+        $cmb->add_group_field($category_mapping_id, array(
+            'name' => 'Outreach Category',
+            'desc' => 'Matched title post will be mapped to this outreach category',
+            'id' => 'event_categroy',
+            'taxonomy' => 'event-category', //Enter Taxonomy Slug
+            'type' => 'taxonomy_select',
+            'remove_default' => 'true' // Removes the default metabox provided by WP core. Pending release as of Aug-10-16
+        ));
 
     }
+
+    /**
+     * Public getter method for retrieving protected/private variables
+     *
+     * @since  0.8.0
+     *
+     * @param  string $field Field to retrieve
+     *
+     * @return mixed          Field value or exception is thrown
+     */
+    public function __get($field)
+    {
+        // Allowed fields to retrieve
+        if (in_array($field, array('key', 'metabox_id', 'title', 'options_page'), true)) {
+            return $this->{$field};
+        }
+
+        throw new Exception('Invalid property: ' . $field);
+    }
+
+}

@@ -466,3 +466,16 @@ city page***************
 .lo-additional-info-blw-hr {
     margin:0 0 10px 0;
 }
+
+/*********various option page metabox css**************/
+.cmb2-id-lo-events-page-category-mapping .cmb-repeatable-grouping .cmb-repeat-group-field:first-child {
+    border-bottom: none;
+}
+
+.cmb2-id-lo-events-page-category-mapping .cmb-repeatable-grouping .cmb-repeat-group-field {
+    padding: 0;
+}
+
+.cmb2-id-lo-events-page-category-mapping .cmb-repeatable-grouping .cmb-remove-field-row {
+    padding: 0;
+}

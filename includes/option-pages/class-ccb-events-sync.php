@@ -892,6 +892,8 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                             ]);
                     }
 
+                    $this->set_post_category($new_post, $event_post_data);
+
                 } else {
 
                     $update_post = wp_update_post([
@@ -915,6 +917,8 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                                 'ccb_event_id' => $ccb_event_datum['ccb_event_id']
                             ]);
                     }
+
+                    $this->set_post_category($update_post, $event_post_data);
                 }
 
             }
@@ -1083,6 +1087,29 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
             'error' => !empty($api_error),
             'attendees_data' => $attendees_data
         ];
+    }
+
+    /**
+     * set post terms for event category
+     *
+     * @since 0.10.0
+     * @param $postID
+     * @param $postData
+     * @return bool
+     */
+    public function set_post_category($postID, $postData)
+    {
+        if (is_wp_error($postID)) return false;
+
+        $category_map = lo_get_option('page', 'lo_events_page_category_mapping');
+
+        if(empty($category_map)) return false;
+
+        foreach ($category_map as $index => $map) {
+            if (strpos(strtolower($postData['title']), strtolower($map['title'])) !== false) {
+                wp_set_object_terms($postID, $map['event_categroy'], 'event-category');
+            }
+        }
     }
 
     /**
