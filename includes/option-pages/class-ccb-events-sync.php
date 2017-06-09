@@ -594,6 +594,7 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                             '1')) ? 'yes' : 'no',
                     'organizer_id' => (isset($api_data['organizer']['id'])) ? $api_data['organizer']['id'] : null,
                     'registration_limit' => (isset($api_data['registration']['limit'])) ? $api_data['registration']['limit'] : null,
+                    'registration_url' => (isset($api_data['registration']['forms']['registration_form']['url'])) ? $api_data['registration']['forms']['registration_form']['url'] : '',
                     'start_time' => (isset($api_data['start_datetime'])) ? $api_data['start_datetime'] : null,
                     'end_time' => (isset($api_data['end_datetime'])) ? $api_data['end_datetime'] : null,
                     'group_name' => (isset($api_data['group']['value'])) ? $api_data['group']['value'] : null,
@@ -814,6 +815,9 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
 
                         $event_post_meta_prefix .
                         'ccb_event_id' => $ccb_event_datum['ccb_event_id'],
+
+                        $event_post_meta_prefix .
+                        'register_url' => $ccb_event_datum['registration_url'],
                     ]
                 ];
 
