@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 0.9.5
+## [Unreleased] - 0.9.6
 ### Added
 - Add Options Page for various page settings
 - Header image option for event categories
@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 - Register url meta name fix for ccb events
 - Small Fix: Drop Downs Need More Blank Space
 - Small Fix: Addition Info Not Lining Up
+- Small Fix: Date & Time Customization
 
 ### Removed
 
