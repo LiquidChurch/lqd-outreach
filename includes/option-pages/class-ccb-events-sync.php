@@ -117,6 +117,7 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
         add_action('admin_menu', array($this, 'add_admin_menu_page'));
         add_action('cmb2_admin_init', array($this, 'add_options_page_metabox'));
         add_action('before_delete_post', array($this, 'update_api_data_table'));
+        add_action('lo_ccb_cron_event_attendance_sync', array($this, 'cron_event_attendance_sync_func'));
     }
 
     /**
@@ -736,6 +737,7 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
 
     /**
      * ccb event sync handler method
+     * syncing data from temple table wp_posts
      *
      * @since 0.1.2
      */
@@ -1175,7 +1177,56 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
     }
 
     /**
+     * attendance sync cron job handler
+     * @since 0.9.0
+     */
+    public function cron_event_attendance_sync_func()
+    {
+        $event_post_meta_prefix = 'lo_ccb_events_';
+
+        $event_data = $this->check_sync_data();
+
+        if (!isset($event_data['data']['synced_data']) || empty($event_data['data']['synced_data'])) {
+            return false;
+        }
+
+        foreach ($event_data['data']['synced_data'] as $index => $synced_datum) {
+            if ($synced_datum['registration_limit'] == 0) {
+                $event_post_data['meta_input'][$event_post_meta_prefix . 'openings']
+                    = 'no-limit';
+            } elseif (strtotime($synced_datum['start_time']) > time()) {
+                $event_attendees_data
+                    = $this->get_event_attendance_data($synced_datum['ccb_event_id'],
+                    date('Y-m-d', strtotime($synced_datum['start_time'])));
+
+                if (empty($event_attendees_data['error'])) {
+
+                    $event_post_data['meta_input'][$event_post_meta_prefix . 'openings']
+                        = ($synced_datum['registration_limit'] -
+                        $event_attendees_data['attendees_data']['count']);
+                } else {
+
+                    $event_post_data['meta_input'][$event_post_meta_prefix . 'openings']
+                        = $synced_datum['registration_limit'];
+                }
+
+            } else {
+                $event_post_data['meta_input'][$event_post_meta_prefix . 'openings']
+                    = 'expired';
+            }
+
+            $update_post = wp_update_post([
+                'ID' => $synced_datum['wp_post_id'],
+                'post_type' => 'lo-events',
+                'meta_input' => $event_post_data['meta_input'],
+            ]);
+
+        }
+    }
+
+    /**
      * Option page form handler
+     * syncing API data to temp table
      *
      * @since  0.0.6
      */

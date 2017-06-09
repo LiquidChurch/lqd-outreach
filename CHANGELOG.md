@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 0.8.1
+## [Unreleased] - 0.9.0
 ### Added
 
 ### Changed
@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - Break Out Single Dropdown for Filtering to Allow Filtering By Any Combination
 - Add Options Page for various page settings
 - Header image option for event categories
+- Event attendance sync using wp_cron
 
 ### Fixed
 

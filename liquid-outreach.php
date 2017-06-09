@@ -398,7 +398,20 @@ final class Liquid_Outreach
             dirname(self::$basename) . '/languages/');
 
         // Initialize plugin classes.
+        $this->cron_job();
         $this->plugin_classes();
+    }
+
+    /**
+     * register wp crons
+     * @since 0.9.0
+     */
+    public function cron_job() {
+        if ( ! wp_next_scheduled( 'lo_ccb_cron_event_attendance_sync' ) ) {
+            wp_schedule_event( time(), 'hourly', 'lo_ccb_cron_event_attendance_sync' );
+        }
+
+        wp_cron();
     }
 
     /**
