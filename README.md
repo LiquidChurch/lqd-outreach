@@ -1,7 +1,7 @@
 # Liquid Outreach #
-**Contributors:**      SurajPrGupta, Liquidchurch  
+**Contributors:**      SurajPrGupta, LiquidChurch, Dave Mackey (@davidshq)  
 **Donate link:**       https://liquidchurch.com  
-**Tags:**  
+**Tags:**              church, outreach, events
 **Requires at least:** 4.4  
 **Tested up to:**      4.7.2 
 **Stable tag:**        0.3.8  
