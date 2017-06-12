@@ -1,16 +1,17 @@
 # Liquid Outreach #
 **Contributors:**      SurajPrGupta, LiquidChurch, Dave Mackey (@davidshq)  
 **Donate link:**       https://liquidchurch.com  
-**Tags:**              church, outreach, events
+**Tags:**              church, outreach, events  
 **Requires at least:** 4.4  
-**Tested up to:**      4.7.2 
-**Stable tag:**        0.3.8  
+**Tested up to:**      4.7.2  
+**Stable tag:**        0.10.0  
 **License:**           GPLv2  
 **License URI:**       http://www.gnu.org/licenses/gpl-2.0.html  
 
 ## Description ##
 
-Outreach and CCB API integration.
+This WordPress plugin provides a robust UI for viewing outreach events and organizations data pulled from Church 
+Community Builder (CCB) via its API.
 
 ## Installation ##
 
@@ -27,7 +28,7 @@ Outreach and CCB API integration.
 
 ## Changelog ##
 
-## [0.10.0] - 2015-06-10
+## [0.10.0] - 2017-06-10
 ### Added
 - Add Options Page for various page settings
 - Header image option for event categories
@@ -46,7 +47,7 @@ Outreach and CCB API integration.
 - Small Fix: Addition Info Not Lining Up
 - Small Fix: Date & Time Customization
 
-## [0.7.0] - 2015-05-27
+## [0.7.0] - 2017-05-27
 ### Added
 - Event categories shortcode btn fields
 - Event categories single shortcode btn fields
@@ -69,7 +70,7 @@ Outreach and CCB API integration.
 - Single event page time display format fix
 - Nav menu css fix
 
-## [0.5.0] - 2015-05-26
+## [0.5.0] - 2017-05-26
 ### Changed
 - DB schema change for group_type filter
 - Group type filter for event sync to wp_post
@@ -78,7 +79,7 @@ Outreach and CCB API integration.
 - Hide CCB Group ID meta field from Outreach Partner post type
 - Update Outreach Partner posts when updating Outreach Event posts from sync page
 
-## [0.4.5] - 2015-05-26
+## [0.4.5] - 2017-05-26
 ### Added
 - Event Category Shortcode
 
@@ -91,6 +92,6 @@ Outreach and CCB API integration.
 - Submenu auto open when hover
 - Code Fixes
 
-## [0.3.8] - 2015-05-22
+## [0.3.8] - 2017-05-22
 ### Added
 - Stable release of the plugin functionality
