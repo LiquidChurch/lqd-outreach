@@ -1,8 +1,9 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - NEXT
+## [Unreleased] - 0.10.1
 ### Added
+- Custom permalink base for outreach events, categories, partners.
 
 ### Changed
 

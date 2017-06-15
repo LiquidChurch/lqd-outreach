@@ -168,12 +168,15 @@ class LO_Ccb_Event_Categories extends Taxonomy_Core
             'choose_from_most_used' => $hierarchical ? null : sprintf(__('Choose from the most used %s', 'taxonomy-core'), $this->plural),
         );
 
+        $page_settings = get_option('liquid_outreach_ccb_events_page_settings');
+        $slug_base = !empty($page_settings['lo_events_page_permalink_base']) ? $page_settings['lo_events_page_permalink_base'] . '/categories' : 'event-category';
+
         $defaults = array(
             'labels' => array(),
             'hierarchical' => true,
             'show_ui' => true,
             'show_admin_column' => true,
-            'rewrite' => array('hierarchical' => $hierarchical, 'slug' => $this->taxonomy),
+            'rewrite' => array('hierarchical' => $hierarchical, 'slug' => $slug_base),
         );
 
         $this->taxonomy_args = wp_parse_args($this->arg_overrides, $defaults);
@@ -184,6 +187,34 @@ class LO_Ccb_Event_Categories extends Taxonomy_Core
         }
 
         return $this->taxonomy_args;
+    }
+
+    /**
+     * Actually registers our Taxonomy with the merged arguments
+     * @since  0.1.0
+     */
+    public function register_taxonomy() {
+        global $wp_taxonomies;
+
+        // Register our Taxonomy
+        $args = register_taxonomy( $this->taxonomy, $this->object_types, $this->get_args() );
+        // If error, yell about it.
+        if ( is_wp_error( $args ) ) {
+            wp_die( $args->get_error_message() );
+        }
+
+        // Success. Set args to what WP returns
+        $this->taxonomy_args = $wp_taxonomies[ $this->taxonomy ];
+
+        // Add this taxonomy to our taxonomies array
+        self::$taxonomies[ $this->taxonomy ] = $this;
+
+        $flush_base_rewrite = get_option('lo_ccb_flush_base_rewrite');
+
+        if ($flush_base_rewrite == 'flush') {
+            flush_rewrite_rules();
+            update_option('lo_ccb_flush_base_rewrite', FALSE);
+        }
     }
 
     /**

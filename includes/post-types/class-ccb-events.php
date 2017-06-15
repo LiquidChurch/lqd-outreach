@@ -77,6 +77,9 @@ class LO_Ccb_Events extends CPT_Core
         $this->plugin = $plugin;
         $this->hooks();
 
+        $page_settings = get_option('liquid_outreach_ccb_events_page_settings');
+        $slug_base = !empty($page_settings['lo_events_page_permalink_base']) ? $page_settings['lo_events_page_permalink_base'] . '/events' : 'events';
+
         // Register this cpt.
         // First parameter should be an array with Singular, Plural, and Registered name.
         parent::__construct(
@@ -113,7 +116,7 @@ class LO_Ccb_Events extends CPT_Core
                     'read' => 'read_outreach_event',
                 ),
                 'map_meta_cap' => true,
-                'rewrite' => array('slug' => 'events'),
+                'rewrite' => array('slug' => $slug_base),
             )
         );
 
@@ -177,6 +180,84 @@ class LO_Ccb_Events extends CPT_Core
         }
 
         $this->overrides_processed = true;
+    }
+
+    /**
+     * Actually registers our CPT with the merged arguments
+     * @since  0.1.0
+     */
+    public function register_post_type()
+    {
+        // Register our CPT
+        $args = register_post_type($this->post_type, $this->get_args());
+        // If error, yell about it.
+        if (is_wp_error($args)) {
+            wp_die($args->get_error_message());
+        }
+
+        // Success. Set args to what WP returns
+        $this->cpt_args = $args;
+
+        // Add this post type to our custom_post_types array
+        self::$custom_post_types[$this->post_type] = $this;
+
+        $flush_base_rewrite = get_option('lo_ccb_flush_base_rewrite');
+
+        if ($flush_base_rewrite == 'flush') {
+            flush_rewrite_rules();
+            update_option('lo_ccb_flush_base_rewrite', FALSE);
+        }
+
+    }
+
+    /**
+     * Overriding get_args from parent
+     * @return array
+     */
+    public function get_args()
+    {
+
+        if (!empty($this->cpt_args)) {
+            return $this->cpt_args;
+        }
+
+        // Generate CPT labels
+        $labels = array(
+            'name' => $this->plural,
+            'singular_name' => $this->singular,
+            'add_new' => sprintf(__('Add New %s', 'cpt-core'), $this->singular),
+            'add_new_item' => sprintf(__('Add New %s', 'cpt-core'), $this->singular),
+            'edit_item' => sprintf(__('Edit %s', 'cpt-core'), $this->singular),
+            'new_item' => sprintf(__('New %s', 'cpt-core'), $this->singular),
+            'all_items' => sprintf(__('All %s Events', 'cpt-core'), $this->plural),
+            'view_item' => sprintf(__('View %s', 'cpt-core'), $this->singular),
+            'search_items' => sprintf(__('Search %s', 'cpt-core'), $this->plural),
+            'not_found' => sprintf(__('No %s', 'cpt-core'), $this->plural),
+            'not_found_in_trash' => sprintf(__('No %s found in Trash', 'cpt-core'), $this->plural),
+            'parent_item_colon' => isset($this->arg_overrides['hierarchical']) && $this->arg_overrides['hierarchical'] ? sprintf(__('Parent %s:', 'cpt-core'), $this->singular) : null,
+            'menu_name' => $this->plural,
+            'insert_into_item' => sprintf(__('Insert into %s', 'cpt-core'), strtolower($this->singular)),
+            'uploaded_to_this_item' => sprintf(__('Uploaded to this %s', 'cpt-core'), strtolower($this->singular)),
+            'items_list' => sprintf(__('%s list', 'cpt-core'), $this->plural),
+            'items_list_navigation' => sprintf(__('%s list navigation', 'cpt-core'), $this->plural),
+            'filter_items_list' => sprintf(__('Filter %s list', 'cpt-core'), strtolower($this->plural))
+        );
+
+        // Set default CPT parameters
+        $defaults = array(
+            'labels' => array(),
+            'public' => true,
+            'publicly_queryable' => true,
+            'show_ui' => true,
+            'show_in_menu' => true,
+            'has_archive' => true,
+            'supports' => array('title', 'editor', 'excerpt'),
+        );
+
+        $this->cpt_args = wp_parse_args($this->arg_overrides, $defaults);
+        $this->cpt_args['labels'] = wp_parse_args($this->cpt_args['labels'], $labels);
+
+        return $this->cpt_args;
     }
 
     /**
@@ -595,55 +676,6 @@ class LO_Ccb_Events extends CPT_Core
             default:
                 throw new Exception('Invalid ' . __CLASS__ . ' property: ' . $field);
         }
-    }
-
-    /**
-     * Overriding get_args from parent
-     * @return array
-     */
-    public function get_args() {
-
-        if ( ! empty( $this->cpt_args ) ) {
-            return $this->cpt_args;
-        }
-
-        // Generate CPT labels
-        $labels = array(
-            'name'                  => $this->plural,
-            'singular_name'         => $this->singular,
-            'add_new'               => sprintf( __( 'Add New %s', 'cpt-core' ), $this->singular ),
-            'add_new_item'          => sprintf( __( 'Add New %s', 'cpt-core' ), $this->singular ),
-            'edit_item'             => sprintf( __( 'Edit %s', 'cpt-core' ), $this->singular ),
-            'new_item'              => sprintf( __( 'New %s', 'cpt-core' ), $this->singular ),
-            'all_items'             => sprintf( __( 'All %s Events', 'cpt-core' ), $this->plural ),
-            'view_item'             => sprintf( __( 'View %s', 'cpt-core' ), $this->singular ),
-            'search_items'          => sprintf( __( 'Search %s', 'cpt-core' ), $this->plural ),
-            'not_found'             => sprintf( __( 'No %s', 'cpt-core' ), $this->plural ),
-            'not_found_in_trash'    => sprintf( __( 'No %s found in Trash', 'cpt-core' ), $this->plural ),
-            'parent_item_colon'     => isset( $this->arg_overrides['hierarchical'] ) && $this->arg_overrides['hierarchical'] ? sprintf( __( 'Parent %s:', 'cpt-core' ), $this->singular ) : null,
-            'menu_name'             => $this->plural,
-            'insert_into_item'      => sprintf( __( 'Insert into %s', 'cpt-core' ), strtolower( $this->singular ) ),
-            'uploaded_to_this_item' => sprintf( __( 'Uploaded to this %s', 'cpt-core' ), strtolower( $this->singular ) ),
-            'items_list'            => sprintf( __( '%s list', 'cpt-core' ), $this->plural ),
-            'items_list_navigation' => sprintf( __( '%s list navigation', 'cpt-core' ), $this->plural ),
-            'filter_items_list'     => sprintf( __( 'Filter %s list', 'cpt-core' ), strtolower( $this->plural ) )
-        );
-
-        // Set default CPT parameters
-        $defaults = array(
-            'labels'             => array(),
-            'public'             => true,
-            'publicly_queryable' => true,
-            'show_ui'            => true,
-            'show_in_menu'       => true,
-            'has_archive'        => true,
-            'supports'           => array( 'title', 'editor', 'excerpt' ),
-        );
-
-        $this->cpt_args = wp_parse_args( $this->arg_overrides, $defaults );
-        $this->cpt_args['labels'] = wp_parse_args( $this->cpt_args['labels'], $labels );
-
-        return $this->cpt_args;
     }
 
 }

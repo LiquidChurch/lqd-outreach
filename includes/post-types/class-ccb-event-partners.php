@@ -80,6 +80,9 @@
         {
             $this->plugin = $plugin;
             $this->hooks();
+
+            $page_settings = get_option('liquid_outreach_ccb_events_page_settings');
+            $slug_base = !empty($page_settings['lo_events_page_permalink_base']) ? $page_settings['lo_events_page_permalink_base'] . '/partners' : 'partners';
             
             // Register this cpt.
             // First parameter should be an array with Singular, Plural, and Registered name.
@@ -117,9 +120,37 @@
                     ),
                     'map_meta_cap' => true,
                     'show_in_menu' => 'edit.php?post_type=lo-events',
-                    'rewrite' => array('slug' => 'outreach-partners'),
+                    'rewrite' => array('slug' => $slug_base),
                 )
             );
+        }
+
+        /**
+         * Actually registers our CPT with the merged arguments
+         * @since  0.1.0
+         */
+        public function register_post_type()
+        {
+            // Register our CPT
+            $args = register_post_type($this->post_type, $this->get_args());
+            // If error, yell about it.
+            if (is_wp_error($args)) {
+                wp_die($args->get_error_message());
+            }
+
+            // Success. Set args to what WP returns
+            $this->cpt_args = $args;
+
+            // Add this post type to our custom_post_types array
+            self::$custom_post_types[$this->post_type] = $this;
+
+            $flush_base_rewrite = get_option('lo_ccb_flush_base_rewrite');
+
+            if ($flush_base_rewrite == 'flush') {
+                flush_rewrite_rules();
+                update_option('lo_ccb_flush_base_rewrite', FALSE);
+            }
+
         }
         
         /**
