@@ -1,7 +1,20 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 0.11.1
+## [Unreleased]
+### Added
+
+### Changed
+
+### Fixed
+
+### Removed
+
+### Deprecated
+
+### Security
+
+## [0.11.1] - 2015-06-16
 ### Added
 - Custom permalink base for outreach events, categories, partners.
 
@@ -11,12 +24,6 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - Search page nav menu fix
-
-### Removed
-
-### Deprecated
-
-### Security
 
 ## [0.10.0] - 2015-06-10
 ### Added
@@ -86,7 +93,8 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Stable release of the plugin functionality
 
-[Unreleased]: https://github.com/LiquidChurch/lqd-outreach/compare/v0.10.0...HEAD
+[Unreleased]: https://github.com/LiquidChurch/lqd-outreach/compare/v0.11.1...HEAD
+[0.11.1]: https://github.com/LiquidChurch/lqd-outreach/compare/v0.10.0..v0.11.1
 [0.10.0]: https://github.com/LiquidChurch/lqd-outreach/compare/v0.7.0...v0.10.0
 [0.7.0]: https://github.com/LiquidChurch/lqd-outreach/compare/v0.5.0...v0.7.0
 [0.5.0]: https://github.com/LiquidChurch/lqd-outreach/compare/v0.4.5...v0.5.0

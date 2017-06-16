@@ -4,7 +4,7 @@
 **Tags:**              church, outreach, events  
 **Requires at least:** 4.4  
 **Tested up to:**      4.7.2
-**Stable tag:**        0.10.0  
+**Stable tag:**        0.11.1  
 **License:**           GPLv2  
 **License URI:**       http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -27,6 +27,17 @@ Community Builder (CCB) via its API.
 
 
 ## Changelog ##
+
+## [0.11.1] - 2015-06-16
+### Added
+- Custom permalink base for outreach events, categories, partners.
+
+### Changed
+- Prioritize Outreach MetaBoxes on Outreach Plugin Pages
+- Partner details page
+
+### Fixed
+- Search page nav menu fix
 
 ## [0.10.0] - 2017-06-10
 ### Added
