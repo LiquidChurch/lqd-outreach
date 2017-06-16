@@ -16,6 +16,14 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
 {
 
     /**
+     * Holds an instance of the object
+     *
+     * @var LO_Ccb_Events_Page_Settings
+     * @since 0.8.0
+     */
+    protected static $instance = null;
+
+    /**
      * Option key, and option page slug
      *
      * @var string

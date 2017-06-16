@@ -96,7 +96,11 @@ $projects_cat_link = !empty($lo_events_page_settings['lo_events_page_lo_category
                     </ul>
                 </li>
                 <li>
-                    <a href="<?php echo home_url('outreach-partners') ?>">Partner Organizations</a>
+                    <?php
+                    $page_settings = get_option('liquid_outreach_ccb_events_page_settings');
+                    $slug_base = !empty($page_settings['lo_events_page_permalink_base']) ? $page_settings['lo_events_page_permalink_base'] . '/partners' : 'partners';
+                    ?>
+                    <a href="<?php echo home_url($slug_base) ?>">Partner Organizations</a>
                 </li>
             </ul>
         </div>

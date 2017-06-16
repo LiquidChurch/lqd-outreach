@@ -13,6 +13,14 @@
 	 * @since 0.3.4
 	 */
 	class LO_Ccb_Events_Info_Setings extends LO_Base_Option_Page{
+
+        /**
+         * Holds an instance of the object
+         *
+         * @var LO_Ccb_Events_Page_Settings
+         * @since 0.8.0
+         */
+        protected static $instance = null;
 		
 		/**
 		 * Option key, and option page slug
@@ -95,7 +103,13 @@
 			// Set our CMB2 fields
 			
 			$prefix = 'lo_events_info_';
-			
+
+            $cmb->add_field( array(
+                'name' => 'Settings for Events <hr/>',
+                'desc' => '',
+                'type' => 'title',
+                'id'   => 'events_title'
+            ) );
 			$cmb->add_field( array(
 				'name'    => 'Date Time',
 				'id'      => $prefix . 'date_time',
@@ -206,6 +220,63 @@
 					false => __( 'Hide', 'cmb2' ),
 				),
 			) );
+
+            $cmb->add_field( array(
+                'name' => '<hr/>Settings for Partners <hr/>',
+                'desc' => '',
+                'type' => 'title',
+                'id'   => 'partner_title'
+            ) );
+            $cmb->add_field( array(
+                'name'    => 'Address',
+                'id'      => $prefix . 'partner_address',
+                'type'    => 'radio_inline',
+                'default' => true,
+                'options' => array(
+                    true => __( 'Show', 'cmb2' ),
+                    false => __( 'Hide', 'cmb2' ),
+                ),
+            ) );
+            $cmb->add_field( array(
+                'name'    => 'Website',
+                'id'      => $prefix . 'partner_website',
+                'type'    => 'radio_inline',
+                'default' => true,
+                'options' => array(
+                    true => __( 'Show', 'cmb2' ),
+                    false => __( 'Hide', 'cmb2' ),
+                ),
+            ) );
+            $cmb->add_field( array(
+                'name'    => 'Team Leader',
+                'id'      => $prefix . 'partner_team_leader',
+                'type'    => 'radio_inline',
+                'default' => true,
+                'options' => array(
+                    true => __( 'Show', 'cmb2' ),
+                    false => __( 'Hide', 'cmb2' ),
+                ),
+            ) );
+            $cmb->add_field( array(
+                'name'    => 'Phone',
+                'id'      => $prefix . 'partner_phone',
+                'type'    => 'radio_inline',
+                'default' => true,
+                'options' => array(
+                    true => __( 'Show', 'cmb2' ),
+                    false => __( 'Hide', 'cmb2' ),
+                ),
+            ) );
+            $cmb->add_field( array(
+                'name'    => 'Email',
+                'id'      => $prefix . 'partner_email',
+                'type'    => 'radio_inline',
+                'default' => true,
+                'options' => array(
+                    true => __( 'Show', 'cmb2' ),
+                    false => __( 'Hide', 'cmb2' ),
+                ),
+            ) );
 			
 		}
 		

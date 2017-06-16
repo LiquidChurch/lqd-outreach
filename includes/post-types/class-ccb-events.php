@@ -577,13 +577,20 @@ class LO_Ccb_Events extends CPT_Core
         unset($defaults['posts_per_page']);
         unset($defaults['no_found_rows']);
 
-        $search_query = [
-            'key' => isset($_GET['lo-event-s']) ? $_GET['lo-event-s'] : '',
-            'cat' => isset($_GET['lo-event-cat']) ? $_GET['lo-event-cat'] : '',
-            'org' => isset($_GET['lo-event-org']) ? $_GET['lo-event-org'] : '',
-            'day' => isset($_GET['lo-event-day']) ? $_GET['lo-event-day'] : '',
-            'loc' => isset($_GET['lo-event-loc']) ? $_GET['lo-event-loc'] : '',
-        ];
+        if(isset($args['bypass_uri_query']) && isset($args['event_org'])) {
+            $search_query = [
+                'org' => $args['event_org'],
+            ];
+            unset($args['bypass_uri_query'], $args['event_org']);
+        } else {
+            $search_query = [
+                'key' => isset($_GET['lo-event-s']) ? $_GET['lo-event-s'] : '',
+                'cat' => isset($_GET['lo-event-cat']) ? $_GET['lo-event-cat'] : '',
+                'org' => isset($_GET['lo-event-org']) ? $_GET['lo-event-org'] : '',
+                'day' => isset($_GET['lo-event-day']) ? $_GET['lo-event-day'] : '',
+                'loc' => isset($_GET['lo-event-loc']) ? $_GET['lo-event-loc'] : '',
+            ];
+        }
 
         if (!empty($search_query['key'])) {
 

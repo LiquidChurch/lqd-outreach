@@ -97,6 +97,7 @@
                         'title',
                         'editor',
                         'excerpt',
+                        'thumbnail'
                     ),
                     'menu_icon'    => 'dashicons-admin-post',
                     // https://developer.wordpress.org/resource/dashicons/

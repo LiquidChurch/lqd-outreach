@@ -23,7 +23,7 @@ class LO_Events_Post {
 	protected $event_categories;
 	
 	/**
-	 * Image data for the sermon post.
+	 * Image data for the post.
 	 *
 	 * @var array
 	 */

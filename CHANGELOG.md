@@ -1,11 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 0.10.1
+## [Unreleased] - 0.11.0
 ### Added
 - Custom permalink base for outreach events, categories, partners.
 
 ### Changed
+- Prioritize Outreach MetaBoxes on Outreach Plugin Pages
+- Partner details page
 
 ### Fixed
 

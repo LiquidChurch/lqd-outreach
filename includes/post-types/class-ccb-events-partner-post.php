@@ -14,6 +14,13 @@ class LO_Event_Partners_Post {
 	 * @since 0.2.7
 	 */
 	protected $post;
+
+    /**
+     * Image data for the post.
+     *
+     * @var array
+     */
+    protected $images = array();
 	
 	/**
 	 * Constructor
@@ -96,19 +103,19 @@ class LO_Event_Partners_Post {
 			}
 		}
 
-		if ( isset( $this->images[ $size ] ) ) {
-			// If we got it already, then send it back
-			if ( isset( $this->images[ $size ][ $id ] ) ) {
-				return $this->images[ $size ][ $id ];
-			} else {
-				$this->images[ $size ][ $id ] = array();
-			}
-		} else {
-			$this->images[ $size ][ $id ] = array();
-		}
+        if ( isset( $this->images[ $size ] ) ) {
+            // If we got it already, then send it back
+            if ( isset( $this->images[ $size ][ $id ] ) ) {
+                return $this->images[ $size ][ $id ];
+            } else {
+                $this->images[ $size ][ $id ] = array();
+            }
+        } else {
+            $this->images[ $size ][ $id ] = array();
+        }
 
 		$img = get_the_post_thumbnail( $this->ID, $size, $attr );
-		$this->images[ $size ][ $id ] = $img ? $img : $this->series_image( $size, $attr );
+        $this->images[ $size ][ $id ] = $img ? $img : null;
 
 		return $this->images[ $size ][ $id ];
 	}
