@@ -162,13 +162,6 @@ final class Liquid_Outreach
     protected $lo_ccb_events_sync;
 
     /**
-     * Instance of LO_Shortcodes
-     *
-     * @since 0.2.0
-     * @var LO_Shortcodes
-     */
-
-    /**
      * Instance of LO_Ccb_Events_Info_Setings
      *
      * @since 0.3.4
@@ -193,8 +186,10 @@ final class Liquid_Outreach
     protected $lo_ccb_event_categories;
 
     /**
+     * Instance of LO_Shortcodes
+     *
+     * @since 0.2.0
      * @var LO_Shortcodes
-     * @since 0.4.1
      */
     protected $lo_shortcodes;
 
@@ -243,7 +238,20 @@ final class Liquid_Outreach
     public function hooks()
     {
         add_action('init', array($this, 'init'), 0);
+        add_action( 'admin_enqueue_scripts', array($this, 'admin_enqueue_scripts') );
     } // END OF PLUGIN CLASSES FUNCTION
+
+    /**
+     * add admin script
+     * @since 0.11.1
+     */
+    public function admin_enqueue_scripts() {
+        wp_register_script( 'liquid-outreach', self::$url . 'assets/js/liquid-outreach.js' );
+
+        wp_localize_script( 'liquid-outreach', 'current_screen', (array)get_current_screen() );
+
+        wp_enqueue_script( 'liquid-outreach' );
+    }
 
     /**
      * Activate the plugin.
