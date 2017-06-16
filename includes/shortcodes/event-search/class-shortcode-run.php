@@ -79,11 +79,11 @@ class LO_Shortcodes_Event_Search_Run extends LO_Shortcodes_Run_Base
 
         if(!$disable['nav'] || !$disable['cateogy_list']) {
 
-            $disable['categories'] = $categories = liquid_outreach()->lo_ccb_event_categories->get_many([
+            $content_arr['categories'] = $categories = liquid_outreach()->lo_ccb_event_categories->get_many([
                 'hide_empty' => false
             ]);
 
-            $disable['cities'] = $cities = liquid_outreach()->lo_ccb_events->get_all_city_list();
+            $content_arr['cities'] = $cities = liquid_outreach()->lo_ccb_events->get_all_city_list();
 
             $partners = liquid_outreach()->lo_ccb_event_partners->get_many([
                 'post_type' => liquid_outreach()->lo_ccb_event_partners->post_type(),

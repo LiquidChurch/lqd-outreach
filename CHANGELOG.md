@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 0.11.0
+## [Unreleased] - 0.11.1
 ### Added
 - Custom permalink base for outreach events, categories, partners.
 
@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 - Partner details page
 
 ### Fixed
+- Search page nav menu fix
 
 ### Removed
 
