@@ -28,6 +28,10 @@ Community Builder (CCB) via its API.
 
 ## Changelog ##
 
+## [0.11.2] - 2015-06-17
+### Added
+Custom permalink base2 for outreach events, categories, partners.
+
 ## [0.11.1] - 2015-06-16
 ### Added
 - Custom permalink base for outreach events, categories, partners.
