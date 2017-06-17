@@ -169,14 +169,16 @@ class LO_Ccb_Event_Categories extends Taxonomy_Core
         );
 
         $page_settings = get_option('liquid_outreach_ccb_events_page_settings');
-        $slug_base = !empty($page_settings['lo_events_page_permalink_base']) ? $page_settings['lo_events_page_permalink_base'] . '/categories' : 'event-category';
+        $slug_base = !empty($page_settings['lo_events_page_permalink_base']) ? $page_settings['lo_events_page_permalink_base'] : 'outreach';
+        $categories_base = !empty($page_settings['lo_events_page_permalink_base_categories']) ? $page_settings['lo_events_page_permalink_base_categories'] : 'categories';
+        $final_base = $slug_base . '/' . $categories_base;
 
         $defaults = array(
             'labels' => array(),
             'hierarchical' => true,
             'show_ui' => true,
             'show_admin_column' => true,
-            'rewrite' => array('hierarchical' => $hierarchical, 'slug' => $slug_base),
+            'rewrite' => array('hierarchical' => $hierarchical, 'slug' => $final_base),
         );
 
         $this->taxonomy_args = wp_parse_args($this->arg_overrides, $defaults);

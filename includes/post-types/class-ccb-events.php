@@ -78,7 +78,9 @@ class LO_Ccb_Events extends CPT_Core
         $this->hooks();
 
         $page_settings = get_option('liquid_outreach_ccb_events_page_settings');
-        $slug_base = !empty($page_settings['lo_events_page_permalink_base']) ? $page_settings['lo_events_page_permalink_base'] . '/events' : 'events';
+        $slug_base = !empty($page_settings['lo_events_page_permalink_base']) ? $page_settings['lo_events_page_permalink_base'] : 'outreach';
+        $event_base = !empty($page_settings['lo_events_page_permalink_base_events']) ? $page_settings['lo_events_page_permalink_base_events'] : 'events';
+        $final_base = $slug_base . '/' . $event_base;
 
         // Register this cpt.
         // First parameter should be an array with Singular, Plural, and Registered name.
@@ -116,7 +118,7 @@ class LO_Ccb_Events extends CPT_Core
                     'read' => 'read_outreach_event',
                 ),
                 'map_meta_cap' => true,
-                'rewrite' => array('slug' => $slug_base),
+                'rewrite' => array('slug' => $final_base),
             )
         );
 

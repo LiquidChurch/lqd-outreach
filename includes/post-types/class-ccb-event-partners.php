@@ -82,8 +82,10 @@
             $this->hooks();
 
             $page_settings = get_option('liquid_outreach_ccb_events_page_settings');
-            $slug_base = !empty($page_settings['lo_events_page_permalink_base']) ? $page_settings['lo_events_page_permalink_base'] . '/partners' : 'partners';
-            
+            $slug_base = !empty($page_settings['lo_events_page_permalink_base']) ? $page_settings['lo_events_page_permalink_base'] : 'outreach';
+            $partner_base = !empty($page_settings['lo_events_page_permalink_base_partners']) ? $page_settings['lo_events_page_permalink_base_partners'] : 'partners';
+            $final_base = $slug_base . '/' . $partner_base;
+
             // Register this cpt.
             // First parameter should be an array with Singular, Plural, and Registered name.
             parent::__construct(
@@ -121,7 +123,7 @@
                     ),
                     'map_meta_cap' => true,
                     'show_in_menu' => 'edit.php?post_type=lo-events',
-                    'rewrite' => array('slug' => $slug_base),
+                    'rewrite' => array('slug' => $final_base),
                 )
             );
         }
