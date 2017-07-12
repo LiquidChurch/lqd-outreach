@@ -193,7 +193,7 @@ function lo_get_option( $page = '', $key = '', $default = null ) {
     }
 
     // Fallback to get_option if CMB2 is not loaded yet.
-    $opts = get_option( lo_settings_admin( null )->key, $key, $default );
+    $opts = get_option( lo_settings_admin( $page )->key, $key, $default );
 
     $val = $default;
 

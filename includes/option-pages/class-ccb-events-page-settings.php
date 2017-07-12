@@ -60,7 +60,7 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
     public function __construct()
     {
         // Set our title
-        $this->title = __('Outreach Various Page Settings', 'liquid-outreach');
+        $this->title = __('Outreach Settings', 'liquid-outreach');
 
         $this->hooks();
     }
@@ -138,6 +138,27 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
             'search' => (get_page_by_path('search-projects')),
             'categories' => (get_page_by_path('project-categories')),
         ];
+        
+        $cmb->add_field(array(
+            'name' => __('CCB API Username', 'liquid-outreach'),
+            'desc' => __('Please enter your username for accessing CCB API.', 'liquid-outreach'),
+            'id' => $prefix . 'ccb_api_username',
+            'type' => 'text',
+            'attributes' => ['required' => 'required'],
+            'default' => '',
+        ));
+    
+        $cmb->add_field(array(
+            'name' => __('CCB API Password', 'liquid-outreach'),
+            'desc' => __('Please enter your password for accessing CCB API.', 'liquid-outreach'),
+            'id' => $prefix . 'ccb_api_password',
+            'type' => 'text',
+            'attributes' => [
+                'required' => 'required',
+                'type' => 'password'
+            ],
+            'default' => '',
+        ));
 
         $cmb->add_field(array(
             'name' => 'Category Animation',

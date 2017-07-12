@@ -265,9 +265,10 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                                 location.reload();
                             }
                         } else {
-                            $(blockui_msg[3]).addClass('hide-obj');
                             data['page'] = res.current_page;
-                            ccb_event_ajax_call(data);
+                            $(blockui_msg[3]).text(res.details.error_msg + '\r\n Please refresh the page and try again.');
+                            $(blockui_msg[3]).removeClass('hide-obj');
+//                            ccb_event_ajax_call(data);
                         }
                     });
                 }

@@ -82,11 +82,21 @@
         {
             $this->plugin = $plugin;
             $this->ajax_call = defined('DOING_AJAX') && DOING_AJAX;
+        }
+        
+        public function set_initial_api_args() {
+            $username = lo_get_option( 'page', 'lo_events_page_ccb_api_username' );
+            $password = lo_get_option( 'page', 'lo_events_page_ccb_api_password' );
+    
             $this->api_args = array(
                 'headers' => array(
-                    'Authorization' => 'Basic ' . base64_encode('ccbgravity:HR%0ZPAeZM@n')
+                    'Authorization' => 'Basic ' . base64_encode($username . ":" . $password)
                 )
             );
+        }
+        
+        protected function call_ccb_api() {
+            $this->set_initial_api_args();
         }
         
         /**

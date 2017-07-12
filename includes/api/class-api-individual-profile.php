@@ -85,6 +85,8 @@ class Lo_Ccb_api_individual_profile extends Lo_Ccb_api_main
      */
     public function call_ccb_api()
     {
+        parent::call_ccb_api();
+    
         $this->api_url = $this->api_base . '?' . $this->api_req_str;
         $this->api_args = array_merge(
             $this->api_args,

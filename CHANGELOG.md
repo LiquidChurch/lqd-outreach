@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [Unreleased] - 0.11.3 - 13-07-2017
 ### Added
 
 ### Changed
@@ -13,10 +13,11 @@ All notable changes to this project will be documented in this file.
 ### Deprecated
 
 ### Security
+- Add API credentials to options page
 
 ## [0.11.2] - 2015-06-17
 ### Added
-Custom permalink base2 for outreach events, categories, partners.
+- Custom permalink base2 for outreach events, categories, partners.
 
 ## [0.11.1] - 2015-06-16
 ### Added
