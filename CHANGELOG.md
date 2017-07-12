@@ -1,8 +1,9 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 0.11.3 - 13-07-2017
+## [Unreleased] - 0.11.4 - 13-07-2017
 ### Added
+- Show Images on Admin --> Outreach Categories List View
 
 ### Changed
 

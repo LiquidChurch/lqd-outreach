@@ -256,6 +256,8 @@ class LO_Ccb_Event_Categories extends Taxonomy_Core
                 )
             ),
         ));
+    
+        $this->add_image_column( __( 'Categories Image', 'liquid-outreach' ) );
 
     }
 
@@ -456,5 +458,75 @@ class LO_Ccb_Event_Categories extends Taxonomy_Core
             default:
                 throw new Exception('Invalid ' . __CLASS__ . ' property: ' . $field);
         }
+    }
+    
+    /**
+     * Register image columns for $this->taxonomy().
+     *
+     * @since 0.11.4
+     *
+     * @param string  $img_col_title The title for the Image column.
+     */
+    protected function add_image_column( $img_col_title ) {
+        $this->img_col_title = $img_col_title ? $img_col_title : __( 'Image', 'gc-sermons' );
+        
+        $tax = $this->taxonomy();
+        
+        add_filter( "manage_edit-{$tax}_columns", array( $this, 'add_column_header' ) );
+        add_filter( "manage_{$tax}_custom_column", array( $this, 'add_column_value'  ), 10, 3 );
+    }
+    
+    /**
+     * Add the "tax-image" column to taxonomy terms list-tables.
+     *
+     * @since 0.11.4
+     *
+     * @param array $columns
+     *
+     * @return array
+     */
+    public function add_column_header( $columns = array() ) {
+        $columns['tax-image'] = $this->img_col_title;
+        
+        return $columns;
+    }
+    
+    /**
+     * Output the value for the custom column.
+     *
+     * @since 0.11.4
+     *
+     * @param string $empty
+     * @param string $custom_column
+     * @param int    $term_id
+     *
+     * @return mixed
+     */
+    public function add_column_value( $empty = '', $custom_column = '', $term_id = 0 ) {
+        
+        // Bail if no taxonomy passed or not on the `tax-image` column
+        if ( empty( $_REQUEST['taxonomy'] ) || ( 'tax-image' !== $custom_column ) || ! empty( $empty ) ) {
+            return;
+        }
+        
+        $retval = '&#8212;';
+        
+        // Get the term data.
+        $term = $this->get( $term_id, array( 'image_size' => 'thumb' ) );
+        
+        // Output image if not empty.
+        if ( isset( $term->image_id ) && $term->image_id ) {
+            $retval = wp_get_attachment_image( $term->image_id, 'thumb', false, array(
+                'style' => 'max-width:100%;height: auto;',
+            ) );
+            
+            $link = get_edit_term_link( $term->term_id, $this->taxonomy() );
+            
+            if ( $link ) {
+                $retval = '<a href="'. $link .'">'. $retval .'</a>';
+            }
+        }
+        
+        echo $retval;
     }
 }
