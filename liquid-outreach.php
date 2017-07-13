@@ -510,6 +510,7 @@ final class Liquid_Outreach
             $this->lo_ccb_api_individual_profile = new Lo_Ccb_api_individual_profile($this);
             $this->lo_ccb_api_attendance_profile = new Lo_Ccb_api_attendance_profile($this);
             $this->lo_ccb_events_sync = new LO_Ccb_Events_Sync($this);
+            $this->lo_ccb_base_function = new LO_Ccb_Base_Function($this);
         } else {
             $this->lo_wp_template_loader = new LO_WP_Template_Loader();
         }

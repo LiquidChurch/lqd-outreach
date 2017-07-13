@@ -14,7 +14,7 @@
      *
      * @see   https://github.com/WebDevStudios/CPT_Core
      */
-    class LO_Ccb_Event_Partners extends CPT_Core
+    class LO_Ccb_Event_Partners extends LO_Ccb_Base_Post
     {
         /**
          * Parent plugin class.
@@ -78,9 +78,6 @@
          */
         public function __construct($plugin)
         {
-            $this->plugin = $plugin;
-            $this->hooks();
-
             $page_settings = get_option('liquid_outreach_ccb_events_page_settings');
             $slug_base = !empty($page_settings['lo_events_page_permalink_base']) ? $page_settings['lo_events_page_permalink_base'] : 'outreach';
             $partner_base = !empty($page_settings['lo_events_page_permalink_base_partners']) ? $page_settings['lo_events_page_permalink_base_partners'] : 'partners';
@@ -126,36 +123,13 @@
                     'rewrite' => array('slug' => $final_base),
                 )
             );
+    
+            $this->plugin = $plugin;
+            $this->hooks();
+    
+            add_action( 'plugins_loaded', array( $this, 'filter_values' ), 4 );
         }
 
-        /**
-         * Actually registers our CPT with the merged arguments
-         * @since  0.1.0
-         */
-        public function register_post_type()
-        {
-            // Register our CPT
-            $args = register_post_type($this->post_type, $this->get_args());
-            // If error, yell about it.
-            if (is_wp_error($args)) {
-                wp_die($args->get_error_message());
-            }
-
-            // Success. Set args to what WP returns
-            $this->cpt_args = $args;
-
-            // Add this post type to our custom_post_types array
-            self::$custom_post_types[$this->post_type] = $this;
-
-            $flush_base_rewrite = get_option('lo_ccb_flush_base_rewrite');
-
-            if ($flush_base_rewrite == 'flush') {
-                flush_rewrite_rules();
-                update_option('lo_ccb_flush_base_rewrite', FALSE);
-            }
-
-        }
-        
         /**
          * Initiate our hooks.
          *
@@ -163,7 +137,7 @@
          */
         public function hooks()
         {
-            add_action('cmb2_init', array($this, 'fields'));
+            parent::hooks();
 	        add_action( 'cmb2_render_list_related_ccb_events', array($this, 'cmb2_render_callback_for_list_related_ccb_events'), 10, 5 );
         }
 	
@@ -274,35 +248,6 @@
 //            ));
         }
         
-        /**
-         * Registers admin columns to display. Hooked in via CPT_Core.
-         *
-         * @since  0.1.0
-         *
-         * @param  array $columns Array of registered column names/labels.
-         * @return array          Modified array.
-         */
-        public function columns($columns)
-        {
-            $new_column = array();
-            
-            return array_merge($new_column, $columns);
-        }
-        
-        /**
-         * Handles admin column display. Hooked in via CPT_Core.
-         *
-         * @since  0.1.0
-         *
-         * @param array   $column  Column currently being rendered.
-         * @param integer $post_id ID of post to display column for.
-         */
-        public function columns_display($column, $post_id)
-        {
-            switch ($column) {
-            }
-        }
-	
 	    /**
 	     * Retrieve lo-events-partners
 	     *
@@ -335,65 +280,57 @@
 		    }
 		    return $partners;
 	    }
+    
+        /**
+         * Overriding get_args from parent
+         *
+         * @since  0.11.5
+         * @return array
+         */
+        public function get_args()
+        {
+        
+            if (!empty($this->cpt_args)) {
+                return $this->cpt_args;
+            }
+        
+            // Generate CPT labels
+            $labels = array(
+                'name' => $this->plural,
+                'singular_name' => $this->singular,
+                'add_new' => sprintf(__('Add New %s', 'cpt-core'), $this->singular),
+                'add_new_item' => sprintf(__('Add New %s', 'cpt-core'), $this->singular),
+                'edit_item' => sprintf(__('Edit %s', 'cpt-core'), $this->singular),
+                'new_item' => sprintf(__('New %s', 'cpt-core'), $this->singular),
+                'all_items' => sprintf(__('%s', 'cpt-core'), $this->plural),
+                'view_item' => sprintf(__('View %s', 'cpt-core'), $this->singular),
+                'search_items' => sprintf(__('Search %s', 'cpt-core'), $this->plural),
+                'not_found' => sprintf(__('No %s', 'cpt-core'), $this->plural),
+                'not_found_in_trash' => sprintf(__('No %s found in Trash', 'cpt-core'), $this->plural),
+                'parent_item_colon' => isset($this->arg_overrides['hierarchical']) && $this->arg_overrides['hierarchical'] ? sprintf(__('Parent %s:', 'cpt-core'), $this->singular) : null,
+                'menu_name' => $this->plural,
+                'insert_into_item' => sprintf(__('Insert into %s', 'cpt-core'), strtolower($this->singular)),
+                'uploaded_to_this_item' => sprintf(__('Uploaded to this %s', 'cpt-core'), strtolower($this->singular)),
+                'items_list' => sprintf(__('%s list', 'cpt-core'), $this->plural),
+                'items_list_navigation' => sprintf(__('%s list navigation', 'cpt-core'), $this->plural),
+                'filter_items_list' => sprintf(__('Filter %s list', 'cpt-core'), strtolower($this->plural))
+            );
+        
+            // Set default CPT parameters
+            $defaults = array(
+                'labels' => array(),
+                'public' => true,
+                'publicly_queryable' => true,
+                'show_ui' => true,
+                'show_in_menu' => true,
+                'has_archive' => true,
+                'supports' => array('title', 'editor', 'excerpt'),
+            );
+        
+            $this->cpt_args = wp_parse_args($this->arg_overrides, $defaults);
+            $this->cpt_args['labels'] = wp_parse_args($this->cpt_args['labels'], $labels);
+        
+            return $this->cpt_args;
+        }
 	
-	    /**
-	     * Provides access to protected class properties.
-	     * @since  0.2.7
-	     * @param  boolean $key Specific CPT parameter to return
-	     * @return mixed        Specific CPT parameter or array of singular, plural and registered name
-	     */
-	    public function post_type( $key = 'post_type' ) {
-		    if ( ! $this->overrides_processed ) {
-			    $this->filter_values();
-		    }
-		
-		    return parent::post_type( $key );
-	    }
-	
-	    /**
-	     * @since  0.2.7
-	     */
-	    public function filter_values() {
-		    if ( $this->overrides_processed ) {
-			    return;
-		    }
-		
-		    $args = array(
-			    'singular'      => $this->singular,
-			    'plural'        => $this->plural,
-			    'post_type'     => $this->post_type,
-			    'arg_overrides' => $this->arg_overrides,
-		    );
-		
-		    $filtered_args = apply_filters( 'lo_post_types_'. $this->id, $args, $this );
-		
-		    if ( $filtered_args !== $args ) {
-			    foreach ( $args as $arg => $val ) {
-				    if ( isset( $filtered_args[ $arg ] ) ) {
-					    $this->{$arg} = $filtered_args[ $arg ];
-				    }
-			    }
-		    }
-		
-		    $this->overrides_processed = true;
-	    }
-	
-	    /**
-	     * Magic getter for our object. Allows getting but not setting.
-	     *
-	     * @param string $field
-	     * @throws Exception Throws an exception if the field is invalid.
-	     * @return mixed
-	     * @since  0.2.7
-	     */
-	    public function __get( $field ) {
-		    switch ( $field ) {
-			    case 'id':
-			    case 'arg_overrides':
-			    case 'cpt_args':
-				    return $this->{$field};
-			    default:
-				    throw new Exception( 'Invalid ' . __CLASS__ . ' property: ' . $field );
-		    }
-	    }
     }
