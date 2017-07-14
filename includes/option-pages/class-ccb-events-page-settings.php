@@ -77,8 +77,19 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
         add_action( "cmb2_save_field_lo_events_page_permalink_base_events", array( $this, 'after_permalink_settings_save' ), 10, 3 );
         add_action( "cmb2_save_field_lo_events_page_permalink_base_categories", array( $this, 'after_permalink_settings_save' ), 10, 3 );
         add_action( "cmb2_save_field_lo_events_page_permalink_base_partners", array( $this, 'after_permalink_settings_save' ), 10, 3 );
+        add_action( "cmb2_save_field_lo_events_page_event_attendance_count_update", array( $this, 'clear_scheduled_hook' ), 10, 3 );
     }
 
+    /**
+     * remove wp_clear_scheduled_hook for cron interval
+     * @since 0.11.7
+     */
+    public function clear_scheduled_hook($updated, $action, $settingsThis) {
+        if(!empty($updated)) {
+            wp_clear_scheduled_hook('lo_ccb_cron_event_attendance_sync');
+        }
+    }
+    
     /**
      * for changes after permalink settings value is changed
      * @since 0.10.1
@@ -158,6 +169,26 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
                 'type' => 'password'
             ],
             'default' => '',
+        ));
+    
+        $cmb->add_field(array(
+            'name' => __('Event Attendance Count Update Interval', 'liquid-outreach'),
+            'desc' => '',
+            'id' => $prefix . 'event_attendance_count_update',
+            'type' => 'select',
+            'options' => [
+                '5min' => '5 Min',
+                '15min' => '15 Min',
+                '30min' => '30 Min',
+                '45min' => '45 Min',
+                'hourly' => 'Hourly',
+                'twicedaily' => 'Twice Daily',
+                'daily' => 'Daily',
+                ],
+            'default' => '30min',
+            'attributes' => [
+                'required' => 'required',
+            ]
         ));
 
         $cmb->add_field(array(

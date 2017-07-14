@@ -1226,7 +1226,13 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
         if (!isset($event_data['data']['synced_data']) || empty($event_data['data']['synced_data'])) {
             return false;
         }
-
+        
+        $synced_data_count = count($event_data['data']['synced_data']);
+        $php_max_execution_time = ini_get('max_execution_time');
+        if($synced_data_count > 10 || $php_max_execution_time < 30) {
+            set_time_limit($php_max_execution_time + ($synced_data_count * 2));
+        }
+        
         foreach ($event_data['data']['synced_data'] as $index => $synced_datum) {
             if ($synced_datum['registration_limit'] == 0) {
                 $event_post_data['meta_input'][$event_post_meta_prefix . 'openings']
