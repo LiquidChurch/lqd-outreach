@@ -464,7 +464,7 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                         };
 
                         var ccb_data = ccb_events_data[$(this).data('ccb-events')];
-                        var total_data = ccb_data.length, offset = 0, limit = 50;
+                        var total_data = ccb_data.length, offset = 0, limit = 10;
                         var ccb_data_chunk = ccb_data.slice(offset, (offset + limit));
                         var nonce = '<?php echo wp_create_nonce('nonce_lo_sync_ccb_event'); ?>';
 
@@ -756,6 +756,11 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
         $filter_dep = !empty($_POST['filter_dep']) ? $_POST['filter_dep'] : null;
         $start_date_filter = !empty($_POST['start_date']) ? strtotime($_POST['start_date']) : null;
         $end_date_filter = !empty($_POST['end_date']) ? strtotime($_POST['end_date']) : null;
+    
+        $php_max_execution_time = ini_get('max_execution_time');
+        if($php_max_execution_time < 90) {
+            set_time_limit(90);
+        }
 
         if (!empty($ccb_event_data)) {
 
@@ -1264,6 +1269,11 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
      */
     protected function liquid_outreach_ccb_events_sync_handler()
     {
+        $php_max_execution_time = ini_get('max_execution_time');
+        if($php_max_execution_time < 90) {
+            set_time_limit(90);
+        }
+        
         $this->plugin->lo_ccb_api_event_profiles->api_map();
         $api_error = $this->plugin->lo_ccb_api_event_profiles->api_error;
 
