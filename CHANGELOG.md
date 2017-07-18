@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 0.11.7 - 13-07-2017
+## [Unreleased] - 0.11.8 - 13-07-2017
 ### Added
 - Show Images on Admin --> Outreach Categories List View
 - Add Ability to Bulk Publish Events
@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 - Modify sync on event registration to schedule cron for 5 mins. later
 
 ### Fixed
+- Fix sync of partners
 
 ### Removed
 
