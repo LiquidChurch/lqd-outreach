@@ -479,3 +479,23 @@ city page***************
 .cmb2-id-lo-events-page-category-mapping .cmb-repeatable-grouping .cmb-remove-field-row {
     padding: 0;
 }
+
+#cmb2-metabox-lo_ccb_events_display_settings > div.cmb-row.cmb-type-checkbox {
+    padding-top: 5px !important;
+    padding-bottom: 0 !important;
+}
+
+#cmb2-metabox-lo_ccb_events_display_settings > div.cmb-row.cmb-type-checkbox > div.cmb-th {
+    float: left;
+    width:40%;
+    padding-bottom: 0 !important;
+}
+
+#cmb2-metabox-lo_ccb_events_display_settings > div.cmb-row.cmb-type-checkbox > div.cmb-th label:after {
+    border:none;
+}
+
+#cmb2-metabox-lo_ccb_events_display_settings > div.cmb-row.cmb-type-checkbox > div.cmb-td {
+    float: left;
+    width:40%;
+}
