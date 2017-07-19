@@ -162,6 +162,66 @@
 			    }
 		    }
 	    }
+    
+        /**
+         * Show  display settings for individual post
+         * @since 0.20.0
+         */
+        public function cmb_page_display_settings()
+        {
+        
+            $prefix = $this->meta_prefix;
+            $option_prefix = 'lo_events_info_';
+        
+            // Define our metaboxes and fields.
+            $cmb_page_settings = new_cmb2_box(array(
+                'id'           => $prefix . 'display_settings',
+                'title'        => esc_html__('Display Settings', 'liquid-outreach'),
+                'object_types' => array('lo-event-partners'),
+                'context'      => 'side',
+                'priority'     => 'low',
+                'show_names'   => true, // Show field names on the left
+                'cmb_styles' => false, // false to disable the CMB stylesheet
+                // 'closed'     => true, // Keep the metabox closed by default
+            ));
+        
+            $settings_arr = array(
+                'location'    => [
+                    'label' => 'Address',
+                    'settings_key' => 'partner_address'
+                ],
+                'website'    => [
+                    'label' => 'Website',
+                    'settings_key' => 'partner_website'
+                ],
+                'team_leader'    => [
+                    'label' => 'Team Leader',
+                    'settings_key' => 'partner_team_leader'
+                ],
+                'phone'    => [
+                    'label' => 'Phone',
+                    'settings_key' => 'partner_phone'
+                ],
+                'email'    => [
+                    'label' => 'Email',
+                    'settings_key' => 'partner_email'
+                ],
+            );
+        
+            foreach ($settings_arr as $index => $item) {
+                $cmb_page_settings->add_field( array(
+                    'name' => $item['label'],
+                    'desc' => '',
+                    'id'   => $option_prefix . $item['settings_key'],
+                    'type'    => 'radio_inline',
+                    'options' => array(
+                        '1' => __( 'Show', 'cmb2' ),
+                        '0'   => __( 'Hide', 'cmb2' ),
+                    ),
+                    'default' => $this->global_details_page_setting($option_prefix . $item['settings_key'])
+                ) );
+            }
+        }
         
         /**
          * Add custom fields to the CPT.
@@ -170,6 +230,7 @@
          */
         public function fields()
         {
+            $this->cmb_page_display_settings();
             
             // Set our prefix.
             $prefix = $this->meta_prefix;

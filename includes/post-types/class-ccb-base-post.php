@@ -200,5 +200,24 @@
                     throw new Exception('Invalid ' . __CLASS__ . ' property: ' . $field);
             }
         }
+    
+        /**
+         * Check common page option for default if no option is saved
+         *
+         * @param $key
+         * @return bool
+         * @since 0.20.0
+         */
+        public function global_details_page_setting($key)
+        {
+            if(!isset($_GET['post'])) {
+                return null;
+            }
+            $post_config_val = get_post_meta($_GET['post'], $key, 1);
+            if($post_config_val == '') {
+                $post_config_val = lo_get_option('additional-info', $key);
+            }
+            return $post_config_val;
+        }
         
     }

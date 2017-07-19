@@ -60,9 +60,10 @@
             <!--addtnal info column-->
             <div class="col-md-4">
                 <?php
-                    if (!empty($info_settings['lo_events_info_date_time']) ||
-                        !isset($info_settings['lo_events_info_date_time'])
-                    ) {
+                    $show
+                        = LO_Ccb_Base_Function::check_details_display_enabled($event_post->post->ID,
+                        'lo_events_info_date_time');
+                    if ($show == '1') {
                         ?>
                         <div class="row">
                             <div class="col-md-5 " style="vertical-align: top;"><strong>Date &
@@ -76,12 +77,13 @@
                 ?>
                 
                 <?php
-                    if (!empty($info_settings['lo_events_info_cost']) ||
-                        !isset($info_settings['lo_events_info_cost'])
-                    ) {
+                    $show
+                        = LO_Ccb_Base_Function::check_details_display_enabled($event_post->post->ID,
+                        'lo_events_info_cost');
+                    if ($show == '1') {
                         ?>
                         <div class="row">
-                            <div class="col-md-5 ">Cost</div>
+                            <div class="col-md-5 "><strong>Cost</strong></div>
                             <div class="col-md-1">&#8594</div>
                             <div class="col-md-6"><?php echo '$' .
                                                              $event_post->get_meta($meta_prefix .
@@ -92,9 +94,10 @@
                 ?>
                 
                 <?php
-                    if (!empty($info_settings['lo_events_info_openings']) ||
-                        !isset($info_settings['lo_events_info_openings'])
-                    ) {
+                    $show
+                        = LO_Ccb_Base_Function::check_details_display_enabled($event_post->post->ID,
+                        'lo_events_info_openings');
+                    if ($show == '1') {
                         ?>
                         <div class="row">
                             <div class="col-md-5 "><strong>Openings</strong></div>
@@ -118,9 +121,10 @@
                 ?>
                 
                 <?php
-                    if (!empty($info_settings['lo_events_info_categories']) ||
-                        !isset($info_settings['lo_events_info_categories'])
-                    ) {
+                    $show
+                        = LO_Ccb_Base_Function::check_details_display_enabled($event_post->post->ID,
+                        'lo_events_info_categories');
+                    if ($show == '1') {
                         ?>
                         <div class="row">
                             <div class="col-md-5 "><strong>Categories</strong></div>
@@ -147,9 +151,10 @@
                 ?>
                 
                 <?php
-                    if (!empty($info_settings['lo_events_info_kid_friendly']) ||
-                        !isset($info_settings['lo_events_info_kid_friendly'])
-                    ) {
+                    $show
+                        = LO_Ccb_Base_Function::check_details_display_enabled($event_post->post->ID,
+                        'lo_events_info_kid_friendly');
+                    if ($show == '1') {
                         ?>
                         <div class="row">
                             <div class="col-md-5 "><strong>Kid friendly</strong></div>
@@ -164,9 +169,10 @@
                 <br/>
                 
                 <?php
-                    if (!empty($info_settings['lo_events_info_team_leader']) ||
-                        !isset($info_settings['lo_events_info_team_leader'])
-                    ) {
+                    $show
+                        = LO_Ccb_Base_Function::check_details_display_enabled($event_post->post->ID,
+                        'lo_events_info_team_leader');
+                    if ($show == '1') {
                         ?>
                         <!--team leader block-->
                         <div class="row">
@@ -175,9 +181,10 @@
                         </div>
                         
                         <?php
-                        if (!empty($info_settings['lo_events_info_team_leader_name']) ||
-                            !isset($info_settings['lo_events_info_team_leader_name'])
-                        ) {
+                        $show
+                            = LO_Ccb_Base_Function::check_details_display_enabled($event_post->post->ID,
+                            'lo_events_info_team_leader_name');
+                        if ($show == '1') {
                             ?>
                             <div class="row">
                                 <div class="col-md-offset-1 col-md-4 add-info-label-2">
@@ -195,9 +202,10 @@
                         ?>
                         
                         <?php
-                        if (!empty($info_settings['lo_events_info_team_leader_email']) ||
-                            !isset($info_settings['lo_events_info_team_leader_email'])
-                        ) {
+                        $show
+                            = LO_Ccb_Base_Function::check_details_display_enabled($event_post->post->ID,
+                            'lo_events_info_team_leader_email');
+                        if ($show == '1') {
                             ?>
                             <div class="row">
                                 <div class="col-md-offset-1 col-md-4 add-info-label-2">
@@ -213,9 +221,10 @@
                         ?>
                         
                         <?php
-                        if (!empty($info_settings['lo_events_info_team_leader_phone']) ||
-                            !isset($info_settings['lo_events_info_team_leader_phone'])
-                        ) {
+                        $show
+                            = LO_Ccb_Base_Function::check_details_display_enabled($event_post->post->ID,
+                            'lo_events_info_team_leader_phone');
+                        if ($show == '1') {
                             ?>
                             <div class="row">
                                 <div class="col-md-offset-1 col-md-4 add-info-label-2">
@@ -236,9 +245,10 @@
                 ?>
                 
                 <?php
-                    if (!empty($info_settings['lo_events_info_partner_organization']) ||
-                        !isset($info_settings['lo_events_info_partner_organization'])
-                    ) {
+                    $show
+                        = LO_Ccb_Base_Function::check_details_display_enabled($event_post->post->ID,
+                        'lo_events_info_partner_organization');
+                    if ($show == '1') {
                         ?>
                         <div class="row">
                             <?php
@@ -279,9 +289,10 @@
                 ?>
                 
                 <?php
-                    if (!empty($info_settings['lo_events_info_address']) ||
-                        !isset($info_settings['lo_events_info_address'])
-                    ) {
+                    $show
+                        = LO_Ccb_Base_Function::check_details_display_enabled($event_post->post->ID,
+                        'lo_events_info_address');
+                    if ($show == '1') {
                         ?>
                         <div class="row">
                             <div class="col-md-5 "><strong>Address</strong></div>

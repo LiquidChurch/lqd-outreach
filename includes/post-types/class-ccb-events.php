@@ -196,11 +196,11 @@
         public function fields()
         {
             wp_enqueue_style('lc-plugin', Liquid_Outreach::$url . 'assets/css/lc-plugin.css');
+    
+            $this->cmb_page_display_settings();
             
             // Set our prefix.
             $prefix = $this->meta_prefix;
-            
-            $this->cmb_page_display_settings();
             
             // Define our metaboxes and fields.
             $cmb_additional = new_cmb2_box(array(
@@ -396,25 +396,17 @@
                 $cmb_page_settings->add_field( array(
                     'name' => $item['label'],
                     'desc' => '',
-                    'id'   => 'show_' . $index,
-                    'type' => 'checkbox',
+                    'id'   => $option_prefix . $item['settings_key'],
+                    'type'    => 'radio_inline',
+                    'options' => array(
+                        '1' => __( 'Show', 'cmb2' ),
+                        '0'   => __( 'Hide', 'cmb2' ),
+                    ),
                     'default' => $this->global_details_page_setting($option_prefix . $item['settings_key'])
                 ) );
             }
         }
     
-        /**
-         * Check common page option for default if no option is saved
-         *
-         * @param $key
-         * @return bool
-         * @since 0.20.0
-         */
-        public function global_details_page_setting($key)
-        {
-            return !empty(lo_get_option('additional-info', $key));
-        }
-        
         /**
          * Retrieve lo-events.
          *

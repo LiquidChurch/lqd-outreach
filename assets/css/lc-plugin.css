@@ -480,22 +480,26 @@ city page***************
     padding: 0;
 }
 
-#cmb2-metabox-lo_ccb_events_display_settings > div.cmb-row.cmb-type-checkbox {
+#cmb2-metabox-lo_ccb_events_display_settings > div.cmb-row.cmb-type-radio-inline,
+#cmb2-metabox-lo_ccb_event_partner_display_settings > div.cmb-row.cmb-type-radio-inline {
     padding-top: 5px !important;
     padding-bottom: 0 !important;
 }
 
-#cmb2-metabox-lo_ccb_events_display_settings > div.cmb-row.cmb-type-checkbox > div.cmb-th {
+#cmb2-metabox-lo_ccb_events_display_settings > div.cmb-row.cmb-type-radio-inline > div.cmb-th,
+#cmb2-metabox-lo_ccb_event_partner_display_settings > div.cmb-row.cmb-type-radio-inline > div.cmb-th {
     float: left;
     width:40%;
     padding-bottom: 0 !important;
 }
 
-#cmb2-metabox-lo_ccb_events_display_settings > div.cmb-row.cmb-type-checkbox > div.cmb-th label:after {
+#cmb2-metabox-lo_ccb_events_display_settings > div.cmb-row.cmb-type-radio-inline > div.cmb-th label:after,
+#cmb2-metabox-lo_ccb_event_partner_display_settings > div.cmb-row.cmb-type-radio-inline > div.cmb-th label:after {
     border:none;
 }
 
-#cmb2-metabox-lo_ccb_events_display_settings > div.cmb-row.cmb-type-checkbox > div.cmb-td {
+#cmb2-metabox-lo_ccb_events_display_settings > div.cmb-row.cmb-type-radio-inline > div.cmb-td,
+#cmb2-metabox-lo_ccb_event_partner_display_settings > div.cmb-row.cmb-type-radio-inline > div.cmb-td {
     float: left;
     width:40%;
 }

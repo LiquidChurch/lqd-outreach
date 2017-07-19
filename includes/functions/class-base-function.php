@@ -34,4 +34,16 @@
     
             $this->lo_ccb_post_action_handler = new LO_Ccb_Post_Action_Handler($this->plugin);
         }
+        
+        public static function check_details_display_enabled($postID, $key) {
+            $show = get_post_meta($postID, $key, true);
+            if($show == '') {
+                
+                $settings = lo_get_option('additional-info', $key);
+                return !empty($settings) ? '1' : '0';
+                
+            } else {
+                return $show;
+            }
+        }
     }
