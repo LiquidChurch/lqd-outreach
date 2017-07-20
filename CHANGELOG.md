@@ -1,11 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 0.20.0 - 13-07-2017
+## [Unreleased] - 0.20.1 - 13-07-2017
 ### Added
 - Show Images on Admin --> Outreach Categories List View
 - Add Ability to Bulk Publish Events
 - Add Ability to Override Outreach Details Page Settings on Each Outreach Page
+- Add event date to list view for Outreach Events.
 
 ### Changed
 - Modify sync to break into sessions to avoid failure loading

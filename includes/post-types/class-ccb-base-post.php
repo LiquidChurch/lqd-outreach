@@ -46,7 +46,7 @@
          * @var string
          * @since  0.2.4
          */
-//        protected $id = '';
+        //        protected $id = '';
         /**
          * Default WP_Query args
          *
@@ -161,9 +161,14 @@
          */
         public function columns($columns)
         {
-            $new_column = array();
+            $new_column = [];
+            if ($this->id == 'lo-events') {
+                $new_column = array(
+                    'lo-event-start-date' => 'Event Start Date'
+                );
+            }
             
-            return array_merge($new_column, $columns);
+            return array_merge($columns, $new_column);
         }
         
         /**
@@ -176,7 +181,12 @@
          */
         public function columns_display($column, $post_id)
         {
-            switch ($column) {
+            if ($this->id == 'lo-events') {
+                if ($column == 'lo-event-start-date') {
+                    $date = get_post_meta($post_id, 'lo_ccb_events_start_date', true);
+                    $date = !empty($date) ? date("Y-m-d H:i:s", $date) : '';
+                    echo $date;
+                }
             }
         }
         
@@ -200,7 +210,7 @@
                     throw new Exception('Invalid ' . __CLASS__ . ' property: ' . $field);
             }
         }
-    
+        
         /**
          * Check common page option for default if no option is saved
          *
@@ -210,13 +220,14 @@
          */
         public function global_details_page_setting($key)
         {
-            if(!isset($_GET['post'])) {
+            if (!isset($_GET['post'])) {
                 return null;
             }
             $post_config_val = get_post_meta($_GET['post'], $key, 1);
-            if($post_config_val == '') {
+            if ($post_config_val == '') {
                 $post_config_val = lo_get_option('additional-info', $key);
             }
+            
             return $post_config_val;
         }
         
