@@ -1159,7 +1159,8 @@
                 return false;
             }
             
-            $category_map = lo_get_option('page', 'lo_events_page_category_mapping');
+            $settings_key = $this->plugin->lo_ccb_events_partner_cat_map_settings->meta_prefix;
+            $category_map = lo_get_option('cat-map', $settings_key . 'category_mapping');
             
             if (empty($category_map)) {
                 return false;

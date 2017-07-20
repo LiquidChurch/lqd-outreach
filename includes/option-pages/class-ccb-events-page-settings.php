@@ -38,6 +38,13 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
      */
     protected $metabox_id = 'liquid_outreach_ccb_events_page_settings_metabox';
     /**
+     * Options page meta prefix
+     *
+     * @var string
+     * @since 0.20.2
+     */
+    protected $meta_prefix = 'lo_events_page_';
+    /**
      * Options Page title
      *
      * @var string
@@ -142,8 +149,6 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
 
         // Set our CMB2 fields
 
-        $prefix = 'lo_events_page_';
-
         $default_page = [
             'projects' => (get_page_by_path('projects')),
             'search' => (get_page_by_path('search-projects')),
@@ -153,7 +158,7 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
         $cmb->add_field(array(
             'name' => __('CCB API Username', 'liquid-outreach'),
             'desc' => __('Please enter your username for accessing CCB API.', 'liquid-outreach'),
-            'id' => $prefix . 'ccb_api_username',
+            'id' => $this->meta_prefix . 'ccb_api_username',
             'type' => 'text',
             'attributes' => ['required' => 'required'],
             'default' => '',
@@ -162,7 +167,7 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
         $cmb->add_field(array(
             'name' => __('CCB API Password', 'liquid-outreach'),
             'desc' => __('Please enter your password for accessing CCB API.', 'liquid-outreach'),
-            'id' => $prefix . 'ccb_api_password',
+            'id' => $this->meta_prefix . 'ccb_api_password',
             'type' => 'text',
             'attributes' => [
                 'required' => 'required',
@@ -174,7 +179,7 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
         $cmb->add_field(array(
             'name' => __('Event Attendance Count Update Interval', 'liquid-outreach'),
             'desc' => '',
-            'id' => $prefix . 'event_attendance_count_update',
+            'id' => $this->meta_prefix . 'event_attendance_count_update',
             'type' => 'select',
             'options' => [
                 '5min' => '5 Min',
@@ -193,7 +198,7 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
 
         $cmb->add_field(array(
             'name' => 'Category Animation',
-            'id' => $prefix . 'category_animation',
+            'id' => $this->meta_prefix . 'category_animation',
             'type' => 'radio_inline',
             'default' => true,
             'options' => array(
@@ -204,7 +209,7 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
 
         $cmb->add_field(array(
             'name' => __('Default Header Image', 'liquid-outreach'),
-            'id' => $prefix . 'default_header_image',
+            'id' => $this->meta_prefix . 'default_header_image',
             'type' => 'file',
         ));
 
@@ -212,7 +217,7 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
             'name' => __('Select Home Page', 'liquid-outreach'),
             'desc' => 'Place these shortcodes inside the page content area - ' .
                 '<br/>[lo_header_element]<br/>[lo_nav_element]<br/>[lo_categories_element]',
-            'id' => $prefix . 'lo_home_page',
+            'id' => $this->meta_prefix . 'lo_home_page',
             'type' => 'select',
             'options_cb' => ['LO_Ccb_Events_Page_Settings', 'show_wp_pages'],
             'default' => !empty($default_page['projects']) ? $default_page['projects']->ID : ''
@@ -222,7 +227,7 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
             'name' => __('Select Search Page', 'liquid-outreach'),
             'desc' => 'Place these shortcodes inside the page content area - ' .
                 '<br/>[lo_event_search]',
-            'id' => $prefix . 'lo_search_page',
+            'id' => $this->meta_prefix . 'lo_search_page',
             'type' => 'select',
             'options_cb' => ['LO_Ccb_Events_Page_Settings', 'show_wp_pages'],
             'default' => !empty($default_page['search']) ? $default_page['projects']->ID : ''
@@ -232,7 +237,7 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
             'name' => __('Select Category Page', 'liquid-outreach'),
             'desc' => 'Place these shortcodes inside the page content area - ' .
                 '<br/>[lo_event_categories]',
-            'id' => $prefix . 'lo_category_page',
+            'id' => $this->meta_prefix . 'lo_category_page',
             'type' => 'select',
             'options_cb' => ['LO_Ccb_Events_Page_Settings', 'show_wp_pages'],
             'default' => !empty($default_page['categories']) ? $default_page['projects']->ID : ''
@@ -241,7 +246,7 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
         $cmb->add_field(array(
             'name' => __('Custom Permalink Base', 'liquid-outreach'),
             'desc' => __('Permalink base for outreach events, categories and partners.', 'liquid-outreach'),
-            'id' => $prefix . 'permalink_base',
+            'id' => $this->meta_prefix . 'permalink_base',
             'type' => 'text',
             'attributes' => ['required' => 'required'],
             'default' => 'outreach',
@@ -250,7 +255,7 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
         $cmb->add_field(array(
             'name' => __('Custom Permalink Events', 'liquid-outreach'),
             'desc' => __('Permalink base for outreach events.', 'liquid-outreach'),
-            'id' => $prefix . 'permalink_base_events',
+            'id' => $this->meta_prefix . 'permalink_base_events',
             'type' => 'text',
             'attributes' => ['required' => 'required'],
             'default' => 'events',
@@ -259,7 +264,7 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
         $cmb->add_field(array(
             'name' => __('Custom Permalink Categories', 'liquid-outreach'),
             'desc' => __('Permalink base for outreach categories', 'liquid-outreach'),
-            'id' => $prefix . 'permalink_base_categories',
+            'id' => $this->meta_prefix . 'permalink_base_categories',
             'type' => 'text',
             'attributes' => ['required' => 'required'],
             'default' => 'categories',
@@ -268,37 +273,10 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
         $cmb->add_field(array(
             'name' => __('Custom Permalink Partners', 'liquid-outreach'),
             'desc' => __('Permalink base for outreach partners.', 'liquid-outreach'),
-            'id' => $prefix . 'permalink_base_partners',
+            'id' => $this->meta_prefix . 'permalink_base_partners',
             'type' => 'text',
             'attributes' => ['required' => 'required'],
             'default' => 'partners',
-        ));
-
-        $category_mapping_id = $cmb->add_field(array(
-            'name' => __('Category Mapping', 'liquid-outreach'),
-            'id' => $prefix . 'category_mapping',
-            'type' => 'group',
-            'options' => array(
-                'group_title' => esc_html__('Mapping {#}', 'liquid-outreach'),
-                'add_button' => esc_html__('Add Another Mapping', 'liquid-outreach'),
-                'remove_button' => esc_html__('Remove Mapping', 'liquid-outreach'),
-            ),
-        ));
-
-        $cmb->add_group_field($category_mapping_id, array(
-            'name' => esc_html__('Match Title', 'liquid-outreach'),
-            'desc' => '',
-            'id' => 'title',
-            'type' => 'text',
-        ));
-
-        $cmb->add_group_field($category_mapping_id, array(
-            'name' => 'Outreach Category',
-            'desc' => 'Matched title post will be mapped to this outreach category',
-            'id' => 'event_categroy',
-            'taxonomy' => 'event-category', //Enter Taxonomy Slug
-            'type' => 'taxonomy_select',
-            'remove_default' => 'true' // Removes the default metabox provided by WP core. Pending release as of Aug-10-16
         ));
 
     }
@@ -315,7 +293,7 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
     public function __get($field)
     {
         // Allowed fields to retrieve
-        if (in_array($field, array('key', 'metabox_id', 'title', 'options_page'), true)) {
+        if (in_array($field, array('key', 'metabox_id', 'meta_prefix', 'title', 'options_page'), true)) {
             return $this->{$field};
         }
 

@@ -36,6 +36,13 @@
 		 * @since 0.3.4
 		 */
 		protected $metabox_id = 'liquid_outreach_ccb_events_info_settings_metabox';
+        /**
+         * Options page meta prefix
+         *
+         * @var string
+         * @since 0.20.2
+         */
+        protected $meta_prefix = 'lo_events_info_';
 		/**
 		 * Options Page title
 		 *
@@ -102,8 +109,6 @@
 			
 			// Set our CMB2 fields
 			
-			$prefix = 'lo_events_info_';
-
             $cmb->add_field( array(
                 'name' => 'Settings for Events <hr/>',
                 'desc' => '',
@@ -112,7 +117,7 @@
             ) );
 			$cmb->add_field( array(
 				'name'    => 'Date Time',
-				'id'      => $prefix . 'date_time',
+				'id'      => $this->meta_prefix . 'date_time',
 				'type'    => 'radio_inline',
 				'default' => true,
 				'options' => array(
@@ -122,7 +127,7 @@
 			) );
 			$cmb->add_field( array(
 				'name'    => 'Cost',
-				'id'      => $prefix . 'cost',
+				'id'      => $this->meta_prefix . 'cost',
 				'type'    => 'radio_inline',
 				'default' => true,
 				'options' => array(
@@ -132,7 +137,7 @@
 			) );
 			$cmb->add_field( array(
 				'name'    => 'Openings',
-				'id'      => $prefix . 'openings',
+				'id'      => $this->meta_prefix . 'openings',
 				'type'    => 'radio_inline',
 				'default' => true,
 				'options' => array(
@@ -142,7 +147,7 @@
 			) );
 			$cmb->add_field( array(
 				'name'    => 'Categories',
-				'id'      => $prefix . 'categories',
+				'id'      => $this->meta_prefix . 'categories',
 				'type'    => 'radio_inline',
 				'default' => true,
 				'options' => array(
@@ -152,7 +157,7 @@
 			) );
 			$cmb->add_field( array(
 				'name'    => 'Kid Friendly',
-				'id'      => $prefix . 'kid_friendly',
+				'id'      => $this->meta_prefix . 'kid_friendly',
 				'type'    => 'radio_inline',
 				'default' => true,
 				'options' => array(
@@ -162,7 +167,7 @@
 			) );
 			$cmb->add_field( array(
 				'name'    => 'Team Leader',
-				'id'      => $prefix . 'team_leader',
+				'id'      => $this->meta_prefix . 'team_leader',
 				'type'    => 'radio_inline',
 				'default' => true,
 				'options' => array(
@@ -172,7 +177,7 @@
 			) );
 			$cmb->add_field( array(
 				'name'    => 'Team Leader Name',
-				'id'      => $prefix . 'team_leader_name',
+				'id'      => $this->meta_prefix . 'team_leader_name',
 				'type'    => 'radio_inline',
 				'default' => true,
 				'options' => array(
@@ -182,7 +187,7 @@
 			) );
 			$cmb->add_field( array(
 				'name'    => 'Team Leader Email',
-				'id'      => $prefix . 'team_leader_email',
+				'id'      => $this->meta_prefix . 'team_leader_email',
 				'type'    => 'radio_inline',
 				'default' => true,
 				'options' => array(
@@ -192,7 +197,7 @@
 			) );
 			$cmb->add_field( array(
 				'name'    => 'Team Leader Phone',
-				'id'      => $prefix . 'team_leader_phone',
+				'id'      => $this->meta_prefix . 'team_leader_phone',
 				'type'    => 'radio_inline',
 				'default' => true,
 				'options' => array(
@@ -202,7 +207,7 @@
 			) );
 			$cmb->add_field( array(
 				'name'    => 'Partner organization',
-				'id'      => $prefix . 'partner_organization',
+				'id'      => $this->meta_prefix . 'partner_organization',
 				'type'    => 'radio_inline',
 				'default' => true,
 				'options' => array(
@@ -212,7 +217,7 @@
 			) );
 			$cmb->add_field( array(
 				'name'    => 'Address',
-				'id'      => $prefix . 'address',
+				'id'      => $this->meta_prefix . 'address',
 				'type'    => 'radio_inline',
 				'default' => true,
 				'options' => array(
@@ -229,7 +234,7 @@
             ) );
             $cmb->add_field( array(
                 'name'    => 'Address',
-                'id'      => $prefix . 'partner_address',
+                'id'      => $this->meta_prefix . 'partner_address',
                 'type'    => 'radio_inline',
                 'default' => true,
                 'options' => array(
@@ -239,7 +244,7 @@
             ) );
             $cmb->add_field( array(
                 'name'    => 'Website',
-                'id'      => $prefix . 'partner_website',
+                'id'      => $this->meta_prefix . 'partner_website',
                 'type'    => 'radio_inline',
                 'default' => true,
                 'options' => array(
@@ -249,7 +254,7 @@
             ) );
             $cmb->add_field( array(
                 'name'    => 'Team Leader',
-                'id'      => $prefix . 'partner_team_leader',
+                'id'      => $this->meta_prefix . 'partner_team_leader',
                 'type'    => 'radio_inline',
                 'default' => true,
                 'options' => array(
@@ -259,7 +264,7 @@
             ) );
             $cmb->add_field( array(
                 'name'    => 'Phone',
-                'id'      => $prefix . 'partner_phone',
+                'id'      => $this->meta_prefix . 'partner_phone',
                 'type'    => 'radio_inline',
                 'default' => true,
                 'options' => array(
@@ -269,7 +274,7 @@
             ) );
             $cmb->add_field( array(
                 'name'    => 'Email',
-                'id'      => $prefix . 'partner_email',
+                'id'      => $this->meta_prefix . 'partner_email',
                 'type'    => 'radio_inline',
                 'default' => true,
                 'options' => array(
@@ -291,7 +296,7 @@
 		 */
 		public function __get( $field ) {
 			// Allowed fields to retrieve
-			if ( in_array( $field, array( 'key', 'metabox_id', 'title', 'options_page' ), true ) ) {
+			if ( in_array( $field, array( 'key', 'metabox_id', 'meta_prefix', 'title', 'options_page' ), true ) ) {
 				return $this->{$field};
 			}
 			

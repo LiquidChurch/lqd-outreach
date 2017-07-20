@@ -171,6 +171,8 @@ function lo_settings_admin($page = null) {
         return LO_Ccb_Events_Page_Settings::get_instance();
     } else if($page == 'additional-info') {
         return LO_Ccb_Events_Info_Setings::get_instance();
+    } else if($page == 'cat-map') {
+        return LO_Ccb_Events_Partner_Cat_Map_Settings::get_instance();
     } else {
         die(__('Invalid page setting key provided', 'liquid-outreach'));
     }
