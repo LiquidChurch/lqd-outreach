@@ -62,6 +62,7 @@
             = array(
                 'liquid_outreach_ccb_events_sync',
                 'lo_admin_ajax_sync_ccb_events',
+                'lo_admin_ajax_delete_ccb_events',
             );
         
         /**
@@ -116,6 +117,8 @@
                 array($this, 'fetch_ccb_events_ccb_ajax_callback'));
             add_action('wp_ajax_lo_admin_ajax_sync_ccb_events',
                 array($this, 'sync_ccb_events_ccb_ajax_callback'));
+            add_action('wp_ajax_lo_admin_ajax_delete_ccb_events',
+                array($this, 'delete_ccb_events_ccb_ajax_callback'));
             add_action('admin_menu', array($this, 'add_admin_menu_page'));
             add_action('cmb2_admin_init', array($this, 'add_options_page_metabox'));
             add_action('before_delete_post', array($this, 'update_api_data_table'));
@@ -411,14 +414,14 @@
                     </div>
                     <div class="cmb-row" style="text-align: center;">
                         <div class="cmb-th">
-                            <button type="buton" data-ccb-events="all"
+                            <button type="button" data-ccb-events="all"
                                     class="button-primary lo-sync-ccb-event"
                                     style="text-align: center;">
                                 Sync All
                             </button>
                         </div>
                         <div class="cmb-th">
-                            <button type="buton" data-ccb-events="synced"
+                            <button type="button" data-ccb-events="synced"
                                     class="button-primary lo-sync-ccb-event"
                                     style="text-align: center;"
                                 <?php echo(0 ==
@@ -427,7 +430,7 @@
                             </button>
                         </div>
                         <div class="cmb-th">
-                            <button type="buton" data-ccb-events="updated"
+                            <button type="button" data-ccb-events="updated"
                                     class="button-primary lo-sync-ccb-event"
                                     style="text-align: center;"
                                 <?php echo(0 ==
@@ -436,12 +439,44 @@
                             </button>
                         </div>
                         <div class="cmb-th">
-                            <button type="buton" data-ccb-events="new"
+                            <button type="button" data-ccb-events="new"
                                     class="button-primary lo-sync-ccb-event"
                                     style="text-align: center;"
                                 <?php echo(0 ==
                                            count($sync_data['data']['new_data']) ? 'disabled' : '') ?>
                             >Sync New
+                            </button>
+                        </div>
+                    </div>
+                    <div class="cmb-row" style="text-align: center;">
+                        <div class="cmb-th">
+                            <button type="button" data-ccb-events="all"
+                                    class="button-primary lo-delete-ccb-event lo-btn-danger">
+                                Delete All
+                            </button>
+                        </div>
+                        <div class="cmb-th">
+                            <button type="button" data-ccb-events="synced"
+                                    class="button-primary lo-delete-ccb-event lo-btn-danger"
+                                <?php echo(0 ==
+                                           count($sync_data['data']['synced_data']) ? 'disabled' : '') ?>
+                            >Delete Existing
+                            </button>
+                        </div>
+                        <div class="cmb-th">
+                            <button type="button" data-ccb-events="updated"
+                                    class="button-primary lo-delete-ccb-event lo-btn-danger"
+                                <?php echo(0 ==
+                                           count($sync_data['data']['updated_data']) ? 'disabled' : '') ?>
+                            >Delete Updated
+                            </button>
+                        </div>
+                        <div class="cmb-th">
+                            <button type="button" data-ccb-events="new"
+                                    class="button-primary lo-delete-ccb-event lo-btn-danger"
+                                <?php echo(0 ==
+                                           count($sync_data['data']['new_data']) ? 'disabled' : '') ?>
+                            >Delete New
                             </button>
                         </div>
                     </div>
@@ -455,11 +490,12 @@
 
                         var blockui_msg_event_sync;
 
+                        /***************sync button func******************/
                         $('.lo-sync-ccb-event').on('click', function (e) {
 
                             e.preventDefault();
 
-                            var confirm_sync = confirm('Are you sure want to process this sync?');
+                            var confirm_sync = confirm('Are you sure want to process this sync ?');
                             if (!confirm_sync) {
                                 return;
                             }
@@ -502,6 +538,55 @@
                             ccb_event_sync_ajax_call(data, blockui_msg_event_sync, ccb_data);
                         });
 
+                        /***************delete button func******************/
+                        $('.lo-delete-ccb-event').on('click', function (e) {
+                            e.preventDefault();
+
+                            var confirm_del = confirm('Are you sure want to process this request, ' +
+                                'all related data from the wp_post and the plugin table will be deleted ?');
+                            if (!confirm_del) {
+                                return;
+                            }
+
+                            var ccb_events_data = {
+                                'all': <?php echo json_encode($sync_data['data']['all_data']) ?>,
+                                'synced': <?php echo json_encode($sync_data['data']['synced_data']) ?>,
+                                'updated': <?php echo json_encode($sync_data['data']['updated_data']) ?>,
+                                'new': <?php echo json_encode($sync_data['data']['new_data']) ?>
+                            };
+
+                            var ccb_data = ccb_events_data[$(this).data('ccb-events')];
+                            var total_data = ccb_data.length, offset = 0, limit = 10;
+                            var ccb_data_chunk = ccb_data.slice(offset, (offset + limit));
+                            var nonce = '<?php echo wp_create_nonce('nonce_lo_delete_ccb_event'); ?>';
+
+                            blockui_msg_event_sync = $('<h2>' +
+                                '<img style="width: 25px; vertical-align: middle;" src="<?php echo Liquid_Outreach::$url .
+                                                                                                   '/assets/images/spinner.svg'?>" /> ' +
+                                'Please Wait...</h2>' +
+                                '<hr/>' +
+                                '<h3 class="lo-page-det" style="color:blue;">Syncing <span class="lo-sync-span">' + (offset + 1) + ' - ' + (offset + limit) + ' of ' + total_data + '</span></h3>' +
+                                '<h3 class="lo-page-error hide-obj" style="display:none; color:red;">Error!!! Trying again.</h3>');
+
+                            var data = {
+                                'action': 'lo_admin_ajax_delete_ccb_events',
+                                'nonce': nonce,
+                                'offset': offset,
+                                'limit': limit,
+                                'data': ccb_data_chunk,
+                                'filter_group': $("#ccb-sync-filter-by-group").val(),
+                                'filter_group_type': $("#ccb-sync-filter-by-group-type").val(),
+                                'filter_dep': $("#ccb-sync-filter-by-dep").val(),
+                                'start_date': $("#start_date").val(),
+                                'end_date': $("#end_date").val()
+                            };
+
+                            $(blockui_msg_event_sync[2]).find('span.lo-sync-span').html((offset + 1) + ' - ' + (offset + limit) + ' of ' + total_data);
+
+                            ccb_event_delete_ajax_call(data, blockui_msg_event_sync, ccb_data);
+                        });
+
+                        /**********ajax handler for ccb post sync*************/
                         var ccb_event_sync_ajax_call = function (data, blockui_msg, ccb_data) {
 
                             if (typeof data['offset'] == 'undefined' || data['offset'] == 0) {
@@ -518,7 +603,6 @@
                                 dataType: "json"
                             }).done(function (res) {
 
-                                console.log(res);
                                 var total_data = ccb_data.length;
                                 data['offset'] = data['offset'] + data['limit'];
                                 data['limit'] = data['limit'];
@@ -538,7 +622,50 @@
                                 } else {
 
                                     $.unblockUI();
-                                    alert('All data has been synced to WP.');
+                                    alert('Selected data has been synced to WP.');
+                                    location.reload();
+                                }
+
+                            });
+                        }
+
+                        /**********ajax handler for ccb post delete**************/
+                        var ccb_event_delete_ajax_call = function (data, blockui_msg, ccb_data) {
+
+                            if (typeof data['offset'] == 'undefined' || data['offset'] == 0) {
+                                $.blockUI({
+                                    message: blockui_msg
+                                });
+                            }
+
+                            var ajax_url = "<?php echo admin_url('admin-ajax.php'); ?>";
+                            $.ajax({
+                                url: ajax_url,
+                                method: 'POST',
+                                data: data,
+                                dataType: "json"
+                            }).done(function (res) {
+
+                                var total_data = ccb_data.length;
+                                data['offset'] = data['offset'] + data['limit'];
+                                data['limit'] = data['limit'];
+
+                                if (data['offset'] < total_data) {
+
+                                    data['data'] = ccb_data.slice(data['offset'], (data['offset'] + data['limit']));
+
+                                    $(blockui_msg[2]).find('span.lo-sync-span').html((data['offset'] + 1) + ' - ' + (data['offset'] + data['limit']) + ' of ' + total_data);
+
+                                    $.blockUI({
+                                        message: blockui_msg
+                                    });
+
+                                    ccb_event_delete_ajax_call(data, blockui_msg_event_sync, ccb_data);
+
+                                } else {
+
+                                    $.unblockUI();
+                                    alert('Selected data has been delete.');
                                     location.reload();
                                 }
 
@@ -751,6 +878,89 @@
             
             $method_key = str_replace('-', '_', $action) . '_handler';
             $this->form_handle_status = $this->{$method_key}();
+        }
+        
+        /**
+         * check if post action is valid
+         * and process data for ajax call delete ccb events
+         *
+         * @since  0.22.2
+         */
+        public function delete_ccb_events_ccb_ajax_callback()
+        {
+            // If no form submission, bail
+            if (empty($_POST)) {
+                return false;
+            }
+            
+            // check required $_POST variables and security nonce
+            if (
+                !isset($_POST['action'], $_POST['nonce'], $_POST['data'])
+                || !wp_verify_nonce($_POST['nonce'],
+                    'nonce_lo_delete_ccb_event')
+            ) {
+                return new WP_Error('security_fail', __('Security check failed.'));
+            }
+            
+            $this->form_submitted = true;
+            $nonce = sanitize_text_field($_POST['nonce']);
+            $action = sanitize_text_field($_POST['action']);
+            
+            if (!in_array($action, $this->acceptable_post_action)) {
+                return new WP_Error('security_fail', __('Post action failed.'));
+            }
+            
+            $method_key = str_replace('-', '_', $action) . '_handler';
+            $this->form_handle_status = $this->{$method_key}();
+        }
+    
+        /**
+         * ccb event delete handler method
+         * deleting data from temp table and wp_posts
+         *
+         * @since  0.22.2
+         */
+        public function lo_admin_ajax_delete_ccb_events_handler() {
+            
+            global $wpdb;
+            
+            if(!empty($_POST['data'])) {
+                foreach ($_POST['data'] as $index => $datum) {
+                    
+                    if(!empty($datum['wp_post_id'])) {
+                        
+                        /********check if group has multiple event posts*********/
+                        $event_query = new WP_Query( "post_type=lo-events&meta_key=lo_ccb_events_group_id&meta_value={$datum['group_id']}");
+                        if ( $event_query->have_posts() ) {
+                            $count = $event_query->post_count;
+                            
+                            if($count < 2) {
+                                /*******deleting related partner post**********/
+                                $eventPartner_post_meta_prefix = 'lo_ccb_event_partner_';
+                                $partner_query = new WP_Query("post_type=lo-event-partners&meta_key=" .
+                                                              $eventPartner_post_meta_prefix .
+                                                              "group_id&meta_value=" .
+                                                              $datum['group_id']);
+    
+                                if ($partner_query->have_posts()) {
+                                    $partner_query->the_post();
+                                    global $post;
+                                    wp_delete_post($post->ID);
+                                    wp_reset_postdata();
+                                }
+                                /*******deleting related partner post**********/
+                            }
+    
+                        }
+    
+                        /*******deleting event post**********/
+                        wp_delete_post($datum['wp_post_id']);
+                    }
+    
+                    $wpdb->delete( $wpdb->prefix . 'lo_ccb_events_api_data',
+                        ['ccb_event_id' => $datum['ccb_event_id']] );
+                }
+            }
         }
         
         /**
@@ -981,25 +1191,47 @@
             );
             $partner_data = json_decode($partner_api_data['data'], 1);
             
-            if(isset($partner_data['count']) && $partner_data['count'] > 0) {
-    
+            if (isset($partner_data['count']) && $partner_data['count'] > 0) {
+                
                 $meta_input[$eventPartner_post_meta_prefix . 'location'] = [];
                 
-                $partner_data_address = isset($partner_data['group']['addresses']['address']) ? $partner_data['group']['addresses']['address'] : [];
+                $partner_data_address
+                    = isset($partner_data['group']['addresses']['address']) ? $partner_data['group']['addresses']['address'] : [];
                 
-                isset($partner_data_address['street_address']) ? $meta_input[$eventPartner_post_meta_prefix . 'location'][] = $partner_data_address['street_address'] : null;
-                isset($partner_data_address['city']) ? $meta_input[$eventPartner_post_meta_prefix . 'location'][] = $partner_data_address['city'] : null;
-                isset($partner_data_address['state']) ? $meta_input[$eventPartner_post_meta_prefix . 'location'][] = $partner_data_address['state'] : null;
-                isset($partner_data_address['zip']) ? $meta_input[$eventPartner_post_meta_prefix . 'location'][] = $partner_data_address['zip'] : null;
-                isset($partner_data_address['line_1']) ? $meta_input[$eventPartner_post_meta_prefix . 'location'][] = $partner_data_address['line_1'] : null;
-                isset($partner_data_address['line_2']) ? $meta_input[$eventPartner_post_meta_prefix . 'location'][] = $partner_data_address['line_2'] : null;
+                isset($partner_data_address['street_address']) ?
+                    $meta_input[$eventPartner_post_meta_prefix . 'location'][]
+                        = $partner_data_address['street_address'] : null;
+                isset($partner_data_address['city']) ?
+                    $meta_input[$eventPartner_post_meta_prefix . 'location'][]
+                        = $partner_data_address['city'] : null;
+                isset($partner_data_address['state']) ?
+                    $meta_input[$eventPartner_post_meta_prefix . 'location'][]
+                        = $partner_data_address['state'] : null;
+                isset($partner_data_address['zip']) ?
+                    $meta_input[$eventPartner_post_meta_prefix . 'location'][]
+                        = $partner_data_address['zip'] : null;
+                isset($partner_data_address['line_1']) ?
+                    $meta_input[$eventPartner_post_meta_prefix . 'location'][]
+                        = $partner_data_address['line_1'] : null;
+                isset($partner_data_address['line_2']) ?
+                    $meta_input[$eventPartner_post_meta_prefix . 'location'][]
+                        = $partner_data_address['line_2'] : null;
                 
-                $partner_data_main_lead = isset($partner_data['group']['main_leader']) ? $partner_data['group']['main_leader'] : [];
+                $partner_data_main_lead
+                    = isset($partner_data['group']['main_leader']) ? $partner_data['group']['main_leader'] : [];
                 
-                isset($partner_data_main_lead['full_name']) ? $meta_input[$eventPartner_post_meta_prefix . 'team_leader'] = $partner_data_main_lead['full_name'] : null;
-                isset($partner_data_main_lead['id']) ? $meta_input[$eventPartner_post_meta_prefix . 'team_leader_id'] = $partner_data_main_lead['id'] : null;
-                isset($partner_data_main_lead['phones']['phone']['value']) ? $meta_input[$eventPartner_post_meta_prefix . 'phone'] = $partner_data_main_lead['phones']['phone']['value'] : null;
-                isset($partner_data_main_lead['email']) ? $meta_input[$eventPartner_post_meta_prefix . 'email'] = $partner_data_main_lead['email'] : null;
+                isset($partner_data_main_lead['full_name']) ?
+                    $meta_input[$eventPartner_post_meta_prefix . 'team_leader']
+                        = $partner_data_main_lead['full_name'] : null;
+                isset($partner_data_main_lead['id']) ?
+                    $meta_input[$eventPartner_post_meta_prefix . 'team_leader_id']
+                        = $partner_data_main_lead['id'] : null;
+                isset($partner_data_main_lead['phones']['phone']['value']) ?
+                    $meta_input[$eventPartner_post_meta_prefix . 'phone']
+                        = $partner_data_main_lead['phones']['phone']['value'] : null;
+                isset($partner_data_main_lead['email']) ?
+                    $meta_input[$eventPartner_post_meta_prefix . 'email']
+                        = $partner_data_main_lead['email'] : null;
                 
             }
             
@@ -1023,6 +1255,31 @@
                     'meta_input' => $meta_input
                 ]);
             }
+        }
+        
+        /**
+         * set post title from mapping
+         *
+         * @since 0.21.2
+         * @param $title
+         */
+        public function set_post_title($title)
+        {
+            $settings_key = $this->plugin->lo_ccb_events_name_map_settings->meta_prefix;
+            $map = lo_get_option('name-map', $settings_key . 'name_mapping');
+            
+            if (empty($map)) {
+                return $title;
+            }
+            
+            foreach ($map as $index => $single_map) {
+                if (strpos(strtolower($title), strtolower($single_map['title'])) !== false) {
+                    $title = $single_map['replace_title'];
+                    break;
+                }
+            }
+            
+            return $title;
         }
         
         /**
@@ -1171,30 +1428,6 @@
                     wp_set_object_terms($postID, $map['event_categroy'], 'event-category');
                 }
             }
-        }
-    
-        /**
-         * set post title from mapping
-         *
-         * @since 0.22.2
-         * @param $title
-         */
-        public function set_post_title($title) {
-            $settings_key = $this->plugin->lo_ccb_events_name_map_settings->meta_prefix;
-            $map = lo_get_option('name-map', $settings_key . 'name_mapping');
-    
-            if (empty($map)) {
-                return $title;
-            }
-            
-            foreach ($map as $index => $single_map) {
-                if (strpos(strtolower($title), strtolower($single_map['title'])) !== false) {
-                    $title = $single_map['replace_title'];
-                    break;
-                }
-            }
-            
-            return $title;
         }
         
         /**

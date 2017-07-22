@@ -503,3 +503,12 @@ city page***************
     float: left;
     width:40%;
 }
+
+.lo-btn-danger {
+    text-align: center;
+    background-color: #cc0000 !important;
+    border-color: #5b0000 !important;
+    -webkit-box-shadow: 0 1px 0 #5b0000 !important;
+    box-shadow: 0 1px 0 #5b0000 !important;
+    text-shadow: 0 -1px 1px #5b0000, 1px 0 1px #5b0000, 0 1px 1px #5b0000, -1px 0 1px #5b0000 !important;
+}
