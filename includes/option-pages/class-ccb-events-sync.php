@@ -814,7 +814,7 @@
                     
                     //create events post
                     $event_post_data = [
-                        'title'      => $ccb_event_datum['title'],
+                        'title'      => $this->set_post_title($ccb_event_datum['title']),
                         'content'    => $ccb_event_datum['description'],
                         'meta_input' => [
                             $event_post_meta_prefix .
@@ -1171,6 +1171,30 @@
                     wp_set_object_terms($postID, $map['event_categroy'], 'event-category');
                 }
             }
+        }
+    
+        /**
+         * set post title from mapping
+         *
+         * @since 0.22.2
+         * @param $title
+         */
+        public function set_post_title($title) {
+            $settings_key = $this->plugin->lo_ccb_events_name_map_settings->meta_prefix;
+            $map = lo_get_option('name-map', $settings_key . 'name_mapping');
+    
+            if (empty($map)) {
+                return $title;
+            }
+            
+            foreach ($map as $index => $single_map) {
+                if (strpos(strtolower($title), strtolower($single_map['title'])) !== false) {
+                    $title = $single_map['replace_title'];
+                    break;
+                }
+            }
+            
+            return $title;
         }
         
         /**

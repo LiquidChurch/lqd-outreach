@@ -110,7 +110,7 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
     /**
      * Returns the running object
      *
-     * @return LO_Ccb_Events_Info_Setings
+     * @return LO_Ccb_Events_Info_Settings
      * @since 0.3.4
      */
     public static function get_instance()

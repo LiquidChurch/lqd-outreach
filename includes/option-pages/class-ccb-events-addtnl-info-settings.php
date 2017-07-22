@@ -12,7 +12,7 @@
 	 *
 	 * @since 0.3.4
 	 */
-	class LO_Ccb_Events_Info_Setings extends LO_Base_Option_Page{
+	class LO_Ccb_Events_Info_Settings extends LO_Base_Option_Page{
 
         /**
          * Holds an instance of the object
@@ -73,7 +73,7 @@
         /**
          * Returns the running object
          *
-         * @return LO_Ccb_Events_Info_Setings
+         * @return LO_Ccb_Events_Info_Settings
          * @since 0.3.4
          */
         public static function get_instance() {

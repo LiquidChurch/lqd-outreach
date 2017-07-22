@@ -164,15 +164,17 @@ abstract class LO_Base_Option_Page {
  * Helper function to get/return the Myprefix_Admin object
  *
  * @since  0.3.4
- * @return LO_Ccb_Events_Info_Setings object
+ * @return LO_Ccb_Events_Info_Settings object
  */
 function lo_settings_admin($page = null) {
     if($page == 'page') {
         return LO_Ccb_Events_Page_Settings::get_instance();
     } else if($page == 'additional-info') {
-        return LO_Ccb_Events_Info_Setings::get_instance();
+        return LO_Ccb_Events_Info_Settings::get_instance();
     } else if($page == 'cat-map') {
         return LO_Ccb_Events_Partner_Cat_Map_Settings::get_instance();
+    }  else if($page == 'name-map') {
+        return LO_Ccb_Events_Name_Map_Settings::get_instance();
     } else {
         die(__('Invalid page setting key provided', 'liquid-outreach'));
     }

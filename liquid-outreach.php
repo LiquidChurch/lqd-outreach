@@ -162,12 +162,12 @@
         protected $lo_ccb_events_sync;
         
         /**
-         * Instance of LO_Ccb_Events_Info_Setings
+         * Instance of LO_Ccb_Events_Info_Settings
          *
          * @since 0.3.4
-         * @var LO_Ccb_Events_Info_Setings
+         * @var LO_Ccb_Events_Info_Settings
          */
-        protected $lo_ccb_events_info_setings;
+        protected $lo_ccb_events_info_settings;
         
         /**
          * Instance of LO_Ccb_Events_Page_Settings
@@ -495,9 +495,10 @@
             $this->lo_ccb_event_partners = new LO_Ccb_Event_Partners($this);
             $this->lo_ccb_event_categories = new LO_Ccb_Event_Categories($this);
             $this->lo_shortcodes = new LO_Shortcodes($this);
-            $this->lo_ccb_events_info_setings = LO_Ccb_Events_Info_Setings::get_instance();
+            $this->lo_ccb_events_info_settings = LO_Ccb_Events_Info_Settings::get_instance();
             $this->lo_ccb_events_page_settings = LO_Ccb_Events_Page_Settings::get_instance();
             $this->lo_ccb_events_partner_cat_map_settings = LO_Ccb_Events_Partner_Cat_Map_Settings::get_instance();
+            $this->lo_ccb_events_name_map_settings = LO_Ccb_Events_Name_Map_Settings::get_instance();
             
             if (is_admin()) {
                 $this->lo_ccb_api_event_profiles = new Lo_Ccb_api_event_profiles($this);
@@ -665,7 +666,7 @@
                 case 'lo_ccb_api_group_profile_from_id':
                 case 'lo_ccb_api_individual_profile':
                 case 'lo_ccb_api_attendance_profile':
-                case 'lo_ccb_events_info_setings':
+                case 'lo_ccb_events_info_settings':
                     return $this->$field;
                 default:
                     throw new Exception('Invalid ' . __CLASS__ . ' property: ' . $field);
