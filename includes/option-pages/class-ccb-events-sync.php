@@ -959,6 +959,8 @@
     
                     $wpdb->delete( $wpdb->prefix . 'lo_ccb_events_api_data',
                         ['ccb_event_id' => $datum['ccb_event_id']] );
+                    $wpdb->delete( $wpdb->prefix . 'lo_ccb_groups_api_data',
+                        ['ccb_group_id' => $datum['group_id']] );
                 }
             }
         }
