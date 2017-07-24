@@ -161,14 +161,13 @@
          */
         public function columns($columns)
         {
-            $new_column = [];
+            $last = [];
             if ($this->id == 'lo-events') {
-                $new_column = array(
-                    'lo-event-start-date' => 'Event Start Date'
-                );
+                $last = array_splice($columns, 3);
+                $columns['lo-event-start-date'] = __('Event Start Date', 'liquid-outreach');
             }
-            
-            return array_merge($columns, $new_column);
+
+            return array_merge($columns, $last);
         }
         
         /**
@@ -184,7 +183,7 @@
             if ($this->id == 'lo-events') {
                 if ($column == 'lo-event-start-date') {
                     $date = get_post_meta($post_id, 'lo_ccb_events_start_date', true);
-                    $date = !empty($date) ? date("Y-m-d H:i:s", $date) : '';
+                    $date = !empty($date) ? date("Y-m-d H:i", $date) : '';
                     echo $date;
                 }
             }
