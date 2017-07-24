@@ -14,6 +14,7 @@
     "tests"
   ],
   "dependencies": {
-    "blockUI": "*"
+    "blockUI": "*",
+    "select2": "*"
   }
 }

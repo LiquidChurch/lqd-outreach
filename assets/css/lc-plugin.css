@@ -512,3 +512,15 @@ city page***************
     box-shadow: 0 1px 0 #5b0000 !important;
     text-shadow: 0 -1px 1px #5b0000, 1px 0 1px #5b0000, 0 1px 1px #5b0000, -1px 0 1px #5b0000 !important;
 }
+.ccb-options-page .cmb2-wrap .cmb-row .cmb-th {
+    padding:0 10px 0 0;
+}
+.ccb-options-page .cmb2-wrap .cmb-row .cmb-td {
+    padding:0 10px 0 0;
+}
+.ccb-options-page .cmb2-wrap .sync-btns .cmb-th {
+    padding:10px 0 0 0;
+}
+.ccb-options-page .cmb2-wrap .ccb-sync-individuals-form .ccb-form-elem .cmb-th {
+    padding:10px 0 0 0;
+}
