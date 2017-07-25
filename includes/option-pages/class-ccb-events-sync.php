@@ -528,6 +528,7 @@
                                         <?php
                                             $args   = [
                                                 'post_type' => "lo-events",
+                                                'posts_per_page' => -1,
                                                 'meta_key'  => "lo_ccb_events_start_date",
                                                 'orderby'   => "meta_value_num",
                                                 'order'     => "ASC",
