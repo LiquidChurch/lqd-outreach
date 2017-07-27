@@ -96,7 +96,6 @@
                         'title',
                         'editor',
                         'excerpt',
-                        'thumbnail'
                     ),
                     'menu_icon'    => 'dashicons-admin-post',
                     // https://developer.wordpress.org/resource/dashicons/
@@ -286,6 +285,14 @@
                 'desc' => __('', 'liquid-outreach'),
                 'id'   => $prefix . 'email',
                 'type' => 'text_email',
+            ));
+
+            //Event Image
+            $cmb_additional->add_field(array(
+                'name' => __('Image', 'liquid-outreach'),
+                'desc' => __('', 'liquid-outreach'),
+                'id'   => $prefix . 'image',
+                'type' => 'file',
             ));
             
             //list_of_projects meta

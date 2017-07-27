@@ -1,34 +1,34 @@
 <?php
 
 /**
- * Liquid Outreach API Event Profiles
+ * Liquid Outreach API Event Profile
  *
- * @since 0.0.5
+ * @since 0.24.0
  * @package Liquid_Outreach
  */
-class Lo_Ccb_api_event_profiles extends Lo_Ccb_api_main
+class Lo_Ccb_api_event_profile extends Lo_Ccb_api_main
 {
     /**
      * @var string
-     * @since 0.0.5
+     * @since 0.24.0
      */
-    protected $api_name    = "event_profiles";
+    protected $api_name    = "event_profile";
     
     /**
      * @var string
-     * @since 0.0.5
+     * @since 0.24.0
      */
-    protected $api_req_str = "srv=event_profiles";
+    protected $api_req_str = "srv=event_profile";
     
     /**
      * @var string
-     * @since 0.0.5
+     * @since 0.24.0
      */
     protected $api_url = "";
     
     /**
      * @var
-     * @since 0.0.5
+     * @since 0.24.0
      */
     protected $api_fields;
     
@@ -36,7 +36,7 @@ class Lo_Ccb_api_event_profiles extends Lo_Ccb_api_main
      * Lo_Ccb_api_event_profiles constructor.
      *
      * @param $plugin
-     * @since 0.0.5
+     * @since 0.24.0
      */
     public function __construct($plugin)
     {
@@ -45,11 +45,11 @@ class Lo_Ccb_api_event_profiles extends Lo_Ccb_api_main
     
     /**
      *
-     * @since 0.0.5
+     * @since 0.24.0
      */
     public function api_map($data = [])
     {
-        $this->map_fields();
+        $this->map_fields($data);
         $this->mod_req_str();
         $this->call_ccb_api();
         $this->process_api_response();
@@ -57,7 +57,7 @@ class Lo_Ccb_api_event_profiles extends Lo_Ccb_api_main
     
     /**
      *
-     * @since 0.0.5
+     * @since 0.24.0
      */
     public function mod_req_str() {
         $add_req_str = http_build_query($this->api_fields);
@@ -66,28 +66,19 @@ class Lo_Ccb_api_event_profiles extends Lo_Ccb_api_main
     
     /**
      * @return WP_Error
-     * @since 0.0.5
+     * @since 0.24.0
      */
-    public function map_fields()
+    public function map_fields($data)
     {
-        $post_fields = [
-            'modified_since' => !empty($_POST['modified_since']) ? date('Y-m-d', strtotime($_POST['modified_since'])) : ''
-        ];
-
         $this->api_fields = [
-            'page' => !empty($_POST['page']) ? $_POST['page'] : 1,
-            'per_page' => !empty($_POST['per_page']) ? $_POST['per_page'] : 25,
+            'id' => $data['event_id'],
             'include_image_link' => !empty($_POST['per_page']) ? $_POST['include_image_link'] : true
         ];
-        
-        if(!empty($post_fields['modified_since'])) {
-            $this->api_fields['modified_since'] = $post_fields['modified_since'];
-        }
     }
     
     /**
      *
-     * @since 0.0.5
+     * @since 0.24.0
      */
     public function call_ccb_api()
     {

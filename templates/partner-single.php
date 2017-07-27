@@ -2,7 +2,7 @@
     $partner_post = $this->get('post');
     $meta_prefix = 'lo_ccb_event_partner_';
     $info_settings = lo_get_option('additional-info', 'all');
-    $image = $partner_post->featured_image('thumbnail');
+    $image = $partner_post->get_meta($meta_prefix . 'image');
 ?>
 
 <div class="container-fluid lo-custom-container panel lo-panel-custom">
@@ -21,7 +21,7 @@
                         if (!empty($image)) {
                             ?>
                             <div class="col-md-4 text-center">
-                                <?php echo $image; ?>
+                                <img src="<?php echo $image ?>" alt="<?php echo $partner_post->title() ?>"/>
                             </div>
                             <?php
                         }

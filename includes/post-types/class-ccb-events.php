@@ -94,7 +94,6 @@
                         'title',
                         'editor',
                         'excerpt',
-                        'thumbnail',
                     ),
                     'menu_icon'    => 'dashicons-admin-post',
                     // https://developer.wordpress.org/resource/dashicons/
@@ -280,6 +279,14 @@
                 'desc' => __('', 'liquid-outreach'),
                 'id'   => $prefix . 'city',
                 'type' => 'text',
+            ));
+
+            //Event Image
+            $cmb_additional->add_field(array(
+                'name' => __('Event Image', 'liquid-outreach'),
+                'desc' => __('', 'liquid-outreach'),
+                'id'   => $prefix . 'image',
+                'type' => 'file',
             ));
             
             // Define our metaboxes and fields.

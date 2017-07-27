@@ -76,9 +76,9 @@ class Lo_Ccb_api_group_profile_from_id extends Lo_Ccb_api_main
 
         $this->api_fields = [
             'id' => $post_fields['id'],
-            'include_image_link' => !empty($_POST['per_page']) ? $_POST['include_image_link'] : false
+            'include_image_link' => !empty($_POST['per_page']) ? $_POST['include_image_link'] : true
         ];
-        
+
     }
     
     /**

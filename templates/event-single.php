@@ -33,7 +33,13 @@
 
                 <div class="lo-description">
                     <?php
-                        echo $event_post->featured_image('large');
+                        $events_image = $event_post->get_meta($meta_prefix . 'image');
+                        if ( ! empty($events_image))
+                        {
+                            ?>
+                            <img src="<?php echo $events_image ?>" alt="<?php echo $event_post->title() ?>"/>
+                            <?php
+                        }
                     ?>
                     <hr/>
                     
@@ -81,13 +87,12 @@
                         = LO_Ccb_Base_Function::check_details_display_enabled($event_post->post->ID,
                         'lo_events_info_cost');
                     if ($show == '1') {
+                        $cost = ! empty($event_post->get_meta($meta_prefix . 'cost')) ? "$/{$event_post->get_meta($meta_prefix . 'cost')}" : __('None', 'liquid-outreach');
                         ?>
                         <div class="row">
                             <div class="col-md-5 "><strong>Cost</strong></div>
                             <div class="col-md-1">&#8594</div>
-                            <div class="col-md-6"><?php echo '$' .
-                                                             $event_post->get_meta($meta_prefix .
-                                                                                   'cost') ?></div>
+                            <div class="col-md-6"><?php echo $cost ?></div>
                         </div>
                         <?php
                     }
@@ -125,15 +130,17 @@
                         = LO_Ccb_Base_Function::check_details_display_enabled($event_post->post->ID,
                         'lo_events_info_categories');
                     if ($show == '1') {
-                        ?>
-                        <div class="row">
-                            <div class="col-md-5 "><strong>Categories</strong></div>
-                            <div class="col-md-1">&#8594</div>
-                            <div class="col-md-6">
-                                <?php
-                                    $categories = $event_post->get_event_categories();
-                                    
-                                    if (!empty($categories)) {
+                        $categories = $event_post->get_event_categories();
+
+                        if ( ! empty($categories))
+                        {
+                            ?>
+                            <div class="row">
+                                <div class="col-md-5 "><strong>Categories</strong></div>
+                                <div class="col-md-1">&#8594</div>
+                                <div class="col-md-6">
+                                    <?php
+
                                         foreach ($categories as $index => $category) {
                                             ?>
                                             <div class="lo-cat-img">
@@ -141,12 +148,11 @@
                                             </div>
                                             <?php
                                         }
-                                    }
-                                ?>
-
+                                    ?>
+                                </div>
                             </div>
-                        </div>
-                        <?php
+                            <?php
+                        }
                     }
                 ?>
                 
