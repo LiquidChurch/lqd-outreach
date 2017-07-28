@@ -1,7 +1,21 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 0.24.0 - 25-07-2017
+## [Unreleased]
+### Added
+
+### Changed
+
+### Fixed
+
+### Removed
+
+### Deprecated
+
+### Security
+- Add API credentials to options page
+
+## [0.24.0] - 2017-07-28
 ### Added
 - Add Ability to Bulk Publish Events
 - Add Ability to Override Outreach Details Page Settings on Each Outreach Page
@@ -21,18 +35,11 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Fix sync of partners
 
-### Removed
-
-### Deprecated
-
-### Security
-- Add API credentials to options page
-
-## [0.11.2] - 2015-06-17
+## [0.11.2] - 2017-06-17
 ### Added
 - Custom permalink base2 for outreach events, categories, partners.
 
-## [0.11.1] - 2015-06-16
+## [0.11.1] - 2017-06-16
 ### Added
 - Custom permalink base for outreach events, categories, partners.
 
@@ -43,7 +50,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Search page nav menu fix
 
-## [0.10.0] - 2015-06-10
+## [0.10.0] - 2017-06-10
 ### Added
 - Add Options Page for various page settings
 - Header image option for event categories
@@ -62,7 +69,7 @@ All notable changes to this project will be documented in this file.
 - Small Fix: Addition Info Not Lining Up
 - Small Fix: Date & Time Customization
 
-## [0.7.0] - 2015-05-27
+## [0.7.0] - 2017-05-27
 ### Added
 - Event categories shortcode btn fields
 - Event categories single shortcode btn fields
@@ -85,7 +92,7 @@ All notable changes to this project will be documented in this file.
 - Single event page time display format fix
 - Nav menu css fix
 
-## [0.5.0] - 2015-05-26
+## [0.5.0] - 2017-05-26
 ### Changed
 - DB schema change for group_type filter
 - Group type filter for event sync to wp_post
@@ -94,7 +101,7 @@ All notable changes to this project will be documented in this file.
 - Hide CCB Group ID meta field from Outreach Partner post type
 - Update Outreach Partner posts when updating Outreach Event posts from sync page
 
-## [0.4.5] - 2015-05-26
+## [0.4.5] - 2017-05-26
 ### Added
 - Event Category Shortcode
 
@@ -107,11 +114,12 @@ All notable changes to this project will be documented in this file.
 - Submenu auto open when hover
 - Code Fixes
 
-## [0.3.8] - 2015-05-22
+## [0.3.8] - 2017-05-22
 ### Added
 - Stable release of the plugin functionality
 
-[Unreleased]: https://github.com/LiquidChurch/lqd-outreach/compare/v0.11.2...HEAD
+[Unreleased]: https://github.com/LiquidChurch/lqd-outreach/compare/v0.24.0...HEAD
+[0.24.0]: https://github.com/LiquidChurch/lqd-outreach/compare/v0.11.2..v0.24.0
 [0.11.2]: https://github.com/LiquidChurch/lqd-outreach/compare/v0.11.1..v0.11.2
 [0.11.1]: https://github.com/LiquidChurch/lqd-outreach/compare/v0.10.0..v0.11.1
 [0.10.0]: https://github.com/LiquidChurch/lqd-outreach/compare/v0.7.0...v0.10.0
