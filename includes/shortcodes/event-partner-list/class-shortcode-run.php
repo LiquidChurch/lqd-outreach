@@ -59,21 +59,7 @@
                 $content_arr['cities'] = $cities = liquid_outreach()->lo_ccb_events->get_all_city_list();
             }
 
-            if ($this->cat_page != NULL)
-            {
-                $partners = liquid_outreach()->lo_ccb_event_partners->get_similar($this->cat_page, [
-                    'post_type'      => liquid_outreach()->lo_ccb_event_partners->post_type(),
-                    'posts_per_page' => -1,
-                ]);
-            } else
-            {
-                $partners = liquid_outreach()->lo_ccb_event_partners->get_many([
-                    'post_type'      => liquid_outreach()->lo_ccb_event_partners->post_type(),
-                    'posts_per_page' => -1,
-                ]);
-            }
-
-            $content_arr['partners'] = ! empty($partners->posts) ? $partners->posts : [];
+            $content_arr = array_merge($content_arr, $this->get_partner_list());
 
             $content_arr = array_merge($content_arr, $this->get_base_pages());
 

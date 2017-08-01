@@ -43,7 +43,7 @@
          * @var string
          * @since 0.25.0
          */
-        public $cat_page = NULL;
+        public $force_cat_page = NULL;
 
         /**
          * Constructor
@@ -66,7 +66,7 @@
         }
 
         public function shortcode() {
-            $this->cat_page = !empty($_GET['lo-cat-page']) ? $_GET['lo-cat-page'] : $this->att('event_cat_slug');
+            $this->force_cat_page = !empty($_GET['lo-cat-page']) ? $_GET['lo-cat-page'] : $this->att('force_cat_slug');
         }
 
         public function get_inline_styles()
@@ -100,10 +100,10 @@
             $arr['page_link']      = [];
             $arr['page_link']['page_query_arr']      = [];
 
-            if ($this->cat_page != NULL)
+            if ($this->force_cat_page != NULL)
             {
                 $arr['page_link']['page_query_arr'] = [
-                    'lo-cat-page' => empty($this->cat_page) ? '' : $this->cat_page
+                    'lo-cat-page' => empty($this->force_cat_page) ? '' : $this->force_cat_page
                 ];
 
                 $page_query = http_build_query($arr['page_link']['page_query_arr']);
@@ -114,7 +114,7 @@
 
                 foreach ($this->page_settings['lo_events_page_cat_base_page_mapping'] as $map_index => $map_value)
                 {
-                    if ($this->cat_page == $map_value['category'])
+                    if ($this->force_cat_page == $map_value['category'])
                     {
                         $arr['page_link']['main'] = get_permalink($map_value['page']);
                         break;
@@ -135,9 +135,9 @@
          * @since 0.25.0
          */
         public function get_category_list() {
-            if ($this->cat_page != NULL)
+            if ($this->force_cat_page != NULL)
             {
-                $arr['categories'] = $categories = liquid_outreach()->lo_ccb_event_categories->get_similar($this->cat_page);
+                $arr['categories'] = $categories = liquid_outreach()->lo_ccb_event_categories->get_similar($this->force_cat_page);
             } else
             {
                 $arr['categories'] = $categories = liquid_outreach()->lo_ccb_event_categories->get_many([
@@ -145,6 +145,23 @@
                 ]);
             }
             return $arr;
+        }
+
+        public function get_partner_list() {
+            if ($this->force_cat_page != NULL)
+            {
+                $partners = liquid_outreach()->lo_ccb_event_partners->get_similar($this->force_cat_page, [
+                    'post_type'      => liquid_outreach()->lo_ccb_event_partners->post_type(),
+                    'posts_per_page' => -1,
+                ]);
+            } else
+            {
+                $partners = liquid_outreach()->lo_ccb_event_partners->get_many([
+                    'post_type'      => liquid_outreach()->lo_ccb_event_partners->post_type(),
+                    'posts_per_page' => -1,
+                ]);
+            }
+            return !empty($partners) ? ['partners' => $partners->posts] : [];
         }
 
     }

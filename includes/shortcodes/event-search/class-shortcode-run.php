@@ -80,17 +80,11 @@ class LO_Shortcodes_Event_Search_Run extends LO_Shortcodes_Run_Base
 
         if(!$disable['nav'] || !$disable['cateogy_list']) {
 
-            $content_arr['categories'] = $categories = liquid_outreach()->lo_ccb_event_categories->get_many([
-                'hide_empty' => true
-            ]);
+            $content_arr = array_merge($content_arr, $this->get_category_list());
 
             $content_arr['cities'] = $cities = liquid_outreach()->lo_ccb_events->get_all_city_list();
 
-            $partners = liquid_outreach()->lo_ccb_event_partners->get_many([
-                'post_type' => liquid_outreach()->lo_ccb_event_partners->post_type(),
-                'posts_per_page' => -1,
-            ]);
-            $content_arr['partners'] = !empty($partners->posts) ? $partners->posts : [];
+            $content_arr = array_merge($content_arr, $this->get_partner_list());
         }
 
         $content_arr = array_merge($content_arr, $this->get_base_pages());
@@ -112,11 +106,11 @@ class LO_Shortcodes_Event_Search_Run extends LO_Shortcodes_Run_Base
         $paged = (int)get_query_var('paged') ? get_query_var('paged') : 1;
         $offset = (($paged - 1) * 10);
         $tax_query = [];
-        if($this->cat_page != null) {
+        if($this->force_cat_page != null) {
             $tax_query[] =             array(
                 'taxonomy' => liquid_outreach()->lo_ccb_event_categories->taxonomy(),
                 'field' => 'slug',
-                'terms' => $this->cat_page,
+                'terms' => $this->force_cat_page,
             );
         }
 

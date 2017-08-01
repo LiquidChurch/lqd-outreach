@@ -71,7 +71,7 @@
             $fields[] = array(
                 'name'           => 'Select Event Category',
                 'desc'           => 'Select event category',
-                'id'             => 'event_cat_slug',
+                'id'             => 'force_cat_slug',
                 'taxonomy'       => 'event-category', //Enter Taxonomy Slug
                 'type'           => 'taxonomy_select',
                 'remove_default' => 'true' // Removes the default metabox provided by WP core. Pending release as of Aug-10-16
@@ -101,7 +101,7 @@
          */
         public $atts_defaults
             = array(
-                'event_cat_slug' => NULL
+                'force_cat_slug' => NULL
             );
 
         /**
@@ -133,7 +133,7 @@
 
             $content_arr['cities']   = $cities = liquid_outreach()->lo_ccb_events->get_all_city_list();
 
-            $content_arr['cat_page'] = $this->cat_page;
+            $content_arr['force_cat_page'] = $this->force_cat_page;
 
             $content_arr['page_settings'] = $this->page_settings;
 

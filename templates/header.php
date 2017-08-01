@@ -1,12 +1,12 @@
 <?php
-    $cat_page      = $this->get('cat_page');
+    $force_cat_page      = $this->get('force_cat_page');
     $event_cat_tax = liquid_outreach()->lo_ccb_event_categories->taxonomy();
 
-    if (is_category($event_cat_tax) || is_tax($event_cat_tax) || $cat_page != NULL)
+    if (is_category($event_cat_tax) || is_tax($event_cat_tax) || $force_cat_page != NULL)
     {
-        if ($cat_page != NULL)
+        if ($force_cat_page != NULL)
         {
-            $term = get_term_by('slug', $cat_page, $event_cat_tax);
+            $term = get_term_by('slug', $force_cat_page, $event_cat_tax);
         } else
         {
             $term = get_term_by('slug', get_query_var('term'), get_query_var('taxonomy'));

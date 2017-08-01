@@ -71,7 +71,7 @@ class LO_Shortcodes_Header_Element_Admin extends LO_Shortcodes_Admin_Base
         $fields[] = array(
             'name'           => 'Select Event Category',
             'desc'           => 'Select event category',
-            'id'             => 'event_cat_slug',
+            'id'             => 'force_cat_slug',
             'taxonomy'       => 'event-category', //Enter Taxonomy Slug
             'type'           => 'taxonomy_select',
             'remove_default' => 'true' // Removes the default metabox provided by WP core. Pending release as of Aug-10-16
@@ -100,7 +100,7 @@ class LO_Shortcodes_Header_Element_Run extends LO_Shortcodes_Run_Base
      * @since 0.7.0
      */
     public $atts_defaults = array(
-        'event_cat_slug' => null
+        'force_cat_slug' => null
     );
 
     /**
@@ -124,7 +124,7 @@ class LO_Shortcodes_Header_Element_Run extends LO_Shortcodes_Run_Base
 
         $content_arr = [];
 
-        $content_arr['cat_page'] = $this->cat_page;
+        $content_arr['force_cat_page'] = $this->force_cat_page;
 
         $content_arr = array_merge($content_arr, $this->get_base_pages());
 
