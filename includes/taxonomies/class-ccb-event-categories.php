@@ -319,7 +319,7 @@ class LO_Ccb_Event_Categories extends Taxonomy_Core
      * @return array|bool|WP_Error
      * @since 0.25.0
      */
-    public function get_similar_terms($term_slug, $args = array(), $single_term_args = array()) {
+    public function get_similar($term_slug, $args = array(), $single_term_args = array()) {
 
         $args = wp_parse_args($args, $this->term_get_many_args_defaults);
         $args = apply_filters("lo_get_{$this->id}_args", $args);

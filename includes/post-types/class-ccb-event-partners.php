@@ -348,6 +348,77 @@
 		    }
 		    return $partners;
 	    }
+
+        /**
+         * @param $term_slug
+         * @param $args
+         *
+         * @return bool|WP_Query
+         * @since 0.25.0
+         */
+	    public function get_similar($term_slug, $args)
+	    {
+            $term = get_term_by('slug', $term_slug, 'event-category');
+
+            $posts_array = get_posts(
+                array(
+                    'posts_per_page' => -1,
+                    'post_type' => 'lo-events',
+                    'tax_query' => array(
+                        array(
+                            'taxonomy' => 'event-category',
+                            'field' => 'term_id',
+                            'terms' => $term->term_id,
+                        )
+                    )
+                )
+            );
+
+            $group_ids = [];
+            foreach ($posts_array as $index => $item)
+            {
+                $group_ids[] = get_post_meta($item->ID, 'lo_ccb_events_group_id', true);
+            }
+
+            if(empty($group_ids)) {
+                return false;
+            }
+
+            $meta_query = [];
+            $meta_query['relation'] = 'OR';
+
+            foreach ($group_ids as $index => $group_id)
+            {
+                $meta_query[] = array(
+                    'key'     => 'lo_ccb_event_partner_group_id',
+                    'value'   => $group_id,
+                    'compare' => '='
+                );
+
+            }
+
+            $defaults = $this->query_args;
+		    $args['augment_posts'] = true;
+		    $args['orderby'] = 'title';
+		    $args['order'] = 'ASC';
+		    $args['meta_query'] = $meta_query;
+		    $args = apply_filters('lo_get_event_partners_similar_args', wp_parse_args($args, $defaults));
+
+		    $partners = new WP_Query($args);
+
+		    if (
+			    isset($args['augment_posts'])
+			    && $args['augment_posts']
+			    && $partners->have_posts()
+			    // Don't augment for queries w/ greater than 100 posts, for perf. reasons.
+			    && $partners->post_count < 100
+		    ) {
+			    foreach ($partners->posts as $key => $post) {
+				    $partners->posts[$key] = new LO_Event_Partners_Post($post);
+			    }
+		    }
+		    return $partners;
+	    }
     
         /**
          * Overriding get_args from parent

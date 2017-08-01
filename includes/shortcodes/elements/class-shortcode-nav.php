@@ -139,7 +139,7 @@
 
             if ($this->cat_page != NULL)
             {
-                $content_arr['categories'] = $categories = liquid_outreach()->lo_ccb_event_categories->get_similar_terms($this->cat_page);
+                $content_arr['categories'] = $categories = liquid_outreach()->lo_ccb_event_categories->get_similar($this->cat_page);
             } else
             {
                 $content_arr['categories'] = $categories = liquid_outreach()->lo_ccb_event_categories->get_many([
