@@ -116,7 +116,7 @@
                 {
                     if ($this->cat_page == $map_value['category'])
                     {
-                        $arr['main'] = get_permalink($map_value['page']);
+                        $arr['page_link']['main'] = get_permalink($map_value['page']);
                         break;
                     }
                 }

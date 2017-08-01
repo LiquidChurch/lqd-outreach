@@ -38,10 +38,11 @@
                             echo '<ul class="dropdown-menu lo-dropdown-menu">';
                             foreach ($this->get('categories') as $val)
                             {
+                                $link = $val->term_link;
                                 if(!empty($page_link['page_query_arr'])) {
-                                    $val->term_link = $val->term_link . '?' . http_build_query($page_link['page_query_arr']);
+                                    $link = $val->term_link . '?' . http_build_query($page_link['page_query_arr']);
                                 }
-                                echo '<li><a href="' . $val->term_link . '">' . $val->name . '</a></li>';
+                                echo '<li><a href="' . $link . '">' . $val->name . '</a></li>';
                             }
                             echo '</ul>';
                         }
