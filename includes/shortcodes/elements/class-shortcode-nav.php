@@ -111,6 +111,8 @@
          */
         public function shortcode()
         {
+            parent::shortcode();
+            
             if ( ! wp_script_is('jquery-ui-sortable', $list = 'enqueued'))
             {
                 wp_enqueue_script('jquery-ui-sortable');
@@ -130,7 +132,8 @@
             $content_arr = [];
 
             $content_arr['cities']   = $cities = liquid_outreach()->lo_ccb_events->get_all_city_list();
-            $content_arr['cat_page'] = $this->cat_page = $this->att('event_cat_slug');
+
+            $content_arr['cat_page'] = $this->cat_page;
 
             $content_arr['page_settings'] = $this->page_settings;
 

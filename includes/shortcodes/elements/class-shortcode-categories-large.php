@@ -109,6 +109,8 @@ class LO_Shortcodes_Categories_Element_Run extends LO_Shortcodes_Run_Base
      */
     public function shortcode()
     {
+        parent::shortcode();
+
         if (!wp_script_is('jquery-ui-sortable', $list = 'enqueued'))
             wp_enqueue_script('jquery-ui-sortable');
 

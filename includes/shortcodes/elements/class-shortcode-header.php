@@ -110,6 +110,8 @@ class LO_Shortcodes_Header_Element_Run extends LO_Shortcodes_Run_Base
      */
     public function shortcode()
     {
+        parent::shortcode();
+
         if (!wp_script_is('jquery-ui-sortable', $list = 'enqueued'))
             wp_enqueue_script('jquery-ui-sortable');
 
@@ -122,7 +124,7 @@ class LO_Shortcodes_Header_Element_Run extends LO_Shortcodes_Run_Base
 
         $content_arr = [];
 
-        $content_arr['cat_page'] = $this->att('event_cat_slug');
+        $content_arr['cat_page'] = $this->cat_page;
 
         $content_arr = array_merge($content_arr, $this->get_base_pages());
 

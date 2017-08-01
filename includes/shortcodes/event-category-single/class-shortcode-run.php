@@ -39,6 +39,7 @@ class LO_Shortcodes_Event_Category_Single_Run extends LO_Shortcodes_Run_Base
      */
     public function shortcode()
     {
+        parent::shortcode();
 
         wp_enqueue_script('jquery-ui-sortable');
         wp_enqueue_script('lo-vandertable',

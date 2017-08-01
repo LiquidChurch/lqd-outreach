@@ -59,9 +59,14 @@
             $this->ccb_event            = $ccb_event;
             $this->ccb_event_partner    = $ccb_event_partner;
             $this->ccb_event_categories = $ccb_event_categories;
-            $this->page_settings        = lo_get_option('page', 'all');
 
             parent::__construct();
+
+            $this->page_settings        = lo_get_option('page', 'all');
+        }
+
+        public function shortcode() {
+            $this->cat_page = !empty($_GET['lo-cat-page']) ? $_GET['lo-cat-page'] : $this->att('event_cat_slug');
         }
 
         public function get_inline_styles()
