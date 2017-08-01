@@ -137,15 +137,7 @@
 
             $content_arr['page_settings'] = $this->page_settings;
 
-            if ($this->cat_page != NULL)
-            {
-                $content_arr['categories'] = $categories = liquid_outreach()->lo_ccb_event_categories->get_similar($this->cat_page);
-            } else
-            {
-                $content_arr['categories'] = $categories = liquid_outreach()->lo_ccb_event_categories->get_many([
-                    'hide_empty' => true
-                ]);
-            }
+            $content_arr = array_merge($content_arr, $this->get_category_list());
 
             $content_arr = array_merge($content_arr, $this->get_base_pages());
 

@@ -86,11 +86,7 @@ class LO_Shortcodes_Event_Category_Single_Run extends LO_Shortcodes_Run_Base
             $categories_required = true;
         }
 
-        if($categories_required || !$disable['cateogy_list']) {
-            $content_arr['categories'] = $categories = liquid_outreach()->lo_ccb_event_categories->get_many([
-                'hide_empty' => true
-            ]);
-        }
+        $content_arr = array_merge($content_arr, $this->get_category_list());
 
         $content_arr = array_merge($content_arr, $this->get_base_pages());
 
@@ -118,6 +114,13 @@ class LO_Shortcodes_Event_Category_Single_Run extends LO_Shortcodes_Run_Base
                 'terms' => $event_cat_slug,
             ),
         );
+        if($this->cat_page != null && $this->cat_page != $event_cat_slug) {
+            $tax_query[] =             array(
+                'taxonomy' => liquid_outreach()->lo_ccb_event_categories->taxonomy(),
+                'field' => 'slug',
+                'terms' => $this->cat_page,
+            );
+        }
         return compact('paged', 'offset', 'tax_query');
     }
 

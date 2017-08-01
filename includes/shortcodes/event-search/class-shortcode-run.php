@@ -111,8 +111,16 @@ class LO_Shortcodes_Event_Search_Run extends LO_Shortcodes_Run_Base
     {
         $paged = (int)get_query_var('paged') ? get_query_var('paged') : 1;
         $offset = (($paged - 1) * 10);
+        $tax_query = [];
+        if($this->cat_page != null) {
+            $tax_query[] =             array(
+                'taxonomy' => liquid_outreach()->lo_ccb_event_categories->taxonomy(),
+                'field' => 'slug',
+                'terms' => $this->cat_page,
+            );
+        }
 
-        return compact('paged', 'offset');
+        return compact('paged', 'offset', 'tax_query');
     }
 
     /**

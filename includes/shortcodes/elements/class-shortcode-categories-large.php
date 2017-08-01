@@ -100,7 +100,9 @@ class LO_Shortcodes_Categories_Element_Run extends LO_Shortcodes_Run_Base
      * @since 0.7.0
      */
     public $atts_defaults
-        = array();
+        = array(
+            'event_cat_slug' => NULL
+        );
 
     /**
      * Shortcode Output
@@ -129,9 +131,15 @@ class LO_Shortcodes_Categories_Element_Run extends LO_Shortcodes_Run_Base
             'animation' => !empty($lo_events_page_category_animation) ? 1 : 0
         ];
 
-        $content_arr['categories'] = $categories = liquid_outreach()->lo_ccb_event_categories->get_many([
-            'hide_empty' => true
-        ]);
+        if ($this->cat_page != NULL)
+        {
+            $content_arr['categories'] = $categories = liquid_outreach()->lo_ccb_event_categories->get_similar($this->cat_page);
+        } else
+        {
+            $content_arr['categories'] = $categories = liquid_outreach()->lo_ccb_event_categories->get_many([
+                'hide_empty' => true
+            ]);
+        }
 
         $content_arr = array_merge($content_arr, $this->get_base_pages());
 

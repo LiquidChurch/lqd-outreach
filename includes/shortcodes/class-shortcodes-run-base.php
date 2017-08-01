@@ -130,4 +130,21 @@
             return $arr;
         }
 
+        /**
+         * @return mixed
+         * @since 0.25.0
+         */
+        public function get_category_list() {
+            if ($this->cat_page != NULL)
+            {
+                $arr['categories'] = $categories = liquid_outreach()->lo_ccb_event_categories->get_similar($this->cat_page);
+            } else
+            {
+                $arr['categories'] = $categories = liquid_outreach()->lo_ccb_event_categories->get_many([
+                    'hide_empty' => true
+                ]);
+            }
+            return $arr;
+        }
+
     }
