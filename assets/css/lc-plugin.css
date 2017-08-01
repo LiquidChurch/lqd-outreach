@@ -460,11 +460,11 @@ city page***************
 }
 
 .lo-font-24 {
-    font-size:24px;
+    font-size: 24px;
 }
 
 .lo-additional-info-blw-hr {
-    margin:0 0 10px 0;
+    margin: 0 0 10px 0;
 }
 
 /*********various option page metabox css**************/
@@ -489,19 +489,19 @@ city page***************
 #cmb2-metabox-lo_ccb_events_display_settings > div.cmb-row.cmb-type-radio-inline > div.cmb-th,
 #cmb2-metabox-lo_ccb_event_partner_display_settings > div.cmb-row.cmb-type-radio-inline > div.cmb-th {
     float: left;
-    width:40%;
+    width: 40%;
     padding-bottom: 0 !important;
 }
 
 #cmb2-metabox-lo_ccb_events_display_settings > div.cmb-row.cmb-type-radio-inline > div.cmb-th label:after,
 #cmb2-metabox-lo_ccb_event_partner_display_settings > div.cmb-row.cmb-type-radio-inline > div.cmb-th label:after {
-    border:none;
+    border: none;
 }
 
 #cmb2-metabox-lo_ccb_events_display_settings > div.cmb-row.cmb-type-radio-inline > div.cmb-td,
 #cmb2-metabox-lo_ccb_event_partner_display_settings > div.cmb-row.cmb-type-radio-inline > div.cmb-td {
     float: left;
-    width:40%;
+    width: 40%;
 }
 
 .lo-btn-danger {
@@ -512,15 +512,42 @@ city page***************
     box-shadow: 0 1px 0 #5b0000 !important;
     text-shadow: 0 -1px 1px #5b0000, 1px 0 1px #5b0000, 0 1px 1px #5b0000, -1px 0 1px #5b0000 !important;
 }
+
 .ccb-options-page .cmb2-wrap .cmb-row .cmb-th {
-    padding:0 10px 0 0;
+    padding: 0 10px 0 0;
 }
+
 .ccb-options-page .cmb2-wrap .cmb-row .cmb-td {
-    padding:0 10px 0 0;
+    padding: 0 10px 0 0;
 }
+
 .ccb-options-page .cmb2-wrap .sync-btns .cmb-th {
-    padding:10px 0 0 0;
+    padding: 10px 0 0 0;
 }
+
 .ccb-options-page .cmb2-wrap .ccb-sync-individuals-form .ccb-form-elem .cmb-th {
-    padding:10px 0 0 0;
+    padding: 10px 0 0 0;
+}
+
+.cmb-repeat-group-wrap h2.cmb-group-name {
+    color: #222;
+    float: left;
+    font-weight: 600;
+    line-height: 1.3;
+    vertical-align: top;
+    width: 250px;
+    display: block;
+    padding: 5px 0;
+    font-size: 15px;
+}
+
+.cmb-repeat-group-wrap .cmb-repeat-group-field {
+    padding: 0 0 10px 0 !important;
+}
+
+.cmb-repeat-group-wrap .cmb-remove-field-row {
+    padding: 0 !important;
+}
+.cmb-repeat-group-wrap .cmb-remove-field-row button {
+    float: left;
 }

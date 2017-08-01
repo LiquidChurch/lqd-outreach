@@ -1,8 +1,9 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [Unreleased] - 2017-07-28 [0.25.0]
 ### Added
+- Provide Shortcode Parameters
 
 ### Changed
 

@@ -67,6 +67,8 @@ class LO_Shortcodes_Event_Categories_Run extends LO_Shortcodes_Run_Base
             $content_arr['partners'] = !empty($partners->posts) ? $partners->posts : [];
         }
 
+        $content_arr = array_merge($content_arr, $this->get_base_pages());
+
         $content = '';
         $content .= LO_Style_Loader::get_template('lc-plugin');
         $content .= LO_Style_Loader::get_template('vandertable');

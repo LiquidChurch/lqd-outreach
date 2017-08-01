@@ -9,6 +9,7 @@ if(!isset($disable['nav']) || !$disable['nav']) {
     LO_Template_Loader::output_template('nav', [
         'categories' => $this->get('categories'),
         'cities' => $this->get('cities'),
+        'page_link' => $this->get('page_link'),
     ]);
 }
 ?>

@@ -1,17 +1,6 @@
 <?php
-$lo_events_page_settings = lo_get_option('page', 'all');
-
-$projects_link = !empty($lo_events_page_settings['lo_events_page_lo_home_page'])
-    ? get_permalink($lo_events_page_settings['lo_events_page_lo_home_page'])
-    : get_permalink(get_page_by_path('projects'));
-
-$projects_srch_link = !empty($lo_events_page_settings['lo_events_page_lo_search_page'])
-    ? get_permalink($lo_events_page_settings['lo_events_page_lo_search_page'])
-    : get_permalink(get_page_by_path('search-projects'));
-
-$projects_cat_link = !empty($lo_events_page_settings['lo_events_page_lo_category_page'])
-    ? get_permalink($lo_events_page_settings['lo_events_page_lo_category_page'])
-    : get_permalink(get_page_by_path('project-categories'));
+    $page_settings = $this->get('page_settings');
+    $page_link = $this->get('page_link');
 ?>
 
 <nav class="navbar navbar-default lo-nav-custom" role="navigation">
@@ -31,27 +20,31 @@ $projects_cat_link = !empty($lo_events_page_settings['lo_events_page_lo_category
         <div class="collapse navbar-collapse" id="lo-events-navbar">
             <ul class="nav navbar-nav lo-navbar-nav">
                 <li>
-                    <a href="<?php echo $projects_link ?>">Projects</a>
+                    <a href="<?php echo $page_link['main'] ?>">Projects</a>
                 </li>
                 <li>
-                    <a href="<?php echo $projects_srch_link ?>">Search
+                    <a href="<?php echo $page_link['search'] ?>">Search
                         Projects</a>
                 </li>
                 <li class="dropdown lo-dropdown-submenu">
-                    <a href="<?php echo $projects_cat_link ?>"
-                       onclick="location.href = '<?php echo $projects_cat_link ?>'"
+                    <a href="<?php echo $page_link['cat'] ?>"
+                       onclick="location.href = '<?php echo $page_link['cat'] ?>'"
                        class="dropdown-toggle" data-toggle="dropdown" role="button"
                        aria-haspopup="true" aria-expanded="false">Project Categories <span
                                 class="caret"></span></a>
                     <?php
-                    if (!empty($this->get('categories'))) {
-                        echo '<ul class="dropdown-menu lo-dropdown-menu">';
-                        foreach ($this->get('categories') as $val) {
-                            echo '<li><a href="' . $val->term_link . '">' . $val->name .
-                                '</a></li>';
+                        if ( ! empty($this->get('categories')))
+                        {
+                            echo '<ul class="dropdown-menu lo-dropdown-menu">';
+                            foreach ($this->get('categories') as $val)
+                            {
+                                if(!empty($page_link['page_query_arr'])) {
+                                    $val->term_link = $val->term_link . '?' . http_build_query($page_link['page_query_arr']);
+                                }
+                                echo '<li><a href="' . $val->term_link . '">' . $val->name . '</a></li>';
+                            }
+                            echo '</ul>';
                         }
-                        echo '</ul>';
-                    }
                     ?>
                 </li>
                 <li class="dropdown lo-dropdown-submenu">
@@ -59,16 +52,20 @@ $projects_cat_link = !empty($lo_events_page_settings['lo_events_page_lo_category
                        aria-haspopup="true" aria-expanded="false">Projects by City <span
                                 class="caret"></span></a>
                     <?php
-                    if (!empty($this->get('cities'))) {
-                        echo '<ul class="dropdown-menu lo-dropdown-menu">';
-                        foreach ($this->get('cities') as $val) {
-                            echo '<li><a href="' .
-                                $projects_srch_link .
-                                '?lo-event-loc=' . $val . '">' .
-                                ucwords($val) . '</a></li>';
+                        if ( ! empty($this->get('cities')))
+                        {
+                            echo '<ul class="dropdown-menu lo-dropdown-menu">';
+                            foreach ($this->get('cities') as $val)
+                            {
+                                if(!empty($page_link['page_query_arr'])) {
+                                    $link = $page_link['search'] . "&lo-event-loc={$val}";
+                                } else {
+                                    $link = $page_link['search'] . "?lo-event-loc={$val}";
+                                }
+                                echo '<li><a href="' . $link . '">' . ucwords($val) . '</a></li>';
+                            }
+                            echo '</ul>';
                         }
-                        echo '</ul>';
-                    }
                     ?>
                 </li>
                 <li class="dropdown lo-dropdown-submenu">
@@ -77,30 +74,39 @@ $projects_cat_link = !empty($lo_events_page_settings['lo_events_page_lo_category
                                 class="caret"></span></a>
                     <ul class="dropdown-menu lo-dropdown-menu">
                         <?php
-                        $weekdays = [
-                            'Sunday',
-                            'Monday',
-                            'Tuesday',
-                            'Wednesday',
-                            'Thursday',
-                            'Friday',
-                            'Saturday',
-                        ];
+                            $weekdays = [
+                                'Sunday',
+                                'Monday',
+                                'Tuesday',
+                                'Wednesday',
+                                'Thursday',
+                                'Friday',
+                                'Saturday',
+                            ];
 
-                        foreach ($weekdays as $weekday) {
-                            echo '<li><a href="' .
-                                $projects_srch_link .
-                                '?lo-event-day=' . $weekday . '">' . $weekday . '</a></li>';
-                        }
+                            foreach ($weekdays as $weekday)
+                            {
+                                if(!empty($page_link['page_query_arr'])) {
+                                    $link = $page_link['search'] . "&lo-event-day={$weekday}";
+                                } else {
+                                    $link = $page_link['search'] . "?lo-event-day={$weekday}";
+                                }
+                                echo '<li><a href="' . $link . '">' . $weekday . '</a></li>';
+                            }
                         ?>
                     </ul>
                 </li>
                 <li>
                     <?php
-                    $page_settings = get_option('liquid_outreach_ccb_events_page_settings');
-                    $slug_base = !empty($page_settings['lo_events_page_permalink_base']) ? $page_settings['lo_events_page_permalink_base'] . '/partners' : 'partners';
+                        $page_settings = get_option('liquid_outreach_ccb_events_page_settings');
+                        $slug_base     = ! empty($page_settings['lo_events_page_permalink_base']) ? $page_settings['lo_events_page_permalink_base'] . '/partners' : 'partners';
+                        if(!empty($page_link['page_query_arr'])) {
+                            $link = $slug_base . '?' . http_build_query($page_link['page_query_arr']);
+                        } else {
+                            $link = $slug_base;
+                        }
                     ?>
-                    <a href="<?php echo home_url($slug_base) ?>">Partner Organizations</a>
+                    <a href="<?php echo home_url($link) ?>">Partner Organizations</a>
                 </li>
             </ul>
         </div>

@@ -96,7 +96,7 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
             wp_clear_scheduled_hook('lo_ccb_cron_event_attendance_sync');
         }
     }
-    
+
     /**
      * for changes after permalink settings value is changed
      * @since 0.10.1
@@ -154,7 +154,7 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
             'search' => (get_page_by_path('search-projects')),
             'categories' => (get_page_by_path('project-categories')),
         ];
-        
+
         $cmb->add_field(array(
             'name' => __('CCB API Username', 'liquid-outreach'),
             'desc' => __('Please enter your username for accessing CCB API.', 'liquid-outreach'),
@@ -163,7 +163,7 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
             'attributes' => ['required' => 'required'],
             'default' => '',
         ));
-    
+
         $cmb->add_field(array(
             'name' => __('CCB API Password', 'liquid-outreach'),
             'desc' => __('Please enter your password for accessing CCB API.', 'liquid-outreach'),
@@ -175,7 +175,7 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
             ],
             'default' => '',
         ));
-    
+
         $cmb->add_field(array(
             'name' => __('Event Attendance Count Update Interval', 'liquid-outreach'),
             'desc' => '',
@@ -221,6 +221,34 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
             'type' => 'select',
             'options_cb' => ['LO_Ccb_Events_Page_Settings', 'show_wp_pages'],
             'default' => !empty($default_page['projects']) ? $default_page['projects']->ID : ''
+        ));
+
+        $category_mapping_id = $cmb->add_field(array(
+            'name' => __('Category Base Page Mapping', 'liquid-outreach'),
+            'id' => $this->meta_prefix . 'cat_base_page_mapping',
+            'type' => 'group',
+            'options' => array(
+                'group_title' => esc_html__('Mapping {#}', 'liquid-outreach'),
+                'add_button' => esc_html__('Add Another Mapping', 'liquid-outreach'),
+                'remove_button' => esc_html__('Remove Mapping', 'liquid-outreach'),
+            ),
+        ));
+
+        $cmb->add_group_field($category_mapping_id, array(
+            'name' => 'Select Category',
+            'desc' => '',
+            'id' => 'category',
+            'taxonomy' => 'event-category', //Enter Taxonomy Slug
+            'type' => 'taxonomy_select',
+            'remove_default' => 'true' // Removes the default metabox provided by WP core. Pending release as of Aug-10-16
+        ));
+
+        $cmb->add_group_field($category_mapping_id, array(
+            'name' => 'Select Page',
+            'desc' => '',
+            'id' => 'page',
+            'type' => 'select',
+            'options_cb' => ['LO_Ccb_Events_Page_Settings', 'show_pages'],
         ));
 
         $cmb->add_field(array(
@@ -299,5 +327,35 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
 
         throw new Exception('Invalid property: ' . $field);
     }
+
+    /**
+     * get page list
+     * \
+     * @return mixed
+     * @since 0.25.0
+     */
+    public static function show_pages()
+    {
+        $query = new WP_Query(
+            $array = array(
+                'post_type' => 'page',
+                'post_status' => 'publish',
+                'posts_per_page' => -1,
+            )
+        );
+
+        $titles[''] = '';
+        if ($query->have_posts()) {
+            while ($query->have_posts()) {
+                $query->the_post();
+                $titles[get_the_id()] = get_the_title();
+            }
+        }
+
+        wp_reset_postdata();
+
+        return $titles;
+    }
+
 
 }

@@ -68,6 +68,8 @@ class LO_Shortcodes_Event_Single_Run extends LO_Shortcodes_Run_Base
             $content_arr['partners'] = !empty($partners->posts) ? $partners->posts : [];
         }
 
+        $content_arr = array_merge($content_arr, $this->get_base_pages());
+
         $content = '';
         $content .= LO_Style_Loader::get_template('lc-plugin');
         $content .= LO_Template_Loader::get_template('event-details', $content_arr);

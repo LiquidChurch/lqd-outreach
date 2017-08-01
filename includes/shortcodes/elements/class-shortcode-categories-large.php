@@ -68,6 +68,15 @@ class LO_Shortcodes_Categories_Element_Admin extends LO_Shortcodes_Admin_Base
      */
     function fields($fields, $button_data)
     {
+        $fields[] = array(
+            'name'           => 'Select Event Category',
+            'desc'           => 'Select event category',
+            'id'             => 'event_cat_slug',
+            'taxonomy'       => 'event-category', //Enter Taxonomy Slug
+            'type'           => 'taxonomy_select',
+            'remove_default' => 'true' // Removes the default metabox provided by WP core. Pending release as of Aug-10-16
+        );
+
         return $fields;
     }
 }
@@ -121,6 +130,8 @@ class LO_Shortcodes_Categories_Element_Run extends LO_Shortcodes_Run_Base
         $content_arr['categories'] = $categories = liquid_outreach()->lo_ccb_event_categories->get_many([
             'hide_empty' => false
         ]);
+
+        $content_arr = array_merge($content_arr, $this->get_base_pages());
 
         $content = '';
         $content .= LO_Style_Loader::get_template('lc-plugin');

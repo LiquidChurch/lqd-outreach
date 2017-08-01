@@ -499,14 +499,15 @@
 
             $this->add_dev_classes();
 
-            $this->lo_ccb_events                          = new LO_Ccb_Events($this);
-            $this->lo_ccb_event_partners                  = new LO_Ccb_Event_Partners($this);
-            $this->lo_ccb_event_categories                = new LO_Ccb_Event_Categories($this);
-            $this->lo_shortcodes                          = new LO_Shortcodes($this);
             $this->lo_ccb_events_info_settings            = LO_Ccb_Events_Info_Settings::get_instance();
             $this->lo_ccb_events_page_settings            = LO_Ccb_Events_Page_Settings::get_instance();
             $this->lo_ccb_events_partner_cat_map_settings = LO_Ccb_Events_Partner_Cat_Map_Settings::get_instance();
             $this->lo_ccb_events_name_map_settings        = LO_Ccb_Events_Name_Map_Settings::get_instance();
+
+            $this->lo_ccb_events                          = new LO_Ccb_Events($this);
+            $this->lo_ccb_event_partners                  = new LO_Ccb_Event_Partners($this);
+            $this->lo_ccb_event_categories                = new LO_Ccb_Event_Categories($this);
+            $this->lo_shortcodes                          = new LO_Shortcodes($this);
 
             if (is_admin())
             {
