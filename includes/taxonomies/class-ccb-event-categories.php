@@ -312,6 +312,62 @@ class LO_Ccb_Event_Categories extends Taxonomy_Core
     }
 
     /**
+     * @param       $term_slug
+     * @param array $args
+     * @param array $single_term_args
+     *
+     * @return array|bool|WP_Error
+     * @since 0.25.0
+     */
+    public function get_similar_terms($term_slug, $args = array(), $single_term_args = array()) {
+
+        $args = wp_parse_args($args, $this->term_get_many_args_defaults);
+        $args = apply_filters("lo_get_{$this->id}_args", $args);
+
+        $term = get_term_by('slug', $term_slug, $this->taxonomy());
+
+        $posts_array = get_posts(
+            array(
+                'posts_per_page' => -1,
+                'post_type' => 'lo-events',
+                'tax_query' => array(
+                    array(
+                        'taxonomy' => $this->taxonomy(),
+                        'field' => 'term_id',
+                        'terms' => $term->term_id,
+                    )
+                )
+            )
+        );
+
+        if(!empty($posts_array)) {
+            $posts_array = wp_list_pluck( $posts_array, 'ID' );
+
+            $terms = wp_get_object_terms( $posts_array, 'event-category' );
+        } else {
+            return false;
+        }
+
+        if(empty($terms)) {
+            return false;
+        }
+
+        if (
+            isset($args['augment_terms'])
+            && $args['augment_terms']
+            && !empty($terms)
+            // Don't augment for queries w/ greater than 100 terms, for perf. reasons.
+            && 100 > count($terms)
+        ) {
+            foreach ($terms as $key => $term) {
+                $terms[$key] = $this->get($term, $single_term_args);
+            }
+        }
+
+        return $terms;
+    }
+
+    /**
      * Wrapper for `get_terms` to account for changes in WP 4.5 where taxonomy
      * is expected as part of the arguments.
      *

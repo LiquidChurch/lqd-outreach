@@ -130,7 +130,7 @@ class LO_Shortcodes_Categories_Element_Run extends LO_Shortcodes_Run_Base
         ];
 
         $content_arr['categories'] = $categories = liquid_outreach()->lo_ccb_event_categories->get_many([
-            'hide_empty' => false
+            'hide_empty' => true
         ]);
 
         $content_arr = array_merge($content_arr, $this->get_base_pages());

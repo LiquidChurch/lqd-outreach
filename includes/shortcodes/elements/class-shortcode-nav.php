@@ -112,7 +112,7 @@
         public function shortcode()
         {
             parent::shortcode();
-            
+
             if ( ! wp_script_is('jquery-ui-sortable', $list = 'enqueued'))
             {
                 wp_enqueue_script('jquery-ui-sortable');
@@ -139,13 +139,11 @@
 
             if ($this->cat_page != NULL)
             {
-                $content_arr['categories'] = $categories = liquid_outreach()->lo_ccb_event_categories->get_many([
-                    'hide_empty' => FALSE
-                ]);
+                $content_arr['categories'] = $categories = liquid_outreach()->lo_ccb_event_categories->get_similar_terms($this->cat_page);
             } else
             {
                 $content_arr['categories'] = $categories = liquid_outreach()->lo_ccb_event_categories->get_many([
-                    'hide_empty' => FALSE
+                    'hide_empty' => true
                 ]);
             }
 

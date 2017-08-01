@@ -56,7 +56,7 @@ class LO_Shortcodes_Event_Categories_Run extends LO_Shortcodes_Run_Base
         ];
 
         $content_arr['categories'] = $categories = liquid_outreach()->lo_ccb_event_categories->get_many([
-            'hide_empty' => false
+            'hide_empty' => true
         ]);
 
         if(!$disable['nav'] || !$disable['search']) {

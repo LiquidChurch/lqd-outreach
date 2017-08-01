@@ -52,7 +52,7 @@ class LO_Shortcodes_Event_Partner_List_Run extends LO_Shortcodes_Run_Base
 
         if(!$disable['nav']) {
             $content_arr['categories'] = $categories = liquid_outreach()->lo_ccb_event_categories->get_many([
-                'hide_empty' => false
+                'hide_empty' => true
             ]);
 
             $content_arr['cities'] = $cities = liquid_outreach()->lo_ccb_events->get_all_city_list();
