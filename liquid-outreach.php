@@ -209,14 +209,6 @@ final class Liquid_Outreach
     protected $lo_ccb_base_function;
 
     /**
-     * Instance of LO_Ccb_Gravity
-     *
-     * @since 0.26.0
-     * @var LO_Ccb_Gravity
-     */
-    protected $lo_ccb_gravity;
-
-    /**
      * Instance of LO_Ccb_Events_Name_Map_Settings
      *
      * @since 0.26.0
@@ -459,7 +451,7 @@ final class Liquid_Outreach
 
         // Load translated strings for plugin.
         load_plugin_textdomain('liquid-outreach', FALSE,
-                               dirname(self::$basename) . '/languages/');
+            dirname(self::$basename) . '/languages/');
 
         // Initialize plugin classes.
         $this->plugin_classes();
@@ -600,13 +592,13 @@ final class Liquid_Outreach
         if ( ! wp_next_scheduled('lo_ccb_cron_event_attendance_sync'))
         {
             $ccb_events_page_settings = get_option("liquid_outreach_ccb_events_page_settings",
-                                                   'lo_events_page_event_attendance_count_update');
+                'lo_events_page_event_attendance_count_update');
 
             $event_attendance_count_update
                 = isset($ccb_events_page_settings['lo_events_page_event_attendance_count_update']) ? $ccb_events_page_settings['lo_events_page_event_attendance_count_update'] : '30min';
 
             wp_schedule_event(time(), $event_attendance_count_update,
-                              'lo_ccb_cron_event_attendance_sync');
+                'lo_ccb_cron_event_attendance_sync');
 
         }
     }
@@ -695,7 +687,7 @@ final class Liquid_Outreach
         // Compile default message.
         $default_message
             = sprintf(__('Liquid Outreach is missing requirements and has been <a href="%s">deactivated</a>. Please make sure all requirements are available.',
-                         'liquid-outreach'), admin_url('plugins.php'));
+            'liquid-outreach'), admin_url('plugins.php'));
 
         // Default details to null.
         $details = NULL;
@@ -752,9 +744,9 @@ final class Liquid_Outreach
 
             case 'lo_ccb_base_function':
 
-            case 'lo_ccb_gravity':
-
             case 'lo_wp_template_loader':
+
+            case 'enable_ccb_gravity':
 
                 return $this->$field;
 
