@@ -98,38 +98,6 @@ final class Liquid_Outreach
     protected static $single_instance = NULL;
 
     /**
-     * Instance of Lo_Ccb_api_event_profiles
-     *
-     * @since 0.0.5
-     * @var Lo_Ccb_api_event_profiles
-     */
-    protected $lo_ccb_api_event_profiles;
-
-    /**
-     * Instance of lo_ccb_api_group_profiles
-     *
-     * @since 0.3.5
-     * @var Lo_Ccb_api_group_profile_from_id
-     */
-    protected $lo_ccb_api_group_profile_from_id;
-
-    /**
-     * Instance of Lo_Ccb_api_individual_profile
-     *
-     * @since 0.1.3
-     * @var Lo_Ccb_api_individual_profile
-     */
-    protected $lo_ccb_api_individual_profile;
-
-    /**
-     * Instance of Lo_Ccb_api_attendance_profile
-     *
-     * @since 0.1.4
-     * @var Lo_Ccb_api_attendance_profile
-     */
-    protected $lo_ccb_api_attendance_profile;
-
-    /**
      * Detailed activation error messages.
      *
      * @var    array
@@ -162,12 +130,67 @@ final class Liquid_Outreach
     protected $lo_ccb_events_sync;
 
     /**
+     * Instance of Lo_Ccb_api_event_profiles
+     *
+     * @since 0.0.5
+     * @var Lo_Ccb_api_event_profiles
+     */
+    protected $lo_ccb_api_event_profiles;
+
+    /**
+     * Instance of Lo_Ccb_api_individual_profile
+     *
+     * @since 0.1.3
+     * @var Lo_Ccb_api_individual_profile
+     */
+    protected $lo_ccb_api_individual_profile;
+
+    /**
+     * Instance of Lo_Ccb_api_attendance_profile
+     *
+     * @since 0.1.4
+     * @var Lo_Ccb_api_attendance_profile
+     */
+    protected $lo_ccb_api_attendance_profile;
+
+    /**
+     * Instance of LO_Shortcodes
+     *
+     * @since 0.2.0
+     * @var LO_Shortcodes
+     */
+    protected $lo_shortcodes;
+
+    /**
+     * Instance of LO_Ccb_Event_Categories
+     *
+     * @since 0.2.1
+     * @var LO_Ccb_Event_Categories
+     */
+    protected $lo_ccb_event_categories;
+
+    /**
      * Instance of LO_Ccb_Events_Info_Settings
      *
      * @since 0.3.4
      * @var LO_Ccb_Events_Info_Settings
      */
     protected $lo_ccb_events_info_settings;
+
+    /**
+     * Instance of lo_ccb_api_group_profiles
+     *
+     * @since 0.3.5
+     * @var Lo_Ccb_api_group_profile_from_id
+     */
+    protected $lo_ccb_api_group_profile_from_id;
+
+
+    /**
+     * @var LO_WP_Template_Loader
+     * @since 0.4.1
+     */
+    protected $lo_wp_template_loader;
 
     /**
      * Instance of LO_Ccb_Events_Page_Settings
@@ -210,26 +233,12 @@ final class Liquid_Outreach
     protected $lo_ccb_events_partner_cat_map_settings;
 
     /**
-     * Instance of LO_Ccb_Event_Categories
+     * check and enable gravity form functionality var
      *
-     * @since 0.2.1
-     * @var LO_Ccb_Event_Categories
+     * @var $enable_ccb_gravity
+     * @since 0.26.0
      */
-    protected $lo_ccb_event_categories;
-
-    /**
-     * Instance of LO_Shortcodes
-     *
-     * @since 0.2.0
-     * @var LO_Shortcodes
-     */
-    protected $lo_shortcodes;
-
-    /**
-     * @var LO_WP_Template_Loader
-     * @since 0.4.1
-     */
-    protected $lo_wp_template_loader;
+    protected $enable_ccb_gravity = FALSE;
 
     /**
      * Sets up our plugin.
@@ -438,6 +447,11 @@ final class Liquid_Outreach
             return;
         }
 
+        if (is_plugin_active('gravityforms/gravityforms.php'))
+        {
+            $this->enable_ccb_gravity = TRUE;
+        }
+
         while ($this->update_table_structure())
         {
             $this->update_table_structure();
@@ -551,10 +565,6 @@ final class Liquid_Outreach
             $this->lo_ccb_events_sync               = new LO_Ccb_Events_Sync($this);
             $this->lo_ccb_base_function             = new LO_Ccb_Base_Function($this);
 
-            if (is_plugin_active('gravityforms/gravityforms.php'))
-            {
-                $this->lo_ccb_gravity = new LO_Ccb_Gravity($this);
-            }
         } else
         {
             $this->lo_wp_template_loader = new LO_WP_Template_Loader();
