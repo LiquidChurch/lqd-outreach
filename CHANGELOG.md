@@ -1,9 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 2017-07-28 [0.25.0]
+## [Unreleased] - 2017-07-28 [0.26.0]
 ### Added
 - Provide Shortcode Parameters
+- Integrate with Gravity Forms <--> CCB Sync
 
 ### Changed
 
