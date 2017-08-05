@@ -278,7 +278,7 @@ class LO_Ccb_Events extends LO_Ccb_Base_Post
         {
             //gravity form select option
             $cmb_additional->add_field(array(
-                'name' => __('Select gravity form', 'liquid-outreach'),
+                'name' => __('Select Gravity Form', 'liquid-outreach'),
                 'desc' => __('When this is selected, above page url will not be used.', 'liquid-outreach'),
                 'id'   => $prefix . 'gform',
                 'type' => 'select',

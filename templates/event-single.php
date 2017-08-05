@@ -365,7 +365,7 @@ $info_settings  = lo_get_option('additional-info', 'all');
             <div class="row lo-gravity-form-container" style="display: none;">
                 <div class="col-md-12">
                     <?php
-                    echo do_shortcode("[gravityform id={$register_gform} title=true description=false ajax=false]");
+                    echo do_shortcode("[gravityform id={$register_gform} title=true description=false ajax=true]");
                     ?>
                 </div>
             </div>
