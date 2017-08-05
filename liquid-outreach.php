@@ -272,6 +272,7 @@ final class Liquid_Outreach
     public function hooks()
     {
         add_action('init', array($this, 'init'), 0);
+        add_action('template_redirect', array($this, 'template'));
         add_action('admin_enqueue_scripts', array($this, 'admin_enqueue_scripts'));
     } // END OF PLUGIN CLASSES FUNCTION
 
@@ -559,9 +560,16 @@ final class Liquid_Outreach
 
         } else
         {
-            $this->lo_wp_template_loader = new LO_WP_Template_Loader();
         }
 
+    }
+
+    /**
+     * For loading templates in wp template_redirect hook
+     * @since 0.26.0
+     */
+    public function template() {
+            $this->lo_wp_template_loader = new LO_WP_Template_Loader();
     }
 
     /**
