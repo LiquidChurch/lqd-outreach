@@ -3,7 +3,7 @@
  * Plugin Name: Liquid Outreach
  * Plugin URI:  https://liquidchurch.com
  * Description: Outreach and CCB API integration.
- * Version:     0.24.0
+ * Version:     0.26.0
  * Author:      SurajPrGupta, Liquidchurch
  * Author URI:  https://twitter.com/surajprgupta
  * Donate link: https://liquidchurch.com
@@ -14,7 +14,7 @@
  * @link    https://liquidchurch.com
  *
  * @package Liquid_Outreach
- * @version 0.24.0
+ * @version 0.26.0
  *
  * Built using generator-plugin-wp (https://github.com/WebDevStudios/generator-plugin-wp)
  */
@@ -27,7 +27,7 @@ $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
 );
 
 /**
- * Copyright (c) 2017 SurajPrGupta, Liquidchurch (email : suraj.gupta@scripterz.in)
+ * Copyright (c) 2017 SurajPrGupta, Liquid Church (email : suraj.gupta@scripterz.in)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2 or, at
@@ -62,7 +62,7 @@ final class Liquid_Outreach
      * @var    string
      * @since  0.0.0
      */
-    const VERSION    = '0.24.0';
+    const VERSION    = '0.26.0';
     const DB_VERSION = 2.2;
 
     /**
