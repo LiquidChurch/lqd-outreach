@@ -1426,6 +1426,8 @@
          * @param $partner_details
          *
          * @since 0.24.0
+         *
+         * @return string
          */
         public function get_event_image($event_details) {
             $upload          = wp_upload_dir();
@@ -1445,6 +1447,8 @@
          * @param $partner_details
          *
          * @since 0.24.0
+         *
+         * @return string
          */
         public function get_partner_image($partner_details) {
             $upload          = wp_upload_dir();
@@ -1566,6 +1570,8 @@
          * @param $partner_details
          *
          * @since 0.24.0
+         *
+         * @return array
          */
         public function save_partner_image($partner_details)
         {
@@ -1594,6 +1600,8 @@
          * @param $ccb_event_datum
          *
          * @since 0.24.0
+         *
+         * @return string
          */
         public function fetch_event_details_api($ccb_event_datum)
         {
@@ -1620,6 +1628,8 @@
          * @param $event_details
          *
          * @since 0.24.0
+         *
+         * @return string
          */
         public function save_event_image($event_details)
         {
@@ -1649,6 +1659,8 @@
          * @param $upload
          *
          * @since 0.24.0
+         *
+         * @return string
          */
         public function save_image($file_to_dwnld, $upload)
         {

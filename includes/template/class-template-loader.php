@@ -55,6 +55,8 @@
 		 * @param array   $args     An array of arguments to extract as variables into the template
 		 *
 		 * @return void
+		 *
+		 * @throws Exception
 		 */
 		public function __construct( $template, $name = null, array $args = array() ) {
 			if ( empty( $template ) ) {

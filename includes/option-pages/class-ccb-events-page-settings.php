@@ -317,6 +317,8 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
      * @param  string $field Field to retrieve
      *
      * @return mixed          Field value or exception is thrown
+     *
+     * @throws Exception
      */
     public function __get($field)
     {
