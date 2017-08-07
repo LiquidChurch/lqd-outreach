@@ -274,7 +274,7 @@ class LO_Ccb_Events extends LO_Ccb_Base_Post
             'type' => 'text',
         ));
 
-        if ($this->plugin->enable_ccb_gravity == TRUE)
+        if (Liquid_Outreach::$enable_ccb_gravity == TRUE)
         {
             //gravity form select option
             $cmb_additional->add_field(array(
