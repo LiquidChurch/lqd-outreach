@@ -24,7 +24,8 @@ $info_settings  = lo_get_option('additional-info', 'all');
                 if ( ! empty($register_gform))
                 {
 
-                } else if ( ! empty($register_url))
+                }
+                else if ( ! empty($register_url))
                 {
                     ?>
                     <a href="<?php echo $register_url ?>" <?php echo empty($register_url) ? 'disabled' : '' ?>
@@ -75,7 +76,8 @@ $info_settings  = lo_get_option('additional-info', 'all');
                         </div>
                     </div>
                     <?php
-                } else if ( ! empty($register_url))
+                }
+                else if ( ! empty($register_url))
                 {
                     ?>
                     <a href="<?php echo $register_url ?>" <?php echo empty($register_url) ? 'disabled' : '' ?>
@@ -140,10 +142,12 @@ $info_settings  = lo_get_option('additional-info', 'all');
                             if ($openings == '0')
                             {
                                 echo 'Closed';
-                            } else if ($openings == 'no-limit')
+                            }
+                            else if ($openings == 'no-limit')
                             {
                                 echo '<span style="font-size: 22px;">&infin;</span>';
-                            } else
+                            }
+                            else
                             {
                                 echo ucwords(str_replace('-', ' ',
                                     $openings));
@@ -363,7 +367,7 @@ $info_settings  = lo_get_option('additional-info', 'all');
         if ( ! empty($register_gform))
         {
             ?>
-            <div class="row lo-gravity-form-container" style="display: none;">
+            <div class="row lo-gravity-form-container" <?php echo (isset($_POST) && ! empty($_POST)) ? 'style="display: block;"' : 'style="display: none;"' ?>>
                 <?php
                 if ( ! CCB_GRAVITY_manage_session::if_user_logged_in())
                 {
@@ -375,7 +379,8 @@ $info_settings  = lo_get_option('additional-info', 'all');
                         ?>
                     </div>
                     <?php
-                } else
+                }
+                else
                 {
                     $args = array(
                         'user_data' => isset($_SESSION['ccb_plugin']['user_profile']) ? $_SESSION['ccb_plugin']['user_profile'] : array()
@@ -418,6 +423,16 @@ $info_settings  = lo_get_option('additional-info', 'all');
                 }
                 $(".lo-gravity-form-container").toggle(300);
             });
+
+            <?php
+            if(isset($_POST) && ! empty($_POST)) {
+            ?>
+            $('html, body').animate({
+                scrollTop: $(".lo-gravity-form-container").offset().top
+            }, 2000);
+            <?php
+            }
+            ?>
         });
     })(jQuery)
 </script>
