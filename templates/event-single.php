@@ -1,7 +1,7 @@
 <?php
 $event_post     = $this->get('post');
 $meta_prefix    = 'lo_ccb_events_';
-$register_gform = $event_post->get_meta($meta_prefix . 'gform');
+$register_gform = Liquid_Outreach::$enable_ccb_gravity ? $event_post->get_meta($meta_prefix . 'gform') : FALSE;
 $register_url   = $event_post->get_meta($meta_prefix . 'register_url');
 $info_settings  = lo_get_option('additional-info', 'all');
 ?>
@@ -24,7 +24,8 @@ $info_settings  = lo_get_option('additional-info', 'all');
                 if ( ! empty($register_gform))
                 {
 
-                } else if ( ! empty($register_url))
+                }
+                else if ( ! empty($register_url))
                 {
                     ?>
                     <a href="<?php echo $register_url ?>" <?php echo empty($register_url) ? 'disabled' : '' ?>
@@ -75,7 +76,8 @@ $info_settings  = lo_get_option('additional-info', 'all');
                         </div>
                     </div>
                     <?php
-                } else if ( ! empty($register_url))
+                }
+                else if ( ! empty($register_url))
                 {
                     ?>
                     <a href="<?php echo $register_url ?>" <?php echo empty($register_url) ? 'disabled' : '' ?>
@@ -140,10 +142,12 @@ $info_settings  = lo_get_option('additional-info', 'all');
                             if ($openings == '0')
                             {
                                 echo 'Closed';
-                            } else if ($openings == 'no-limit')
+                            }
+                            else if ($openings == 'no-limit')
                             {
                                 echo '<span style="font-size: 22px;">&infin;</span>';
-                            } else
+                            }
+                            else
                             {
                                 echo ucwords(str_replace('-', ' ',
                                     $openings));
@@ -326,6 +330,7 @@ $info_settings  = lo_get_option('additional-info', 'all');
                             </div>
                             <?php
                         }
+                        wp_reset_postdata();
                         ?>
 
                     </div>
@@ -362,10 +367,34 @@ $info_settings  = lo_get_option('additional-info', 'all');
         if ( ! empty($register_gform))
         {
             ?>
-            <div class="row lo-gravity-form-container" style="display: none;">
+            <div class="row lo-gravity-form-container" <?php echo (isset($_POST) && ! empty($_POST)) ? 'style="display: block;"' : 'style="display: none;"' ?>>
+                <?php
+                if ( ! CCB_GRAVITY_manage_session::if_user_logged_in())
+                {
+                    $login_gform = ccb_gravity_get_option('option', 'ccb_gravity_option_ccb_login_gform');
+                    ?>
+                    <div class="col-md-12">
+                        <?php
+                        echo do_shortcode("[gravityform id={$login_gform} title=true description=true ajax=false]");
+                        ?>
+                    </div>
+                    <?php
+                }
+                else
+                {
+                    $args = array(
+                        'user_data' => isset($_SESSION['ccb_plugin']['user_profile']) ? $_SESSION['ccb_plugin']['user_profile'] : array()
+                    );
+                    echo '<div class="col-md-12">';
+                    echo CCB_GRAVITY_Template_Loader::get_template('gform/ccb-gform-user-logged-in', $args);
+                    echo '</div>';
+                    ?>
+                    <?php
+                }
+                ?>
                 <div class="col-md-12">
                     <?php
-                    echo do_shortcode("[gravityform id={$register_gform} title=true description=false ajax=false]");
+                    echo do_shortcode("[gravityform id={$register_gform} title=true description=false ajax=true]");
                     ?>
                 </div>
             </div>
@@ -394,6 +423,16 @@ $info_settings  = lo_get_option('additional-info', 'all');
                 }
                 $(".lo-gravity-form-container").toggle(300);
             });
+
+            <?php
+            if(isset($_POST) && ! empty($_POST)) {
+            ?>
+            $('html, body').animate({
+                scrollTop: $(".lo-gravity-form-container").offset().top
+            }, 2000);
+            <?php
+            }
+            ?>
         });
     })(jQuery)
 </script>

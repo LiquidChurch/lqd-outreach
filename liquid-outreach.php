@@ -230,7 +230,7 @@ final class Liquid_Outreach
      * @var $enable_ccb_gravity
      * @since 0.26.0
      */
-    protected $enable_ccb_gravity = FALSE;
+    public static $enable_ccb_gravity = FALSE;
 
     /**
      * Sets up our plugin.
@@ -272,6 +272,7 @@ final class Liquid_Outreach
     public function hooks()
     {
         add_action('init', array($this, 'init'), 0);
+        add_action('template_redirect', array($this, 'template'));
         add_action('admin_enqueue_scripts', array($this, 'admin_enqueue_scripts'));
     } // END OF PLUGIN CLASSES FUNCTION
 
@@ -439,9 +440,9 @@ final class Liquid_Outreach
             return;
         }
 
-        if (is_plugin_active('gravityforms/gravityforms.php'))
+        if (is_plugin_active('gravityforms/gravityforms.php') && is_plugin_active('lqd-ccb-gravity/ccb-gravity.php'))
         {
-            $this->enable_ccb_gravity = TRUE;
+            self::$enable_ccb_gravity = TRUE;
         }
 
         while ($this->update_table_structure())
@@ -559,9 +560,18 @@ final class Liquid_Outreach
 
         } else
         {
-            $this->lo_wp_template_loader = new LO_WP_Template_Loader();
         }
 
+    }
+
+    /**
+     * For loading templates in wp template_redirect hook
+     *
+     * @since 0.26.0
+     */
+    public function template()
+    {
+        $this->lo_wp_template_loader = new LO_WP_Template_Loader();
     }
 
     /**
@@ -745,8 +755,6 @@ final class Liquid_Outreach
             case 'lo_ccb_base_function':
 
             case 'lo_wp_template_loader':
-
-            case 'enable_ccb_gravity':
 
                 return $this->$field;
 
