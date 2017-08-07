@@ -326,6 +326,7 @@ $info_settings  = lo_get_option('additional-info', 'all');
                             </div>
                             <?php
                         }
+                        wp_reset_postdata();
                         ?>
 
                     </div>
@@ -370,7 +371,7 @@ $info_settings  = lo_get_option('additional-info', 'all');
                     ?>
                     <div class="col-md-12">
                         <?php
-                        echo do_shortcode("[gravityform id={$login_gform} title=true description=true ajax=true]");
+                        echo do_shortcode("[gravityform id={$login_gform} title=true description=true ajax=false]");
                         ?>
                     </div>
                     <?php
