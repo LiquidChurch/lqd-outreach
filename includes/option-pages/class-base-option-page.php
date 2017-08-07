@@ -148,6 +148,8 @@ abstract class LO_Base_Option_Page {
      * @param  string $field Field to retrieve
      *
      * @return mixed          Field value or exception is thrown
+     *
+     * @throws exception
      */
     public function __get( $field ) {
         // Allowed fields to retrieve
