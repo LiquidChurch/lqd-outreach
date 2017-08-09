@@ -67,7 +67,7 @@ class LO_Ccb_Events_Partner_Cat_Map_Settings extends LO_Base_Option_Page
     public function __construct()
     {
         // Set our title
-        $this->title = __('Outreach Partners Category Mapping Settings', 'liquid-outreach');
+        $this->title = __('Partners Category Mapping', 'liquid-outreach');
 
         $this->hooks();
     }
@@ -160,6 +160,8 @@ class LO_Ccb_Events_Partner_Cat_Map_Settings extends LO_Base_Option_Page
      * @param  string $field Field to retrieve
      *
      * @return mixed          Field value or exception is thrown
+     *
+     * @throws Exception
      */
     public function __get($field)
     {

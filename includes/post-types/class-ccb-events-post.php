@@ -35,6 +35,8 @@ class LO_Events_Post {
 	 * @since  0.2.3
 	 * @param  mixed $post Post object to wrap
 	 * @return void
+	 *
+	 * @throws Exception
 	 */
 	public function __construct( $post ) {
 		if ( ! ( $post instanceof WP_Post ) ) {
@@ -174,7 +176,7 @@ class LO_Events_Post {
 	 *
 	 * @since  0.2.5
 	 *
-	 * @param  string  $taxonomy Taxonomy to initiate
+	 * @param  string  $taxonomy_class Taxonomy to initiate
 	 *
 	 * @return array  Array of terms for this taxonomy.
 	 */

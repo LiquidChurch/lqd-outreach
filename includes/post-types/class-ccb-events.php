@@ -408,7 +408,7 @@ class LO_Ccb_Events extends LO_Ccb_Base_Post
                 'settings_key' => 'address'
             ],
             'partner_organization' => [
-                'label'        => 'Partner organization',
+                'label'        => 'Partner Organization',
                 'settings_key' => 'partner_organization'
             ],
         );
