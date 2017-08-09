@@ -1,6 +1,6 @@
 <?php
 
-if (class_exists('WP_Logging')) {
+if (class_exists('WP_Logging') && defined('LO_ENV') && LO_ENV == 'development') {
 
     class LO_Logging extends WP_Logging
     {
@@ -34,6 +34,10 @@ if (class_exists('WP_Logging')) {
             return true;
         });
         call_user_func_array(array($LO_Logging, 'prune_logs'), []);
+    }
+
+    if(!empty($_GET['delete-lo-log']) && is_admin()) {
+        lo_delete_log();
     }
 
 } else {

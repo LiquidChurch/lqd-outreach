@@ -105,7 +105,7 @@ if ( ! class_exists('WP_Logging'))
         private function get_logs_to_prune()
         {
 
-            $how_old = apply_filters('wp_logging_prune_when', '2 weeks ago');
+            $how_old = apply_filters('wp_logging_prune_when', '1 hour ago');
 
             $args = array(
                 'post_type'      => 'wp_log',
