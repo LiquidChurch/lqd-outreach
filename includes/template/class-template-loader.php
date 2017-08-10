@@ -147,7 +147,7 @@
 		 *
 		 * @param  string $template Template file to search for.
 		 *
-		 * @return void
+		 * @return string $located
 		 */
 		protected function _locate( $template ) {
 			$theme_file_path = '/liquid-outreach/' . $template;
