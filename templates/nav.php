@@ -20,7 +20,8 @@
         <div class="collapse navbar-collapse" id="lo-events-navbar">
             <ul class="nav navbar-nav lo-navbar-nav">
                 <li>
-                    <a href="<?php echo $page_link['main'] ?>">Projects</a>
+                    <!-- This also needs to be a shortcode parameter, disable for love week temporarily. -->
+                    <!--<a href="<? //php echo $page_link['main'] ?>">Projects</a> -->
                 </li>
                 <li>
                     <a href="<?php echo $page_link['search'] ?>">Search
@@ -99,6 +100,8 @@
                 </li>
                 <li>
                     <?php
+                    // This section commented out for LOVE WEEK, need to add shortcode parameter to handle this long-term.
+                    /*
                         $page_settings = get_option('liquid_outreach_ccb_events_page_settings');
                         $slug_base     = ! empty($page_settings['lo_events_page_permalink_base']) ? $page_settings['lo_events_page_permalink_base'] . '/partners' : 'partners';
                         if(!empty($page_link['page_query_arr'])) {
@@ -106,8 +109,9 @@
                         } else {
                             $link = $slug_base;
                         }
+                    */
                     ?>
-                    <a href="<?php echo home_url($link) ?>">Partner Organizations</a>
+                    <!-- <a href="<? /*php echo home_url($link) */ ?>">Partner Organizations</a> -->
                 </li>
             </ul>
         </div>

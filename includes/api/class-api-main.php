@@ -46,7 +46,7 @@
          * @var string
          * @since 0.0.4
          */
-        protected $api_base = "https://liquidchurch.ccbchurch.com/api.php";
+        protected $api_base = "https://liquidchurch.ccbchurch.com/api.php"; // TODO: Add this as an option on plugin options page, remove hard coding.
         
         /**
          * @var array
@@ -83,7 +83,13 @@
             $this->plugin = $plugin;
             $this->ajax_call = defined('DOING_AJAX') && DOING_AJAX;
         }
-        
+
+	    /**
+	     * Set Initial API Arguments
+	     *
+	     * Uses user enter API credentials saved on options page to authenticate to CCB API
+	     */
+
         public function set_initial_api_args() {
             $username = lo_get_option( 'page', 'lo_events_page_ccb_api_username' );
             $password = lo_get_option( 'page', 'lo_events_page_ccb_api_password' );
@@ -117,6 +123,10 @@
         public abstract function api_map($data = []);
         
         /**
+         * Process API Response
+         *
+         * Calls other functions which handle specific
+         * aspects of CCB's API response.
          *
          * @since 0.0.4
          */
@@ -131,6 +141,7 @@
         }
         
         /**
+         * If WordPress throws an error in response to CCB API
          *
          * @since 0.0.4
          */
@@ -154,6 +165,7 @@
         }
         
         /**
+         * Get the CCB API HTTP Response Code
          *
          * @since 0.0.4
          */
@@ -171,6 +183,7 @@
         }
         
         /**
+         * Checks if the CCB API HTTP Response Code is a valid code.
          *
          * @since 0.0.4
          */
@@ -194,6 +207,7 @@
         }
         
         /**
+         * Get CCB's API HTTP XML Response Formatted As Array
          *
          * @since 0.0.4
          */

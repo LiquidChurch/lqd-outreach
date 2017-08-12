@@ -1,5 +1,6 @@
 <?php
-    $page_link = $this->get('page_link');
+  // TODO: The search isn't robust, returns results for Halloween but not for Nutley, and there are definitely Nutley events. Why?
+   /* $page_link = $this->get('page_link');
 ?>
 <div class="panel panel-default">
     <div class="panel-body">
@@ -152,3 +153,4 @@
         </form>
     </div>
 </div>
+   */

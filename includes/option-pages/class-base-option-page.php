@@ -58,7 +58,7 @@ abstract class LO_Base_Option_Page {
     }
 
     /**
-     * Add menu options page
+     * Add menu options pages
      *
      * @since 0.8.0
      */
@@ -114,6 +114,8 @@ abstract class LO_Base_Option_Page {
     }
 
     /**
+     * Show WP Pages
+     *
      * @since 0.8.0
      * @return mixed
      */
@@ -165,6 +167,8 @@ abstract class LO_Base_Option_Page {
 /**
  * Helper function to get/return the Myprefix_Admin object
  *
+ * @param string $page
+ *
  * @since  0.3.4
  * @return LO_Ccb_Events_Info_Settings object
  */
@@ -187,6 +191,7 @@ function lo_settings_admin($page = null) {
  *
  * @since  0.3.4
  *
+ * @param  string #page
  * @param  string $key     Options array key
  * @param  mixed  $default Optional default value
  *

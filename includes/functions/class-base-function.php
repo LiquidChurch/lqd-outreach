@@ -34,7 +34,15 @@
     
             $this->lo_ccb_post_action_handler = new LO_Ccb_Post_Action_Handler($this->plugin);
         }
-        
+
+	    /**
+	     * Check Details Display Enabled
+	     *
+	     * @param $postID
+	     * @param $key
+	     *
+	     * @return mixed|string $settings|$show
+	     */
         public static function check_details_display_enabled($postID, $key) {
             $show = get_post_meta($postID, $key, true);
             if($show == '') {

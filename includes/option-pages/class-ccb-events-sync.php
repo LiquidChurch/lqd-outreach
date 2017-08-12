@@ -987,7 +987,7 @@
          * Return a list of the groups from CCB
          * to be used as a filter when syncing
          *
-         * @return array|mixed|null|object|ø
+         * @return array|mixed|null|object|ø $data
          * @since 0.3.6
          */
         public function get_group_list()
@@ -1015,7 +1015,7 @@
          * Return a list of the group types from CCB
          * to be used as a filter when syncing
          *
-         * @return array|mixed|null|object|ø
+         * @return array|mixed|null|object|ø $data
          * @since 0.5.0
          */
         public function get_group_type_list()
