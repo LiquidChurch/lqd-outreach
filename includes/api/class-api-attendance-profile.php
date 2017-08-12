@@ -105,7 +105,7 @@ class Lo_Ccb_api_attendance_profile extends Lo_Ccb_api_main
             ));
 
         $this->api_response = wp_remote_post($this->api_url, $this->api_args);
-//        lo_debug('add', array($this->api_name . ' -> raw_api_response', json_encode($this->api_response), 0, 'API'));
+//        lo_debug('add', array($this->api_name . ' -> raw_api_response', $this->api_response, 0, 'lo-api-calls'));
     }
 
 }

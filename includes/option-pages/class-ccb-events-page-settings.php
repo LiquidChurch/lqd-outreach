@@ -67,7 +67,7 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
     public function __construct()
     {
         // Set our title
-        $this->title = __('Outreach Settings', 'liquid-outreach');
+        $this->title = __('General Settings', 'liquid-outreach');
 
         $this->hooks();
     }
@@ -317,6 +317,8 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
      * @param  string $field Field to retrieve
      *
      * @return mixed          Field value or exception is thrown
+     *
+     * @throws Exception
      */
     public function __get($field)
     {

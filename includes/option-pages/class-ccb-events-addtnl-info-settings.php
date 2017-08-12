@@ -65,7 +65,7 @@
 		 */
 		public function __construct() {
 			// Set our title
-			$this->title = __( 'Outreach Details Settings', 'liquid-outreach' );
+			$this->title = __( 'Event Details Settings', 'liquid-outreach' );
 			
 			$this->hooks();
 		}
@@ -206,7 +206,7 @@
 				),
 			) );
 			$cmb->add_field( array(
-				'name'    => 'Partner organization',
+				'name'    => 'Partner Organization',
 				'id'      => $this->meta_prefix . 'partner_organization',
 				'type'    => 'radio_inline',
 				'default' => true,

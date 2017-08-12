@@ -1,8 +1,8 @@
 <?php
 
-if (class_exists('WP_Logging')) {
+if (class_exists('WP_Logging') && defined('LO_ENV') && LO_ENV == 'development') {
 
-    class Lo_Logging extends WP_Logging
+    class LO_Logging extends WP_Logging
     {
 
         public function __construct()
@@ -13,18 +13,31 @@ if (class_exists('WP_Logging')) {
 
         public function pw_add_log_types($types)
         {
-            $types[] = 'API';
+            $types[] = 'lo-api-calls';
             return $types;
         }
     }
 
-    global $Lo_Logging;
-    $Lo_Logging = new Lo_Logging();
+    global $LO_Logging;
+    $LO_Logging = new LO_Logging();
 
     function lo_debug($call_back, $param_arr)
     {
-        global $Lo_Logging;
-        call_user_func_array(array($Lo_Logging, $call_back), $param_arr);
+        global $LO_Logging;
+        call_user_func_array(array($LO_Logging, $call_back), $param_arr);
+    }
+
+    function lo_delete_log()
+    {
+        global $LO_Logging;
+        add_filter('wp_logging_should_we_prune', function(){
+            return true;
+        });
+        call_user_func_array(array($LO_Logging, 'prune_logs'), []);
+    }
+
+    if(!empty($_GET['delete-lo-log']) && is_admin()) {
+        lo_delete_log();
     }
 
 } else {
@@ -35,4 +48,3 @@ if (class_exists('WP_Logging')) {
     }
 
 }
-

@@ -67,7 +67,7 @@ class LO_Ccb_Events_Name_Map_Settings extends LO_Base_Option_Page
     public function __construct()
     {
         // Set our title
-        $this->title = __('Rename Outreaches Mapper', 'liquid-outreach');
+        $this->title = __('Outreach Name Mapping', 'liquid-outreach');
 
         $this->hooks();
     }
@@ -160,6 +160,7 @@ class LO_Ccb_Events_Name_Map_Settings extends LO_Base_Option_Page
      * @return mixed          Field value or exception is thrown
      *
      * @throws Exception
+     *
      */
     public function __get($field)
     {

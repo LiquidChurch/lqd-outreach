@@ -19,7 +19,11 @@
  * Built using generator-plugin-wp (https://github.com/WebDevStudios/generator-plugin-wp)
  */
 
-// Check if there is an update available for this plugin.
+//define LO_ENV
+if (!defined('LO_ENV'))
+{
+    define('LO_ENV', 'development');
+}
 
 require __DIR__ . '/plugin-update-checker/plugin-update-checker.php';
 $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
@@ -47,7 +51,7 @@ $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
  */
 
 
-// Use composer to autoload class mappings, files, namespaces, etc.
+// Use composer autoload.
 require __DIR__ . '/vendor/autoload.php';
 
 /**
@@ -279,7 +283,7 @@ final class Liquid_Outreach
     } // END OF PLUGIN CLASSES FUNCTION
 
     /**
-     * Register, Localize, and Enqueue assets/js/liquid-outreach.js
+     * add admin script
      *
      * @since 0.11.1
      */
@@ -560,7 +564,8 @@ final class Liquid_Outreach
             $this->lo_ccb_events_sync               = new LO_Ccb_Events_Sync($this);
             $this->lo_ccb_base_function             = new LO_Ccb_Base_Function($this);
 
-        } else
+        }
+        else
         {
         }
 
@@ -583,12 +588,13 @@ final class Liquid_Outreach
      */
     public function add_dev_classes()
     {
-        /*if (defined('CCB_ENV') && CCB_ENV == 'development') {*/
-        if (file_exists(__DIR__ . '/dev/WP_Logging.php'))
+        if (defined('LO_ENV') && LO_ENV == 'development')
         {
-            include __DIR__ . '/dev/WP_Logging.php';
+            if (file_exists(__DIR__ . '/dev/WP_Logging.php'))
+            {
+                include __DIR__ . '/dev/WP_Logging.php';
+            }
         }
-        /*}*/
         include __DIR__ . '/dev/Logging_Mods.php';
     }
 
