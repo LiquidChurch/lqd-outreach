@@ -41,7 +41,7 @@ class LO_Shortcodes_Event_Single_Admin extends LO_Shortcodes_Admin_Base
     }
 
     /**
-     * Sets up the button
+     * Sets up the button (for TinyMCE?)
      *
      * @since 0.3.1
      * @return array

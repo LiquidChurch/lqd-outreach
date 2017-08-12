@@ -79,6 +79,8 @@ class LO_Shortcodes_Event_Single_Run extends LO_Shortcodes_Run_Base
     }
 
     /**
+     * Get Initial Query Arguments
+     *
      * @return array
      * @since  0.3.1
      */
@@ -91,7 +93,7 @@ class LO_Shortcodes_Event_Single_Run extends LO_Shortcodes_Run_Base
     }
 
     /**
-     * Pagination links
+     * Pagination Links
      *
      * @since 0.3.1
      *

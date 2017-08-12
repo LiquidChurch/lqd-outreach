@@ -63,27 +63,48 @@ $info_settings  = lo_get_option('additional-info', 'all');
 
 
                 <?php
-                if ( ! empty($register_gform))
+                // Adding this at 4:09 AM
+                $openings = $event_post->get_meta($meta_prefix . 'openings');
+                if ($openings == 0 or $openings < 0) // just in case we somehow end up below zero
                 {
-                    ?>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <a href="javascript:void(0);"
-                               id="lo-show-gravity-form-btn"
-                               class="btn btn-primary pull-left lo-event-register-btn-top">
-                                Show Register Form
-                            </a>
-                        </div>
-                    </div>
-                    <?php
+                    // Don't show register button
                 }
-                else if ( ! empty($register_url))
-                {
-                    ?>
-                    <a href="<?php echo $register_url ?>" <?php echo empty($register_url) ? 'disabled' : '' ?>
-                       class="btn btn-primary pull-left lo-event-register-btn-top">Register Now
-                    </a>
-                    <?php
+                else {
+	                if ( ! empty( $register_gform ) ) {
+		                // Now we decrement, it is a bit early, but nothing can be done in the time remaining.
+		                if ( $openings > 0 ) { // Don't want to decrement below zero now do we?
+			                $decremented = $openings - 1; // Okay, it is greater than zero, so we are safe to decrement
+                            // update_post_meta ( $post_id, $meta_key, $meta_value, $prev value );
+			                update_post_meta( $event_post->post->ID, $meta_prefix . 'openings', $decremented, $openings ); // we done decremented
+		                }
+		                // Now show them the register button.
+                        // We'll need to handle somehow if a person is sitting on the page for a bit before pressing the register button.
+			                ?>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <a href="javascript:void(0);"
+                                       id="lo-show-gravity-form-btn"
+                                       class="btn btn-primary pull-left lo-event-register-btn-top">
+                                        Show Register Form
+                                    </a>
+                                </div>
+                            </div>
+			                <?php
+	                }
+	                else {
+		                if ( ! empty( $register_url ) ) {
+		                    // Don't forget to decrement here too.
+                            if ( $openings > 0 ) { // Still not big on the negative numbers
+	                            $decremented = $openings - 1; // Safe to decrement
+	                            $event_post->update_post_meta( $event_post->post->ID, $meta_prefix . 'openings', $decremented, $openings ); // decrementation complete
+                            }
+			                ?>
+                            <a href="<?php echo $register_url ?>" <?php echo empty( $register_url ) ? 'disabled' : '' ?>
+                               class="btn btn-primary pull-left lo-event-register-btn-top">Register Now
+                            </a>
+			                <?php
+		                }
+	                } // Better check all of this while you are at it.
                 }
                 ?>
 
