@@ -1,6 +1,6 @@
 <?php
 /**
- * Liquid Outreach Ccb Events Page Settings.
+ * Liquid Outreach General Settings Page.
  *
  * @since   0.8.0
  * @package Liquid_Outreach
@@ -8,7 +8,7 @@
 
 
 /**
- * Liquid Outreach Ccb Events Page Settings class.
+ * Liquid Outreach General Settings Page class.
  *
  * @since 0.8.0
  */

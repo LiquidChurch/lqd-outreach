@@ -19,6 +19,8 @@
  * Built using generator-plugin-wp (https://github.com/WebDevStudios/generator-plugin-wp)
  */
 
+// Check if there is an update available for this plugin.
+
 require __DIR__ . '/plugin-update-checker/plugin-update-checker.php';
 $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
     'http://team.scripterz.in/products/wp-update-server/?action=get_metadata&slug=lqd-outreach',
@@ -45,7 +47,7 @@ $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
  */
 
 
-// Use composer autoload.
+// Use composer to autoload class mappings, files, namespaces, etc.
 require __DIR__ . '/vendor/autoload.php';
 
 /**
@@ -277,7 +279,7 @@ final class Liquid_Outreach
     } // END OF PLUGIN CLASSES FUNCTION
 
     /**
-     * add admin script
+     * Register, Localize, and Enqueue assets/js/liquid-outreach.js
      *
      * @since 0.11.1
      */

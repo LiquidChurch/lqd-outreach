@@ -38,7 +38,7 @@
         }
     
         /**
-         * Add custom bulk action
+         * Add Publish as a custom bulk action
          *
          * @since  0.11.5
          *
@@ -53,7 +53,9 @@
         }
     
         /**
-         * Excecute custom bulk action
+         * Execute custom bulk action
+         *
+         * Currently only supports bulk publishing of posts.
          *
          * @since  0.11.5
          *

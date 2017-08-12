@@ -1,6 +1,8 @@
 <?php
     /**
-     * Liquid Outreach Ccb Events Sync.
+     * Liquid Outreach CCB Sync.
+     *
+     * Provides the options page used to sync events and partner orgs from CCB.
      *
      * @since   0.0.3
      * @package Liquid_Outreach
@@ -8,7 +10,7 @@
 
 
     /**
-     * Liquid Outreach Ccb Events Sync class.
+     * Liquid Outreach CCB Sync class.
      *
      * @since 0.0.3
      */
@@ -91,6 +93,8 @@
             ];
 
         /**
+         * Does upload directory exist?
+         *
          * @since 0.24.0
          * @var bool
          */
@@ -106,7 +110,7 @@
         public function __construct($plugin)
         {
             // Set our title.
-            $this->title = esc_attr__('Outreach Events Sync', 'liquid-outreach');
+            $this->title = esc_attr__('CCB Sync', 'liquid-outreach');
 
             parent::__construct($plugin);
         }
@@ -285,7 +289,7 @@
                                 } else
                                 {
                                     $.unblockUI();
-                                    alert('All data has been fetched and saved to table temporarily, This page will auto refresh after clicking the OK button (if not then please refresh the page) and options to sync the data to WP Post will appear.');
+                                    alert('All data has been fetched and saved to a table temporarily. This page will auto refresh after you click the OK button (if not then please refresh the page) and options to sync the data to WP Post will appear.');
                                     location.reload();
                                 }
                             } else
@@ -645,8 +649,8 @@
                         {
                             e.preventDefault();
 
-                            var confirm_del = confirm('Are you sure want to process this request, ' +
-                                'all related data from the wp_post and the plugin table will be deleted ?');
+                            var confirm_del = confirm('Are you sure want to proceed with this request? ' +
+                                'All related data from the wp_post and the plugin table will be deleted!');
                             if (!confirm_del)
                             {
                                 return;
@@ -698,11 +702,11 @@
 
                             if ($("#ccb-sync-select-posts").val() == null)
                             {
-                                alert('Please select a event from the dropdown and continue.');
+                                alert('Please select an event from the dropdown and continue.');
                                 return;
                             }
 
-                            var confirm_sync = confirm('Are you sure want to process this sync ?');
+                            var confirm_sync = confirm('Are you sure want to process this sync?');
                             if (!confirm_sync)
                             {
                                 return;
@@ -722,7 +726,7 @@
 
                             if (ccb_data.length == 0)
                             {
-                                alert('Selected event doesn\'t exists in ccb api table');
+                                alert('Selected event doesn\'t exist in CCB API table');
                                 return;
                             } else
                             {
@@ -980,7 +984,8 @@
         }
 
         /**
-         * get group list for filter
+         * Return a list of the groups from CCB
+         * to be used as a filter when syncing
          *
          * @return array|mixed|null|object|ø
          * @since 0.3.6
@@ -1000,14 +1005,15 @@
                 $data = array_filter(array_unique($data));
                 asort($data);
 
-                set_transient($transient_key, $data, 60 * 60 * 24);
+                set_transient($transient_key, $data, 60 * 60 * 24); // TODO: What are these magic numbers? Look like 60 secs * 60 mins * 24 hrs. Why?
             }
 
             return $data;
         }
 
         /**
-         * get group type list for filter
+         * Return a list of the group types from CCB
+         * to be used as a filter when syncing
          *
          * @return array|mixed|null|object|ø
          * @since 0.5.0
@@ -1035,7 +1041,8 @@
         }
 
         /**
-         * get department list for filter
+         * Return a list of the departments from CCB
+         * to be used as a filter when syncing
          *
          * @return array|mixed|null|object|ø
          * @since 0.3.6
@@ -1154,7 +1161,11 @@
                     if ( ! empty($datum['wp_post_id']))
                     {
 
-                        /********check if group has multiple event posts*********/
+                        /********
+                         * check if group has multiple event posts
+                         * We determine this by checking for post_type lo-events and whether
+                         * there is a meta_key called lo_ccb_events with a value of the group id
+                         *********/
                         $event_query = new WP_Query("post_type=lo-events&meta_key=lo_ccb_events_group_id&meta_value={$datum['group_id']}");
                         if ($event_query->have_posts())
                         {
@@ -1185,6 +1196,7 @@
                         wp_delete_post($datum['wp_post_id']);
                     }
 
+                    // Deleting the event post form the temporary PAI data table.
                     $wpdb->delete($wpdb->prefix . 'lo_ccb_events_api_data',
                         ['ccb_event_id' => $datum['ccb_event_id']]);
                     $wpdb->delete($wpdb->prefix . 'lo_ccb_groups_api_data',
@@ -1260,7 +1272,7 @@
 
                     $this->create_partner_post($ccb_event_datum);
 
-                    //create events post
+                    //create an event post
                     $event_post_data = [
                         'title'      => $this->set_post_title($ccb_event_datum['title']),
                         'content'    => $ccb_event_datum['description'],
@@ -1423,9 +1435,11 @@
         /**
          * get event stored api image
          *
-         * @param $partner_details
+         * @param $event_details
          *
          * @since 0.24.0
+         *
+         * @return string $upload_dir_url
          */
         public function get_event_image($event_details) {
             $upload          = wp_upload_dir();
@@ -1443,6 +1457,8 @@
          * get partner stored api image
          *
          * @param $partner_details
+         *
+         * @return string $upload_dir_url
          *
          * @since 0.24.0
          */
@@ -1565,6 +1581,8 @@
          *
          * @param $partner_details
          *
+         * @return  array $this
+         *
          * @since 0.24.0
          */
         public function save_partner_image($partner_details)
@@ -1593,6 +1611,8 @@
          *
          * @param $ccb_event_datum
          *
+         * @return string $response
+         *
          * @since 0.24.0
          */
         public function fetch_event_details_api($ccb_event_datum)
@@ -1618,6 +1638,8 @@
          * save event image
          *
          * @param $event_details
+         *
+         * @return array $this
          *
          * @since 0.24.0
          */
@@ -1648,6 +1670,9 @@
          *
          * @param $upload
          *
+         * @param $file_to_dwnld
+         *
+         * @return string $return
          * @since 0.24.0
          */
         public function save_image($file_to_dwnld, $upload)

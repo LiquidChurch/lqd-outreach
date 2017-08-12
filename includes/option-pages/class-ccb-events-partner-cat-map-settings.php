@@ -1,6 +1,6 @@
 <?php
 /**
- * Liquid Outreach Ccb Events Partner Category Mapping Settings.
+ * Liquid Outreach Partners Title Mapper.
  *
  * @since   0.20.2
  * @package Liquid_Outreach
@@ -67,7 +67,7 @@ class LO_Ccb_Events_Partner_Cat_Map_Settings extends LO_Base_Option_Page
     public function __construct()
     {
         // Set our title
-        $this->title = __('Outreach Partners Category Mapping Settings', 'liquid-outreach');
+        $this->title = __('Outreach Partners Category Mapper', 'liquid-outreach');
 
         $this->hooks();
     }
@@ -143,7 +143,7 @@ class LO_Ccb_Events_Partner_Cat_Map_Settings extends LO_Base_Option_Page
 
         $cmb->add_group_field($category_mapping_id, array(
             'name' => 'Outreach Category',
-            'desc' => 'Matched title post will be mapped to this outreach category',
+            'desc' => 'Posts with a matching title will be assigned to the following outreach category',
             'id' => 'event_categroy',
             'taxonomy' => 'event-category', //Enter Taxonomy Slug
             'type' => 'taxonomy_select',
@@ -160,6 +160,8 @@ class LO_Ccb_Events_Partner_Cat_Map_Settings extends LO_Base_Option_Page
      * @param  string $field Field to retrieve
      *
      * @return mixed          Field value or exception is thrown
+     *
+     * @throws Exception
      */
     public function __get($field)
     {

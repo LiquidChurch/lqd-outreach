@@ -65,7 +65,7 @@
 		 */
 		public function __construct() {
 			// Set our title
-			$this->title = __( 'Outreach Details Page Settings', 'liquid-outreach' );
+			$this->title = __( 'Outreach Details Settings', 'liquid-outreach' );
 			
 			$this->hooks();
 		}
@@ -293,6 +293,8 @@
 		 * @param  string $field Field to retrieve
 		 *
 		 * @return mixed          Field value or exception is thrown
+		 *
+		 * @throws Exception
 		 */
 		public function __get( $field ) {
 			// Allowed fields to retrieve
