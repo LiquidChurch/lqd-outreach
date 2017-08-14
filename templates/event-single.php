@@ -4,6 +4,37 @@ $meta_prefix    = 'lo_ccb_events_';
 $register_gform = Liquid_Outreach::$enable_ccb_gravity ? $event_post->get_meta($meta_prefix . 'gform') : FALSE;
 $register_url   = $event_post->get_meta($meta_prefix . 'register_url');
 $info_settings  = lo_get_option('additional-info', 'all');
+add_action('gform_after_submission', 'checkit', 10, 2);
+function checkit($meta_prefix) {
+    $event_post = $this->get('post');
+	$openings = $event_post->get_meta($meta_prefix . 'openings');
+	if ($openings == 0 or $openings < 0) // just in case we somehow end up below zero
+	{
+		// Don't show register button
+	}
+	else {
+		if ( ! empty( $register_gform ) ) {
+			// Now we decrement.
+			if ( $openings > 0 ) {
+				$decremented = $openings - 1;
+				update_post_meta( $event_post->post->ID, $meta_prefix . 'openings', $decremented, $openings );
+			}
+			if ( $openings == 0 ) {
+			    ?>
+                <script>
+                    (function ()
+                    {
+                        jQuery(document).ready(function()
+                        {
+                            jQuery("#openings").text("Closed");
+                        });
+                    })
+                </script>
+<?php
+            }
+		}
+	}
+}
 ?>
 <div class="container-fluid lo-custom-container panel lo-panel-custom">
     <div class="row lo-no-margin">
@@ -63,22 +94,7 @@ $info_settings  = lo_get_option('additional-info', 'all');
 
 
                 <?php
-                // Adding this at 4:09 AM
-                $openings = $event_post->get_meta($meta_prefix . 'openings');
-                if ($openings == 0 or $openings < 0) // just in case we somehow end up below zero
-                {
-                    // Don't show register button
-                }
-                else {
 	                if ( ! empty( $register_gform ) ) {
-		                // Now we decrement, it is a bit early, but nothing can be done in the time remaining.
-		                if ( $openings > 0 ) { // Don't want to decrement below zero now do we?
-			                $decremented = $openings - 1; // Okay, it is greater than zero, so we are safe to decrement
-                            // update_post_meta ( $post_id, $meta_key, $meta_value, $prev value );
-			                update_post_meta( $event_post->post->ID, $meta_prefix . 'openings', $decremented, $openings ); // we done decremented
-		                }
-		                // Now show them the register button.
-                        // We'll need to handle somehow if a person is sitting on the page for a bit before pressing the register button.
 			                ?>
                             <div class="row">
                                 <div class="col-md-12">
@@ -92,20 +108,12 @@ $info_settings  = lo_get_option('additional-info', 'all');
 			                <?php
 	                }
 	                else {
-		                if ( ! empty( $register_url ) ) {
-		                    // Don't forget to decrement here too.
-                            if ( $openings > 0 ) { // Still not big on the negative numbers
-	                            $decremented = $openings - 1; // Safe to decrement
-	                            $event_post->update_post_meta( $event_post->post->ID, $meta_prefix . 'openings', $decremented, $openings ); // decrementation complete
-                            }
-			                ?>
+		                if ( ! empty( $register_url ) ) ?>
                             <a href="<?php echo $register_url ?>" <?php echo empty( $register_url ) ? 'disabled' : '' ?>
-                               class="btn btn-primary pull-left lo-event-register-btn-top">Register Now
-                            </a>
-			                <?php
-		                }
-	                } // Better check all of this while you are at it.
-                }
+                        class="btn btn-primary pull-left lo-event-register-btn-top">Register Now
+                        </a>
+		                <?php
+	                }
                 ?>
 
             </div>
@@ -157,7 +165,7 @@ $info_settings  = lo_get_option('additional-info', 'all');
                     <div class="row">
                         <div class="col-md-5 "><strong>Openings</strong></div>
                         <div class="col-md-1">&#8594</div>
-                        <div class="col-md-6">
+                        <div class="col-md-6" id="openings">
                             <?php
                             $openings = $event_post->get_meta($meta_prefix . 'openings');
                             if ($openings == '0')
@@ -425,7 +433,6 @@ $info_settings  = lo_get_option('additional-info', 'all');
 
     </div><!--/.row-->
 </div>
-
 <script type="text/javascript">
     (function ($)
     {
@@ -454,6 +461,8 @@ $info_settings  = lo_get_option('additional-info', 'all');
             <?php
             }
             ?>
+
         });
+
     })(jQuery)
 </script>
