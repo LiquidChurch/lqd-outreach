@@ -123,17 +123,13 @@
         public function hooks()
         {
             add_action('admin_enqueue_scripts', array($this, 'admin_enqueue_js'));
-            add_action('wp_ajax_lo_admin_ajax_fetch_ccb_events',
-                array($this, 'fetch_ccb_events_ccb_ajax_callback'));
-            add_action('wp_ajax_lo_admin_ajax_sync_ccb_events',
-                array($this, 'sync_ccb_events_ccb_ajax_callback'));
-            add_action('wp_ajax_lo_admin_ajax_delete_ccb_events',
-                array($this, 'delete_ccb_events_ccb_ajax_callback'));
+            add_action('wp_ajax_lo_admin_ajax_fetch_ccb_events', array($this, 'fetch_ccb_events_ccb_ajax_callback'));
+            add_action('wp_ajax_lo_admin_ajax_sync_ccb_events', array($this, 'sync_ccb_events_ccb_ajax_callback'));
+            add_action('wp_ajax_lo_admin_ajax_delete_ccb_events', array($this, 'delete_ccb_events_ccb_ajax_callback'));
             add_action('admin_menu', array($this, 'add_admin_menu_page'));
             add_action('cmb2_admin_init', array($this, 'add_options_page_metabox'));
             add_action('before_delete_post', array($this, 'update_api_data_table'));
-            add_action('lo_ccb_cron_event_attendance_sync',
-                array($this, 'cron_event_attendance_sync_func'));
+            add_action('lo_ccb_cron_event_attendance_sync', array($this, 'cron_event_attendance_sync_func'));
         }
 
         /**
@@ -1341,8 +1337,7 @@
                     } else if (strtotime($ccb_event_datum['start_time']) > time())
                     {
                         $event_attendees_data
-                            = $this->get_event_attendance_data($ccb_event_datum['ccb_event_id'],
-                            date('Y-m-d', strtotime($ccb_event_datum['start_time'])));
+                            = $this->get_event_attendance_data($ccb_event_datum['ccb_event_id'], date('Y-m-d', strtotime($ccb_event_datum['start_time'])));
 
                         if (empty($event_attendees_data['error']))
                         {
@@ -2044,8 +2039,7 @@
                 } else if (strtotime($synced_datum['start_time']) > time())
                 {
                     $event_attendees_data
-                        = $this->get_event_attendance_data($synced_datum['ccb_event_id'],
-                        date('Y-m-d', strtotime($synced_datum['start_time'])));
+                        = $this->get_event_attendance_data($synced_datum['ccb_event_id'], date('Y-m-d', strtotime($synced_datum['start_time'])));
 
                     if (empty($event_attendees_data['error']))
                     {
