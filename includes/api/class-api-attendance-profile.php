@@ -9,19 +9,26 @@
 class Lo_Ccb_api_attendance_profile extends Lo_Ccb_api_main
 {
     /**
-     * @var string
+     * Define the CCB API service we are using
+     *
+     * @var string  $api_name   CCB Attendance Profile Service
      * @since 0.1.4
      */
     protected $api_name    = "attendance_profile";
     
     /**
-     * @var string
+     * Define the required CCB srv to execute request
+     * on CCB API service attendance_profile
+     *
+     * @var string  $api_req_str
      * @since 0.1.4
      */
     protected $api_req_str = "srv=attendance_profile";
     
     /**
-     * @var string
+     * The URL used to access the CCB API
+     *
+     * @var string $api_url
      * @since 0.1.4
      */
     protected $api_url = "";
@@ -44,7 +51,9 @@ class Lo_Ccb_api_attendance_profile extends Lo_Ccb_api_main
     }
     
     /**
+     * Create CCB API map
      *
+     * @param   $data
      * @since 0.1.4
      */
     public function api_map($data = [])
@@ -56,6 +65,7 @@ class Lo_Ccb_api_attendance_profile extends Lo_Ccb_api_main
     }
     
     /**
+     * Modify the CCB API request call based on required fields
      *
      * @since 0.1.4
      */
@@ -65,6 +75,8 @@ class Lo_Ccb_api_attendance_profile extends Lo_Ccb_api_main
     }
     
     /**
+     * Handle Errors
+     *
      * @return WP_Error
      * @since 0.1.4
      */
@@ -84,6 +96,7 @@ class Lo_Ccb_api_attendance_profile extends Lo_Ccb_api_main
     }
     
     /**
+     * Execute call against CCB API
      *
      * @since 0.1.4
      */
