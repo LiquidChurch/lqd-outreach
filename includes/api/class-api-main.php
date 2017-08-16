@@ -11,7 +11,7 @@
         /**
          * Array for Holding API Errors
          *
-         * @var array $api_error
+         * @var array   $api_error
          * @since 0.0.4
          */
         public $api_error = array();
@@ -19,7 +19,7 @@
         /**
          * Returns arguments for CCB API Errors
          *
-         * @var array $api_response_arr
+         * @var array   $api_response_arr
          * @since 0.0.4
          */
         public $api_response_arr = array();
@@ -27,7 +27,7 @@
         /**
          * Parent plugin class
          *
-         * @var   class
+         * @var   var   $plugin
          * @since 0.0.4
          */
         protected $plugin = null;
@@ -35,7 +35,7 @@
         /**
          * Detect AJAX Call
          *
-         * @var bool|null
+         * @var bool|null   $ajax_call
          * @since 0.0.4
          */
         protected $ajax_call = null;
@@ -43,7 +43,7 @@
         /**
          * Define the CCB API service we are using
          *
-         * @var string
+         * @var string  $api_name
          * @since 0.0.4
          */
         protected $api_name = '';
@@ -51,7 +51,7 @@
         /**
          * The URL used to access the CCB API
          *
-         * @var string
+         * @var string  $api_base
          * @since 0.0.4
          */
         protected $api_base = "https://liquidchurch.ccbchurch.com/api.php"; // TODO: Add this as an option on plugin options page, remove hard coding.
@@ -59,7 +59,7 @@
         /**
          * Arguments we are making to the CCB API
          *
-         * @var array
+         * @var array   $api_args
          * @since 0.0.4
          */
         protected $api_args = array();
@@ -67,7 +67,7 @@
         /**
          * Response Code Returned by CCB API
          *
-         * @var string
+         * @var string  $api_http_resp_code
          * @since 0.0.4
          */
         protected $api_http_resp_code = '';
@@ -75,7 +75,7 @@
         /**
          * Contents of CCB API Response
          *
-         * @var array
+         * @var array   $api_response
          * @since 0.0.4
          */
         protected $api_response = array();
@@ -83,7 +83,7 @@
         /**
          * Array of valid HTTP Response Codes
          *
-         * @var array
+         * @var array   $valid_http_resp_code
          * @since 0.0.4
          */
         protected $valid_http_resp_code = array(200, 201);
@@ -103,7 +103,7 @@
 	    /**
 	     * Set Initial API Arguments
 	     *
-	     * Uses user entered API credentials saved on options page to authenticate to CCB API
+	     * Uses user entered API credentials saved on options page to authenticate to CCB API.
 	     *
 	     */
 
@@ -125,6 +125,8 @@
         /**
          * Hooks
          *
+         * Currently there are no hooks.
+         *
          * @since 0.0.4
          */
         public function hooks()
@@ -132,7 +134,8 @@
         }
     
         /**
-         * Map with appropriate API call
+         * api_map Function
+         *
          *
          * @since 0.0.4
          * @param array $data
@@ -351,7 +354,7 @@
         }
         
         /**
-         * Handles Error in Conversion from API XML to Array
+         * Handles Error in Array Conversion from CCB API XML Response
          *
          * @since 0.0.4
          */
@@ -376,7 +379,7 @@
         }
         
         /**
-         * Handles No Data in Conversion from API XML to Array
+         * Handles No Data in Array Conversion from API XML
          *
          * @since 0.0.4
          */

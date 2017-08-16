@@ -183,7 +183,8 @@
                 'cmb_styles' => false, // false to disable the CMB stylesheet
                 // 'closed'     => true, // Keep the metabox closed by default
             ));
-        
+
+	        // Defines the radio button options available to turn fields on/off
             $settings_arr = array(
                 'location'    => [
                     'label' => 'Address',
@@ -205,8 +206,13 @@
                     'label' => 'Email',
                     'settings_key' => 'partner_email'
                 ],
+	            'campus'   => [
+	            	'label'         => 'Campus',
+		            'setting_key'   => 'partner_campus'
+	            ]
             );
-        
+
+            // iterate through $settings_arr and create radio buttons
             foreach ($settings_arr as $index => $item) {
                 $cmb_page_settings->add_field( array(
                     'name' => $item['label'],
@@ -302,6 +308,14 @@
                 'id'   => $prefix . 'list_of_projects',
                 'type' => 'list_related_ccb_events',
             ));
+
+            //Campus Meta
+	        $cmb_additional->add_field(array(
+	        	'name'  =>  __('Campus', 'liquid-outreach'),
+		        'desc'  =>  __('', 'liquid-outreach'),
+		        'id'    =>  $prefix . 'campus',
+		        'type'  =>  'text',
+	        ));
             
             //group_id meta
 //            $cmb_additional->add_field(array(
@@ -340,7 +354,7 @@
 			    isset($args['augment_posts'])
 			    && $args['augment_posts']
 			    && $partners->have_posts()
-			    // Don't augment for queries w/ greater than 100 posts, for perf. reasons.
+			    // Don't augment for queries w/ greater than 100 posts, for performance reasons.
 			    && $partners->post_count < 100
 		    ) {
 			    foreach ($partners->posts as $key => $post) {

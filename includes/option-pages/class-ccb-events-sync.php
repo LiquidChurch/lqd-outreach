@@ -3,6 +3,7 @@
      * Liquid Outreach CCB Sync.
      *
      * Provides the options page used to sync events and partner organizations from CCB.
+     * Handles much of the actual syncing from temp tables to actual table.
      *
      * @since   0.0.3
      * @package Liquid_Outreach
@@ -19,14 +20,14 @@
 
         /**
          * @since  0.0.6
-         * @var string
+         * @var string $lo_ccb_events_sync_form
          */
         public static $lo_ccb_events_sync_form = 'lo_ccb_events_sync_form';
 
         /**
          * Page title.
          *
-         * @var    string
+         * @var    string $title
          * @since  0.0.3
          */
         protected $title = '';
@@ -34,7 +35,7 @@
         /**
          * page key, and page slug.
          *
-         * @var    string
+         * @var    string $key
          * @since  0.0.3
          */
         protected $key = 'liquid_outreach_ccb_events_sync';
@@ -42,7 +43,7 @@
         /**
          * Options page metabox ID.
          *
-         * @var    string
+         * @var    string $metabox_id
          * @since  0.0.3
          */
         protected $metabox_id = '_liquid_outreach_ccb_events_sync_metabox';
@@ -50,7 +51,7 @@
         /**
          * Options Page hook.
          *
-         * @var string
+         * @var string $options_page
          */
         protected $options_page = '';
 
@@ -144,8 +145,8 @@
 
         /**
          * Check Post Action and Process Data for Fetch CCB Events
-         * check if post action is valid
-         * and process data for fetch ccb events
+         *
+         * Checks if the Post Action is valid and processes data fetched from CCB Events
          *
          * @since  0.0.6
          */
@@ -183,7 +184,7 @@
         }
 
         /**
-         * add admin menu page and enqueue CSS
+         * Add Admin Menu Page and Enqueue CSS
          *
          * @since  0.0.6
          */
@@ -318,7 +319,7 @@
         }
 
         /**
-         * Show Sync Buttons with Sync Stats
+         * Show Sync Buttons with Sync Stats, Also Delete Buttons
          *
          * Displays the total number of records retrieved by CCB Sync,
          * the number that are already synced, those already synced who
@@ -1492,7 +1493,10 @@
         }
 
         /**
-         * create partner post when syncing events
+         * Create Actual Partner Post
+         *
+         * This function takes data from the temp table and
+         * copies as a partner post
          *
          * @param $ccb_event_datum
          *
