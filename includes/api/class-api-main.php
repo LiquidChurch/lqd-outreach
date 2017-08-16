@@ -9,13 +9,17 @@
     abstract class Lo_Ccb_api_main
     {
         /**
-         * @var array
+         * Array for Holding API Errors
+         *
+         * @var array $api_error
          * @since 0.0.4
          */
         public $api_error = array();
         
         /**
-         * @var array
+         * Returns arguments for CCB API Errors
+         *
+         * @var array $api_response_arr
          * @since 0.0.4
          */
         public $api_response_arr = array();
@@ -29,7 +33,7 @@
         protected $plugin = null;
         
         /**
-         * ajax call detect
+         * Detect AJAX Call
          *
          * @var bool|null
          * @since 0.0.4
@@ -37,36 +41,48 @@
         protected $ajax_call = null;
         
         /**
+         * Define the CCB API service we are using
+         *
          * @var string
          * @since 0.0.4
          */
         protected $api_name = '';
         
         /**
+         * The URL used to access the CCB API
+         *
          * @var string
          * @since 0.0.4
          */
         protected $api_base = "https://liquidchurch.ccbchurch.com/api.php"; // TODO: Add this as an option on plugin options page, remove hard coding.
         
         /**
+         * Arguments we are making to the CCB API
+         *
          * @var array
          * @since 0.0.4
          */
         protected $api_args = array();
         
         /**
+         * Response Code Returned by CCB API
+         *
          * @var string
          * @since 0.0.4
          */
         protected $api_http_resp_code = '';
         
         /**
+         * Contents of CCB API Response
+         *
          * @var array
          * @since 0.0.4
          */
         protected $api_response = array();
         
         /**
+         * Array of valid HTTP Response Codes
+         *
          * @var array
          * @since 0.0.4
          */
@@ -87,7 +103,8 @@
 	    /**
 	     * Set Initial API Arguments
 	     *
-	     * Uses user enter API credentials saved on options page to authenticate to CCB API
+	     * Uses user entered API credentials saved on options page to authenticate to CCB API
+	     *
 	     */
 
         public function set_initial_api_args() {
@@ -106,6 +123,7 @@
         }
         
         /**
+         * Hooks
          *
          * @since 0.0.4
          */
@@ -226,6 +244,8 @@
         }
         
         /**
+         * Convert CCB API XML response to Array
+         *
          * @param       $xml
          * @param array $options
          * @return array
@@ -331,6 +351,7 @@
         }
         
         /**
+         * Handles Error in Conversion from API XML to Array
          *
          * @since 0.0.4
          */
@@ -355,6 +376,7 @@
         }
         
         /**
+         * Handles No Data in Conversion from API XML to Array
          *
          * @since 0.0.4
          */

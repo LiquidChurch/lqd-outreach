@@ -9,18 +9,25 @@
 class Lo_Ccb_api_individual_profile extends Lo_Ccb_api_main
 {
     /**
+     * Define the CCB API service we are using
+     *
      * @var string
      * @since 0.1.3
      */
     protected $api_name    = "individual_profile_from_id";
     
     /**
+     * Define the required CCB srv to execute request
+     * on CCB API service individual_profile_from_id
+     *
      * @var string
      * @since 0.1.3
      */
     protected $api_req_str = "srv=individual_profile_from_id";
     
     /**
+     * The URL used to access the CCB API
+     *
      * @var string
      * @since 0.1.3
      */
@@ -45,6 +52,9 @@ class Lo_Ccb_api_individual_profile extends Lo_Ccb_api_main
     
     /**
      *
+     * Create CCB API map
+     *
+     * @param $data
      * @since 0.1.3
      */
     public function api_map($data = [])
@@ -56,6 +66,7 @@ class Lo_Ccb_api_individual_profile extends Lo_Ccb_api_main
     }
     
     /**
+     * Modify the CCB API request call based on required fields
      *
      * @since 0.1.3
      */
@@ -65,6 +76,8 @@ class Lo_Ccb_api_individual_profile extends Lo_Ccb_api_main
     }
     
     /**
+     * Handles Errors
+     *
      * @return WP_Error
      * @since 0.1.3
      */
@@ -80,6 +93,7 @@ class Lo_Ccb_api_individual_profile extends Lo_Ccb_api_main
     }
     
     /**
+     * Execute call against CCB API
      *
      * @since 0.1.3
      */
