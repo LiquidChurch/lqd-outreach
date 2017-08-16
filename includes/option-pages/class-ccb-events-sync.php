@@ -129,7 +129,7 @@
             add_action('admin_menu', array($this, 'add_admin_menu_page'));
             add_action('cmb2_admin_init', array($this, 'add_options_page_metabox'));
             add_action('before_delete_post', array($this, 'update_api_data_table'));
-            add_action('lo_ccb_cron_event_attendance_sync', array($this, 'cron_event_attendance_sync_func'));
+            add_action('lo_ccb_cron_event_member_sync', array($this, 'cron_event_member_sync_func'));
         }
 
         /**
@@ -1336,20 +1336,14 @@
                             = 'no-limit';
                     } else if (strtotime($ccb_event_datum['start_time']) > time())
                     {
-                        $event_attendees_data
-                            = $this->get_event_attendance_data($ccb_event_datum['ccb_event_id'], date('Y-m-d', strtotime($ccb_event_datum['start_time'])));
+                        $event_member_data = $this->fetch_event_details_api($ccb_event_datum);
 
-                        if (empty($event_attendees_data['error']))
+                        if (empty($event_member_data) && isset($event_member_data['events']['event']['guest_list']))
                         {
-
-                            $event_post_data['meta_input'][$event_post_meta_prefix . 'openings']
-                                = ($ccb_event_datum['registration_limit'] -
-                                   $event_attendees_data['attendees_data']['count']);
+                            $event_post_data['meta_input'][$event_post_meta_prefix . 'openings'] = $ccb_event_datum['registration_limit'];
                         } else
                         {
-
-                            $event_post_data['meta_input'][$event_post_meta_prefix . 'openings']
-                                = $ccb_event_datum['registration_limit'];
+                            $event_post_data['meta_input'][$event_post_meta_prefix . 'openings'] = ($ccb_event_datum['registration_limit'] - count($event_member_data['events']['event']['guest_list']));
                         }
 
                     } else
@@ -2012,7 +2006,7 @@
          *
          * @since 0.9.0
          */
-        public function cron_event_attendance_sync_func()
+        public function cron_event_member_sync_func()
         {
             $event_post_meta_prefix = 'lo_ccb_events_';
 
@@ -2038,20 +2032,14 @@
                         = 'no-limit';
                 } else if (strtotime($synced_datum['start_time']) > time())
                 {
-                    $event_attendees_data
-                        = $this->get_event_attendance_data($synced_datum['ccb_event_id'], date('Y-m-d', strtotime($synced_datum['start_time'])));
+                    $event_member_data = $this->fetch_event_details_api($synced_datum);
 
-                    if (empty($event_attendees_data['error']))
+                    if (empty($event_member_data) && isset($event_member_data['events']['event']['guest_list']))
                     {
-
-                        $event_post_data['meta_input'][$event_post_meta_prefix . 'openings']
-                            = ($synced_datum['registration_limit'] -
-                               $event_attendees_data['attendees_data']['count']);
+                        $event_post_data['meta_input'][$event_post_meta_prefix . 'openings'] = $synced_datum['registration_limit'];
                     } else
                     {
-
-                        $event_post_data['meta_input'][$event_post_meta_prefix . 'openings']
-                            = $synced_datum['registration_limit'];
+                        $event_post_data['meta_input'][$event_post_meta_prefix . 'openings'] = ($synced_datum['registration_limit'] - count($event_member_data['events']['event']['guest_list']));
                     }
 
                 } else

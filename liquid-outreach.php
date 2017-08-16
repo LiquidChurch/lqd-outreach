@@ -609,14 +609,13 @@ final class Liquid_Outreach
     {
         add_filter('cron_schedules', array($this, 'my_cron_schedules'));
 
-        if ( ! wp_next_scheduled('lo_ccb_cron_event_attendance_sync'))
+        if ( ! wp_next_scheduled('lo_ccb_cron_event_member_sync'))
         {
             $ccb_events_page_settings = get_option("liquid_outreach_ccb_events_page_settings", 'lo_events_page_event_attendance_count_update');
 
             $event_attendance_count_update = isset($ccb_events_page_settings['lo_events_page_event_attendance_count_update']) ? $ccb_events_page_settings['lo_events_page_event_attendance_count_update'] : '30min';
 
-            wp_schedule_event(time(), '15sec', 'lo_ccb_cron_event_attendance_sync');
-//            wp_schedule_event(time(), $event_attendance_count_update, 'lo_ccb_cron_event_attendance_sync');
+            wp_schedule_event(time(), $event_attendance_count_update, 'lo_ccb_cron_event_member_sync');
 
         }
     }
@@ -682,7 +681,7 @@ final class Liquid_Outreach
         $role_class = new LO_Ccb_Outreach_Editor_Role();
         $role_class->delete_role();
 
-        wp_clear_scheduled_hook('lo_ccb_cron_event_attendance_sync');
+        wp_clear_scheduled_hook('lo_ccb_cron_event_member_sync');
     }
 
     /**

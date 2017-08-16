@@ -72,6 +72,7 @@ class Lo_Ccb_api_event_profile extends Lo_Ccb_api_main
     {
         $this->api_fields = [
             'id' => $data['event_id'],
+            'include_guest_list' => !empty($_POST['guest_list']) ? $_POST['guest_list'] : true,
             'include_image_link' => !empty($_POST['per_page']) ? $_POST['include_image_link'] : true
         ];
     }
