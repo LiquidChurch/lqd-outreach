@@ -1,6 +1,8 @@
 <?php
 	/**
-	 * Liquid Outreach Ccb Events Info Settings.
+	 * Liquid Outreach Event Details Settings
+	 *
+	 * Options page for how event detail pages are displayed.
 	 *
 	 * @since   0.3.4
 	 * @package Liquid_Outreach
@@ -10,9 +12,10 @@
 	/**
 	 * Liquid Outreach Ccb Events info settings class.
 	 *
+	 * @extends LO_Base_Option_page
 	 * @since 0.3.4
 	 */
-	class LO_Ccb_Events_Info_Settings extends LO_Base_Option_Page{
+	class LO_Ccb_Events_Info_Settings extends LO_Base_Option_Page{ // TODO: Refactor LO_Ccb_Events_Info_Settings to LO_Ccb_Event_Detail_Settings
 
         /**
          * Holds an instance of the object
@@ -29,6 +32,7 @@
 		 * @since 0.3.4
 		 */
 		protected $key = 'liquid_outreach_ccb_events_info_settings';
+
 		/**
 		 * Options page metabox id
 		 *
@@ -36,6 +40,7 @@
 		 * @since 0.3.4
 		 */
 		protected $metabox_id = 'liquid_outreach_ccb_events_info_settings_metabox';
+
         /**
          * Options page meta prefix
          *
@@ -43,6 +48,7 @@
          * @since 0.20.2
          */
         protected $meta_prefix = 'lo_events_info_';
+
 		/**
 		 * Options Page title
 		 *
@@ -50,6 +56,7 @@
 		 * @since 0.3.4
 		 */
 		protected $title = '';
+
 		/**
 		 * Options Page hook
 		 *
@@ -108,15 +115,14 @@
 			) );
 			
 			// Set our CMB2 fields
-			
             $cmb->add_field( array(
-                'name' => 'Settings for Events <hr/>',
+                'name' => 'Settings for Event Detail Pages <hr/>',
                 'desc' => '',
                 'type' => 'title',
                 'id'   => 'events_title'
             ) );
 			$cmb->add_field( array(
-				'name'    => 'Date Time',
+				'name'    => 'Date and Time',
 				'id'      => $this->meta_prefix . 'date_time',
 				'type'    => 'radio_inline',
 				'default' => true,
@@ -227,7 +233,7 @@
 			) );
 
             $cmb->add_field( array(
-                'name' => '<hr/>Settings for Partners <hr/>',
+                'name' => '<hr/>Settings for Partner Detail Pages <hr/>',
                 'desc' => '',
                 'type' => 'title',
                 'id'   => 'partner_title'
@@ -291,9 +297,7 @@
 		 * @since  0.3.4
 		 *
 		 * @param  string $field Field to retrieve
-		 *
-		 * @return mixed          Field value or exception is thrown
-		 *
+		 * @return mixed         Field value or exception is thrown
 		 * @throws Exception
 		 */
 		public function __get( $field ) {
