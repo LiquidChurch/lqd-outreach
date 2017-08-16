@@ -2,7 +2,7 @@
     /**
      * Liquid Outreach CCB Sync.
      *
-     * Provides the options page used to sync events and partner orgs from CCB.
+     * Provides the options page used to sync events and partner organizations from CCB.
      *
      * @since   0.0.3
      * @package Liquid_Outreach
@@ -55,10 +55,10 @@
         protected $options_page = '';
 
         /**
-         * allowed post action
+         * Allowed Post Actions
          *
          * @since  0.0.6
-         * @var array
+         * @var array $acceptable_post_action
          */
         private $acceptable_post_action
             = array(
@@ -68,22 +68,28 @@
             );
 
         /**
+         * Whether Form Has Been Submitted Variable
+         *
          * @since  0.0.6
-         * @var bool
+         * @var bool $form_submitted
          */
         private $form_submitted = FALSE;
 
         /**
+         * Form Handle Status Variable
+         *
          * @since  0.0.6
-         * @var bool
+         * @var bool $form_handle_status
          */
         private $form_handle_status = FALSE;
 
         /**
-         * transient key list
+         * Transient Key List Array
+         *
+         * For groups, group types, and departments
          *
          * @since 0.3.6
-         * @var array
+         * @var array $transient_key
          */
         private $transient_key
             = [
@@ -93,10 +99,10 @@
             ];
 
         /**
-         * Does upload directory exist?
+         * Does upload directory exist? Variable
          *
          * @since 0.24.0
-         * @var bool
+         * @var bool $upload_dir_exists
          */
         private $upload_dir_exists = FALSE;
 
@@ -137,6 +143,7 @@
         }
 
         /**
+         * Check Post Action and Process Data for Fetch CCB Events
          * check if post action is valid
          * and process data for fetch ccb events
          *
@@ -176,7 +183,7 @@
         }
 
         /**
-         * add admin menu page
+         * add admin menu page and enqueue CSS
          *
          * @since  0.0.6
          */
@@ -311,7 +318,11 @@
         }
 
         /**
-         * Show sync details for events
+         * Show Sync Buttons with Sync Stats
+         *
+         * Displays the total number of records retrieved by CCB Sync,
+         * the number that are already synced, those already synced who
+         * have updated data, and those records which are new
          *
          * @since 0.0.9
          */
@@ -1207,7 +1218,7 @@
 
         /**
          * ccb event sync handler method
-         * syncing data from temple table wp_posts
+         * syncing data from temp table to wp_posts
          *
          * @since 0.1.2
          */
@@ -1433,13 +1444,16 @@
         }
 
         /**
-         * get event stored api image
+         * Get Event Image
+         *
+         * If there is an image associated with the event, we grab it and
+         * upload to our WP install, this is necessary because
+         * the CCB API provides expiring URLs for images
          *
          * @param $event_details
+         * @return string $upload_dir_url
          *
          * @since 0.24.0
-         *
-         * @return string $upload_dir_url
          */
         public function get_event_image($event_details) {
             $upload          = wp_upload_dir();
@@ -1454,10 +1468,13 @@
         }
 
         /**
-         * get partner stored api image
+         * Get Partner Image
+         *
+         * If there is an image associated with the partner, we grab it and
+         * upload to our WP install, this is necessary because
+         * the CCB API provides expiring URLs for images
          *
          * @param $partner_details
-         *
          * @return string $upload_dir_url
          *
          * @since 0.24.0
@@ -1553,10 +1570,12 @@
             }
 
             //create events partners post
+            // check if a partner already exists
             $partner_query = new WP_Query("post_type=lo-event-partners&meta_key=" .
                                           $eventPartner_post_meta_prefix .
                                           "group_id&meta_value=" .
                                           $ccb_event_datum['group_id']);
+            // if no record exists
             if ( ! $partner_query->have_posts())
             {
                 $new_partner_post = wp_insert_post([
@@ -1564,7 +1583,7 @@
                     'post_type'  => 'lo-event-partners',
                     'meta_input' => $meta_input
                 ]);
-            } else
+            } else // if record exists
             {
                 $partner_query->the_post();
                 global $post;
@@ -1577,7 +1596,7 @@
         }
 
         /**
-         * save partner image
+         * Save Partner Image
          *
          * @param $partner_details
          *
@@ -1610,7 +1629,6 @@
          * fetch event details using event_profile ccb_api
          *
          * @param $ccb_event_datum
-         *
          * @return string $response
          *
          * @since 0.24.0
@@ -1638,7 +1656,6 @@
          * save event image
          *
          * @param $event_details
-         *
          * @return array $this
          *
          * @since 0.24.0
@@ -1669,9 +1686,7 @@
          * save file
          *
          * @param $upload
-         *
          * @param $file_to_dwnld
-         *
          * @return string $return
          * @since 0.24.0
          */
@@ -1722,9 +1737,10 @@
         /**
          * set post title from mapping
          *
-         * @since 0.21.2
-         *
          * @param $title
+         * @return $title
+         *
+         * @since 0.21.2
          */
         public function set_post_title($title)
         {

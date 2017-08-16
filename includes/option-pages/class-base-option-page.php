@@ -29,6 +29,7 @@ abstract class LO_Base_Option_Page {
      * @since 0.8.0
      */
     protected $title = '';
+
     /**
      * Options Page hook
      *
@@ -58,7 +59,9 @@ abstract class LO_Base_Option_Page {
     }
 
     /**
-     * Add menu options pages
+     * Add menu options pages, enqueue CSS
+     *
+     * See https://developer.wordpress.org/reference/functions/add_submenu_page/
      *
      * @since 0.8.0
      */
@@ -98,8 +101,8 @@ abstract class LO_Base_Option_Page {
      *
      * @since  0.8.0
      *
-     * @param  int   $object_id Option key
-     * @param  array $updated   Array of updated fields
+     * @param  int   $object_id    Option key
+     * @param  array $updated      Array of updated fields
      *
      * @return void
      */
@@ -146,10 +149,8 @@ abstract class LO_Base_Option_Page {
      * Public getter method for retrieving protected/private variables
      *
      * @since  0.3.4
-     *
-     * @param  string $field Field to retrieve
-     *
-     * @return mixed          Field value or exception is thrown
+     * @param  string   $field  Field to retrieve
+     * @return mixed            Field value or exception is thrown
      *
      * @throws Exception
      */

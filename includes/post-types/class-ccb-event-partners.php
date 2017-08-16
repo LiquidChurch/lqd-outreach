@@ -19,7 +19,7 @@
         /**
          * Parent plugin class.
          *
-         * @var Liquid_Outreach
+         * @var Liquid_Outreach $plugin
          * @since  0.1.0
          */
         protected $plugin = null;
@@ -27,13 +27,13 @@
 	    /**
 	     * Bypass temp. cache
 	     *
-	     * @var boolean
+	     * @var boolean $flush
 	     * @since  0.2.7
 	     */
 	    public $flush = false;
 	
 	    /**
-	     * @var bool
+	     * @var bool $overrides_processed
 	     * @since  0.2.7
 	     */
 	    protected $overrides_processed = false;
@@ -41,7 +41,7 @@
 	    /**
 	     * The identifier for this object
 	     *
-	     * @var string
+	     * @var string $id
 	     * @since  0.2.7
 	     */
 	    protected $id = 'lo-event-partners';
@@ -49,7 +49,7 @@
 	    /**
 	     * Default WP_Query args
 	     *
-	     * @var   array
+	     * @var   array $query_args
 	     * @since 0.2.4
 	     */
 	    protected $query_args = array(
@@ -60,7 +60,7 @@
 	    );
 	
 	    /**
-	     * @var string
+	     * @var string $meta_prefix
 	     * @since  0.2.7
 	     */
 	    public $meta_prefix = 'lo_ccb_event_partner_';
@@ -72,9 +72,9 @@
          *
          * See documentation in CPT_Core, and in wp-includes/post.php.
          *
-         * @since  0.1.0
-         *
          * @param  Liquid_Outreach $plugin Main plugin object.
+         *
+         * @since  0.1.0
          */
         public function __construct($plugin)
         {
@@ -321,6 +321,7 @@
 	     *
 	     * @since  0.2.7
 	     *
+	     * @var    $args
 	     * @return WP_Query|LO_Event_Partners_Post object
 	     */
 	    public function get_many($args)
@@ -423,8 +424,9 @@
         /**
          * Overriding get_args from parent
          *
-         * @since  0.11.5
          * @return array
+         *
+         * @since  0.11.5
          */
         public function get_args()
         {
