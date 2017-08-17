@@ -208,7 +208,7 @@
                 ],
 	            'campus'   => [
 	            	'label'         => 'Campus',
-		            'setting_key'   => 'partner_campus'
+		            'settings_key'   => 'partner_campus'
 	            ]
             );
 
