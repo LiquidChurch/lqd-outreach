@@ -16,7 +16,9 @@ class LO_Style_Loader extends LO_Template_Loader {
 	/**
 	 * Template file extension
 	 *
-	 * @var string
+	 * The file extension for template style files (CSS)
+	 *
+	 * @var string  $extension
 	 * @since 0.2.2
 	 */
 	protected $extension = '.css';
@@ -24,7 +26,7 @@ class LO_Style_Loader extends LO_Template_Loader {
 	/**
 	 * Whether to force loading of an already-loaded template.
 	 *
-	 * @var bool
+	 * @var bool    $force
 	 * @since 0.2.2
 	 */
 	protected $force = false;
@@ -32,7 +34,7 @@ class LO_Style_Loader extends LO_Template_Loader {
 	/**
 	 * Keep CSS templates from loading more than once per page.
 	 *
-	 * @var array
+	 * @var array   $done
 	 * @since 0.2.2
 	 */
 	protected static $done = array();

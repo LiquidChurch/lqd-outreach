@@ -1,6 +1,7 @@
 <?php
 /**
  * Liquid Outreach Shortcode Admin Base
+ *
  * @since 0.2.0
  * @package Liquid_Outreach
  */
@@ -10,7 +11,7 @@ abstract class LO_Shortcodes_Admin_Base extends WDS_Shortcode_Admin {
 	/**
 	 * Parent plugin class
 	 *
-	 * @var   LO_Shortcodes_Run_Base
+	 * @var   LO_Shortcodes_Run_Base    $run
 	 * @since 0.2.0
 	 */
 	protected $run;
@@ -18,7 +19,7 @@ abstract class LO_Shortcodes_Admin_Base extends WDS_Shortcode_Admin {
 	/**
 	 * Shortcode prefix for field ids.
 	 *
-	 * @var   string
+	 * @var   string    $prefix
 	 * @since 0.2.0
 	 */
 	protected $prefix = '';
@@ -48,7 +49,7 @@ abstract class LO_Shortcodes_Admin_Base extends WDS_Shortcode_Admin {
 	 *
 	 * @since  0.2.0
 	 * @param  array  $updated Array of shortcode attributes.
-	 * @return array           Modified array of shortcode attributes.
+	 * @return array  $updated Modified array of shortcode attributes.
 	 */
 	public function maybe_remove_prefixes( $updated ) {
 		if ( $this->prefix ) {

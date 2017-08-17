@@ -103,7 +103,7 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
      */
     public function clear_scheduled_hook($updated, $action, $settingsThis) {
         if(!empty($updated)) {
-            wp_clear_scheduled_hook('lo_ccb_cron_event_attendance_sync');
+            wp_clear_scheduled_hook('lo_ccb_cron_event_member_sync');
         }
     }
 

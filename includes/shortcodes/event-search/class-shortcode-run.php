@@ -12,7 +12,7 @@ class LO_Shortcodes_Event_Search_Run extends LO_Shortcodes_Run_Base
     /**
      * The Shortcode Tag
      *
-     * @var string
+     * @var string  $shortcode
      * @since 0.2.1
      */
     public $shortcode = 'lo_event_search';
@@ -20,7 +20,7 @@ class LO_Shortcodes_Event_Search_Run extends LO_Shortcodes_Run_Base
     /**
      * Default attributes applied to the shortcode.
      *
-     * @var array
+     * @var array   $atts_defaults
      * @since 0.2.1
      */
     public $atts_defaults
@@ -33,6 +33,7 @@ class LO_Shortcodes_Event_Search_Run extends LO_Shortcodes_Run_Base
     /**
      * Shortcode Output
      *
+     * @return  string  $content
      * @since 0.2.1
      */
     public function shortcode()
@@ -98,6 +99,8 @@ class LO_Shortcodes_Event_Search_Run extends LO_Shortcodes_Run_Base
     }
 
     /**
+     * Get Initial Query Arguments
+     *
      * @return array
      * @since  0.2.4
      */

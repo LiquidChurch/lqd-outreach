@@ -10,7 +10,7 @@
 		/**
 		 * Shortcode prefix for field ids.
 		 *
-		 * @var   string
+		 * @var   string    $prefix
 		 * @since 0.3.2
 		 */
 		protected $prefix = 'lo_event_category_single';
@@ -38,7 +38,7 @@
 		 * @param $fields
 		 * @param $button_data
 		 *
-		 * @return array
+		 * @return array    $fields
 		 */
 		function fields( $fields, $button_data ) {
 

@@ -12,7 +12,7 @@
         /**
          * The Shortcode Tag
          *
-         * @var string
+         * @var string  $shortcode
          * @since 0.3.3
          */
         public $shortcode = 'lo_event_partner_list';
@@ -20,7 +20,7 @@
         /**
          * Default attributes applied to the shortcode.
          *
-         * @var array
+         * @var array   $atts_defaults
          * @since 0.3.3
          */
         public $atts_defaults
@@ -31,6 +31,8 @@
 
         /**
          * Shortcode Output
+         *
+         * @return string $content
          *
          * @since 0.3.3
          */
@@ -72,6 +74,8 @@
         }
 
         /**
+         * Get Initial Query Arguments
+         *
          * @return array
          * @since  0.2.4
          */

@@ -10,7 +10,7 @@ class LO_Shortcodes {
 	/**
 	 * Instance of LO_Shortcodes_Event_Search
 	 *
-	 * @var LO_Shortcodes_Event_Search
+	 * @var LO_Shortcodes_Event_Search  $event_search
 	 * @since 0.2.0
 	 */
 	protected $event_search;

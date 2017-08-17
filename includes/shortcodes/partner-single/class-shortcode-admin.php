@@ -12,11 +12,16 @@ class LO_Shortcodes_Partner_Single_Admin extends LO_Shortcodes_Admin_Base
     /**
      * Shortcode prefix for field ids.
      *
-     * @var   string
+     * @var   string    $prefix
      * @since 0.11.2
      */
     protected $prefix = 'lo_partner_single';
 
+	/**
+	 * Show Partner Posts
+	 *
+	 * @return mixed $titles
+	 */
     public static function show_partner_posts()
     {
         $query = new WP_Query(
@@ -64,7 +69,7 @@ class LO_Shortcodes_Partner_Single_Admin extends LO_Shortcodes_Admin_Base
      * @param $fields
      * @param $button_data
      *
-     * @return array
+     * @return array $fields
      */
     function fields($fields, $button_data)
     {

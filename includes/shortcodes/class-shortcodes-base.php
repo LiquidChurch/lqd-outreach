@@ -13,7 +13,7 @@ abstract class LO_Shortcodes_Base
      * Instance of LO_Shortcodes_Run_Base
      *
      * @since 0.2.0
-     * @var LO_Shortcodes_Run_Base
+     * @var LO_Shortcodes_Run_Base  $run
      */
     public $run;
 
@@ -21,7 +21,7 @@ abstract class LO_Shortcodes_Base
      * Instance of LO_Shortcodes_Admin_Base
      *
      * @since 0.2.0
-     * @var LO_Shortcodes_Admin_Base
+     * @var LO_Shortcodes_Admin_Base    $admin
      */
     public $admin;
 

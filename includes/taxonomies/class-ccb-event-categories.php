@@ -20,14 +20,14 @@ class LO_Ccb_Event_Categories extends Taxonomy_Core
      * The identifier for this object
      *
      * @since  0.1.1
-     * @var string
+     * @var string  $id
      */
     protected $id = 'event_category';
 
     /**
      * Parent plugin class.
      *
-     * @var    Liquid_Outreach
+     * @var    Liquid_Outreach  $plugin
      * @since  0.1.1
      */
     protected $plugin = null;
@@ -35,14 +35,22 @@ class LO_Ccb_Event_Categories extends Taxonomy_Core
     /**
      * The image meta key for this taxonomy, if applicable
      *
-     * @var string
+     * @var string  $image_meta_key
      * @since  0.2.5
      */
     protected $image_meta_key = 'lo_ccb_event_category_image';
+
+	/**
+	 * The button color key for this taxonomy, if applicable
+	 *
+	 * @var string  $btn_color_meta_key
+	 */
     protected $btn_color_meta_key = 'lo_ccb_event_category_btn_color';
 
     /**
-     * @var string
+     * Header Image Meta Key
+     *
+     * @var string  $header_image_meta_key
      * @since 0.8.1
      */
     protected $header_image_meta_key = 'lo_ccb_event_category_header_image';
@@ -50,7 +58,7 @@ class LO_Ccb_Event_Categories extends Taxonomy_Core
     /**
      * The default args array for self::get()
      *
-     * @var array
+     * @var array   $term_get_args_defaults
      * @since  0.2.5
      */
     protected $term_get_args_defaults
@@ -61,7 +69,7 @@ class LO_Ccb_Event_Categories extends Taxonomy_Core
     /**
      * The default args array for self::get_many()
      *
-     * @var array
+     * @var array   $term_get_many_args_defaults
      * @since  0.2.6
      */
     protected $term_get_many_args_defaults
@@ -71,7 +79,9 @@ class LO_Ccb_Event_Categories extends Taxonomy_Core
         );
 
     /**
-     * @var array
+     * Taxonomy Capabilities
+     *
+     * @var array   $taxonomy_capabilities
      * @since 0.3.8
      */
     protected $taxonomy_capabilities = [
@@ -126,7 +136,9 @@ class LO_Ccb_Event_Categories extends Taxonomy_Core
     }
 
     /**
-     * overrides get_args because fo taxonomy capabilities functionaloity
+     * Override Get Arguments
+     *
+     * overrides get_args because fo taxonomy capabilities functionality
      * @return array
      *
      * @since 0.3.8
@@ -193,6 +205,7 @@ class LO_Ccb_Event_Categories extends Taxonomy_Core
 
     /**
      * Actually registers our Taxonomy with the merged arguments
+     *
      * @since  0.1.0
      */
     public function register_taxonomy() {
@@ -262,6 +275,8 @@ class LO_Ccb_Event_Categories extends Taxonomy_Core
     }
 
     /**
+     * Create new CMB
+     *
      * @since 0.1.1
      *
      * @param $args
@@ -312,6 +327,8 @@ class LO_Ccb_Event_Categories extends Taxonomy_Core
     }
 
     /**
+     * Get Similar
+     *
      * @param       $term_slug
      * @param array $args
      * @param array $single_term_args
@@ -368,6 +385,8 @@ class LO_Ccb_Event_Categories extends Taxonomy_Core
     }
 
     /**
+     * Get Terms Wrapper
+     *
      * Wrapper for `get_terms` to account for changes in WP 4.5 where taxonomy
      * is expected as part of the arguments.
      *
@@ -479,6 +498,8 @@ class LO_Ccb_Event_Categories extends Taxonomy_Core
     }
 
     /**
+     * Add Button Color
+     *
      * @param $term
      *
      * @return mixed

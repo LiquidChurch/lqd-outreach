@@ -12,7 +12,7 @@ class LO_Shortcodes_Event_Category_Single_Run extends LO_Shortcodes_Run_Base
     /**
      * The Shortcode Tag
      *
-     * @var string
+     * @var string  $shortcode
      * @since 0.3.2
      */
     public $shortcode = 'lo_event_category_single';
@@ -20,7 +20,7 @@ class LO_Shortcodes_Event_Category_Single_Run extends LO_Shortcodes_Run_Base
     /**
      * Default attributes applied to the shortcode.
      *
-     * @var array
+     * @var array   $atts_defaults
      * @since 0.3.2
      */
     public $atts_defaults
@@ -29,7 +29,7 @@ class LO_Shortcodes_Event_Category_Single_Run extends LO_Shortcodes_Run_Base
             'disable_header' => false,
             'disable_nav' => false,
             'disable_search' => false,
-            'disable_cateogy_list' => false,
+            'disable_cateogy_list' => false,  // TODO: Refactor to disable_category_list
         );
 
     /**
@@ -127,7 +127,7 @@ class LO_Shortcodes_Event_Category_Single_Run extends LO_Shortcodes_Run_Base
      *
      * @param $total_pages
      *
-     * @return array
+     * @return array    $nav
      */
     protected function get_pagination($total_pages)
     {

@@ -12,10 +12,16 @@ class LO_Shortcodes_Event_Single_Admin extends LO_Shortcodes_Admin_Base
     /**
      * Shortcode prefix for field ids.
      *
-     * @var   string
+     * @var   string    $prefix
      * @since 0.3.1
      */
     protected $prefix = 'lo_event_single';
+
+	/**
+	 * Show Event Posts
+	 *
+	 * @return mixed
+	 */
 
     public static function show_event_posts()
     {
@@ -64,7 +70,7 @@ class LO_Shortcodes_Event_Single_Admin extends LO_Shortcodes_Admin_Base
      * @param $fields
      * @param $button_data
      *
-     * @return array
+     * @return array    $fields
      */
     function fields($fields, $button_data)
     {

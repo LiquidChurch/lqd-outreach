@@ -16,7 +16,7 @@
 		/**
 		 * Template names array
 		 *
-		 * @var array
+		 * @var array   $templates
 		 * @since 0.3.0
 		 */
 		public $templates = array();
@@ -24,7 +24,7 @@
 		/**
 		 * Template name
 		 *
-		 * @var string
+		 * @var string  $template
 		 * @since 0.3.0
 		 */
 		public $template = '';
@@ -32,11 +32,14 @@
 		/**
 		 * Template file extension
 		 *
-		 * @var string
+		 * @var string  $extension
 		 * @since 0.3.0
 		 */
 		protected $extension = '.php';
-		
+
+		/**
+		 * LO_WP_Template_Loader constructor.
+		 */
 		public function __construct() {
 			//            add_filter('archive_template', array($this, 'load_template'));
 			add_filter( 'template_include', array( $this, 'template_loader' ) );
@@ -52,7 +55,7 @@
 		 *
 		 * @param mixed $template
 		 *
-		 * @return string
+		 * @return string   $template
 		 * @since 0.3.0
 		 */
 		public function template_loader( $template ) {

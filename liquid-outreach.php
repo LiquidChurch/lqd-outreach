@@ -20,7 +20,7 @@
  */
 
 //define LO_ENV
-if (!defined('LO_ENV'))
+if ( ! defined('LO_ENV'))
 {
     define('LO_ENV', 'development');
 }
@@ -63,7 +63,10 @@ final class Liquid_Outreach
 {
 
     /**
-     * Current version.
+     * Current Version of Plugin
+     *
+     * There is the overall version of the software as well as
+     * the database version.
      *
      * @var    string
      * @since  0.0.0
@@ -98,7 +101,7 @@ final class Liquid_Outreach
     /**
      * Singleton instance of plugin.
      *
-     * @var    Liquid_Outreach
+     * @var    object Liquid_Outreach
      * @since  0.0.0
      */
     protected static $single_instance = NULL;
@@ -106,7 +109,7 @@ final class Liquid_Outreach
     /**
      * Detailed activation error messages.
      *
-     * @var    array
+     * @var    array $activation_errors
      * @since  0.0.0
      */
     protected $activation_errors = array();
@@ -158,6 +161,14 @@ final class Liquid_Outreach
      * @var Lo_Ccb_api_attendance_profile
      */
     protected $lo_ccb_api_attendance_profile;
+
+    /**
+     * Instance of Lo_Ccb_api_attendance_profiles
+     *
+     * @since 0.26.1
+     * @var Lo_Ccb_api_attendance_profiles
+     */
+    protected $lo_ccb_api_attendance_profiles;
 
     /**
      * Instance of LO_Shortcodes
@@ -283,7 +294,7 @@ final class Liquid_Outreach
     } // END OF PLUGIN CLASSES FUNCTION
 
     /**
-     * add admin script
+     * Register, Localize, and Enqueue Admin Script
      *
      * @since 0.11.1
      */
@@ -554,21 +565,15 @@ final class Liquid_Outreach
         $this->lo_ccb_event_categories = new LO_Ccb_Event_Categories($this);
         $this->lo_shortcodes           = new LO_Shortcodes($this);
 
-        if (is_admin())
-        {
-            $this->lo_ccb_api_event_profiles        = new Lo_Ccb_api_event_profiles($this);
-            $this->lo_ccb_api_event_profile         = new Lo_Ccb_api_event_profile($this);
-            $this->lo_ccb_api_group_profile_from_id = new Lo_Ccb_api_group_profile_from_id($this);
-            $this->lo_ccb_api_individual_profile    = new Lo_Ccb_api_individual_profile($this);
-            $this->lo_ccb_api_attendance_profile    = new Lo_Ccb_api_attendance_profile($this);
-            $this->lo_ccb_events_sync               = new LO_Ccb_Events_Sync($this);
-            $this->lo_ccb_base_function             = new LO_Ccb_Base_Function($this);
+        $this->lo_ccb_api_event_profiles        = new Lo_Ccb_api_event_profiles($this);
+        $this->lo_ccb_api_event_profile         = new Lo_Ccb_api_event_profile($this);
+        $this->lo_ccb_api_group_profile_from_id = new Lo_Ccb_api_group_profile_from_id($this);
+        $this->lo_ccb_api_individual_profile    = new Lo_Ccb_api_individual_profile($this);
+        $this->lo_ccb_api_attendance_profile    = new Lo_Ccb_api_attendance_profile($this);
+        $this->lo_ccb_api_attendance_profiles   = new Lo_Ccb_api_attendance_profiles($this);
+        $this->lo_ccb_base_function             = new LO_Ccb_Base_Function($this);
 
-        }
-        else
-        {
-        }
-
+        $this->lo_ccb_events_sync = new LO_Ccb_Events_Sync($this);
     }
 
     /**
@@ -607,16 +612,13 @@ final class Liquid_Outreach
     {
         add_filter('cron_schedules', array($this, 'my_cron_schedules'));
 
-        if ( ! wp_next_scheduled('lo_ccb_cron_event_attendance_sync'))
+        if ( ! wp_next_scheduled('lo_ccb_cron_event_member_sync'))
         {
-            $ccb_events_page_settings = get_option("liquid_outreach_ccb_events_page_settings",
-                'lo_events_page_event_attendance_count_update');
+            $ccb_events_page_settings = get_option("liquid_outreach_ccb_events_page_settings", 'lo_events_page_event_attendance_count_update');
 
-            $event_attendance_count_update
-                = isset($ccb_events_page_settings['lo_events_page_event_attendance_count_update']) ? $ccb_events_page_settings['lo_events_page_event_attendance_count_update'] : '30min';
+            $event_attendance_count_update = isset($ccb_events_page_settings['lo_events_page_event_attendance_count_update']) ? $ccb_events_page_settings['lo_events_page_event_attendance_count_update'] : '30min';
 
-            wp_schedule_event(time(), $event_attendance_count_update,
-                'lo_ccb_cron_event_attendance_sync');
+            wp_schedule_event(time(), $event_attendance_count_update, 'lo_ccb_cron_event_member_sync', [null]);
 
         }
     }
@@ -631,6 +633,13 @@ final class Liquid_Outreach
      */
     public function my_cron_schedules($schedules)
     {
+        if ( ! isset($schedules["15sec"]))
+        {
+            $schedules["15sec"] = array(
+                'interval' => 15,
+                'display'  => __('Once every 15 seconds')
+            );
+        }
         if ( ! isset($schedules["5min"]))
         {
             $schedules["5min"] = array(
@@ -675,7 +684,7 @@ final class Liquid_Outreach
         $role_class = new LO_Ccb_Outreach_Editor_Role();
         $role_class->delete_role();
 
-        wp_clear_scheduled_hook('lo_ccb_cron_event_attendance_sync');
+        wp_clear_scheduled_hook('lo_ccb_cron_event_member_sync');
     }
 
     /**
@@ -754,6 +763,7 @@ final class Liquid_Outreach
             case 'lo_ccb_api_group_profile_from_id':
             case 'lo_ccb_api_individual_profile':
             case 'lo_ccb_api_attendance_profile':
+            case 'lo_ccb_api_attendance_profiles':
 
             case 'lo_ccb_events_info_settings':
             case 'lo_ccb_events_page_settings':

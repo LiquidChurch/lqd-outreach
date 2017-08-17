@@ -10,7 +10,7 @@
         /**
          * Parent plugin class
          *
-         * @var   Liquid_Outreach
+         * @var   Liquid_Outreach   $plugin
          * @since 0.0.6
          */
         protected $plugin = null;
@@ -19,7 +19,7 @@
          * ajax call detect
          *
          * @since  0.0.6
-         * @var bool|null
+         * @var bool|null   $ajax_call
          */
         protected $ajax_call = null;
         

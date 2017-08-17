@@ -12,7 +12,7 @@ class LO_Shortcodes_Partner_Single_Run extends LO_Shortcodes_Run_Base
     /**
      * The Shortcode Tag
      *
-     * @var string
+     * @var string  $shortcode
      * @since 0.11.2
      */
     public $shortcode = 'lo_partner_single';
@@ -20,7 +20,7 @@ class LO_Shortcodes_Partner_Single_Run extends LO_Shortcodes_Run_Base
     /**
      * Default attributes applied to the shortcode.
      *
-     * @var array
+     * @var array   $atts_defaults
      * @since 0.11.2
      */
     public $atts_defaults
@@ -34,6 +34,7 @@ class LO_Shortcodes_Partner_Single_Run extends LO_Shortcodes_Run_Base
     /**
      * Shortcode Output
      *
+     * @return  string  $content
      * @since 0.11.2
      */
     public function shortcode()
@@ -105,6 +106,8 @@ class LO_Shortcodes_Partner_Single_Run extends LO_Shortcodes_Run_Base
     }
 
     /**
+     * Get Initial Query Arguments
+     *
      * @return array
      * @since  0.11.2
      */
@@ -123,7 +126,7 @@ class LO_Shortcodes_Partner_Single_Run extends LO_Shortcodes_Run_Base
      *
      * @param $total_pages
      *
-     * @return array
+     * @return array    $nav
      */
     protected function get_pagination($total_pages)
     {

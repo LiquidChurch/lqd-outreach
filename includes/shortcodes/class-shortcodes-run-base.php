@@ -12,7 +12,7 @@
         /**
          * LO_Ccb_Events object
          *
-         * @var   LO_Ccb_Events
+         * @var   LO_Ccb_Events $ccb_event
          * @since 0.2.0
          */
         public $ccb_event;
@@ -20,7 +20,7 @@
         /**
          * LO_Ccb_Event_Partners object
          *
-         * @var   LO_Ccb_Event_Partners
+         * @var   LO_Ccb_Event_Partners $ccb_event_partner
          * @since 0.2.0
          */
         public $ccb_event_partner;
@@ -28,19 +28,19 @@
         /**
          * LO_Ccb_Event_Categories object
          *
-         * @var   LO_Ccb_Event_Categories
+         * @var   LO_Ccb_Event_Categories   $ccb_event_categories
          * @since 0.2.0
          */
         public $ccb_event_categories;
 
         /**
-         * @var mixed
+         * @var mixed   $page_settings
          * @since 0.25.0
          */
         public $page_settings;
 
         /**
-         * @var string
+         * @var string  $force_cat_page
          * @since 0.25.0
          */
         public $force_cat_page = NULL;
@@ -52,6 +52,7 @@
          *
          * @param LO_Ccb_Events         $ccb_event
          * @param LO_Ccb_Event_Partners $ccb_event_partner
+         * @param LO_Ccb_Event_Categories   $ccb_event_categories
          */
         public function __construct(LO_Ccb_Events $ccb_event, LO_Ccb_Event_Partners $ccb_event_partner, LO_Ccb_Event_Categories $ccb_event_categories)
         {
@@ -131,6 +132,8 @@
         }
 
         /**
+         * Get Category List
+         *
          * @return mixed
          * @since 0.25.0
          */
@@ -147,6 +150,11 @@
             return $arr;
         }
 
+	    /**
+	     * Get Category Partner List
+	     *
+	     * @return array
+	     */
         public function get_partner_list() {
             if ($this->force_cat_page != NULL)
             {

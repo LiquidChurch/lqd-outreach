@@ -16,7 +16,7 @@
 		/**
 		 * Array of arguments for template
 		 *
-		 * @var array
+		 * @var array   $args
 		 * @since 0.1.9
 		 */
 		public $args = array();
@@ -24,7 +24,7 @@
 		/**
 		 * Template names array
 		 *
-		 * @var array
+		 * @var array   $templates
 		 * @since 0.1.9
 		 */
 		public $templates = array();
@@ -32,7 +32,7 @@
 		/**
 		 * Template name
 		 *
-		 * @var string
+		 * @var string  $template
 		 * @since 0.1.9
 		 */
 		public $template = '';
@@ -40,7 +40,9 @@
 		/**
 		 * Template file extension
 		 *
-		 * @var string
+		 * The file extension for template files (PHP)
+		 *
+		 * @var string  $extension
 		 * @since 0.1.9
 		 */
 		protected $extension = '.php';

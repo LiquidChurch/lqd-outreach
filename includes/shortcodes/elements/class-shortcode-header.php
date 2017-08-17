@@ -35,7 +35,7 @@ class LO_Shortcodes_Header_Element_Admin extends LO_Shortcodes_Admin_Base
     /**
      * Shortcode prefix for field ids.
      *
-     * @var   string
+     * @var   string    $prefix
      * @since 0.7.0
      */
     protected $prefix = 'lo_header_element';
@@ -88,7 +88,7 @@ class LO_Shortcodes_Header_Element_Run extends LO_Shortcodes_Run_Base
     /**
      * The Shortcode Tag
      *
-     * @var string
+     * @var string  $shortcode
      * @since 0.7.0
      */
     public $shortcode = 'lo_header_element';
@@ -96,7 +96,7 @@ class LO_Shortcodes_Header_Element_Run extends LO_Shortcodes_Run_Base
     /**
      * Default attributes applied to the shortcode.
      *
-     * @var array
+     * @var array   $atts_defaults
      * @since 0.7.0
      */
     public $atts_defaults = array(

@@ -35,7 +35,7 @@
         /**
          * Shortcode prefix for field ids.
          *
-         * @var   string
+         * @var   string    $prefix
          * @since 0.7.0
          */
         protected $prefix = 'lo_nav_element';
@@ -64,7 +64,7 @@
          * @param $fields
          * @param $button_data
          *
-         * @return array
+         * @return array    $fields
          */
         function fields($fields, $button_data)
         {
@@ -88,7 +88,7 @@
         /**
          * The Shortcode Tag
          *
-         * @var string
+         * @var string  $shortcode
          * @since 0.7.0
          */
         public $shortcode = 'lo_nav_element';
@@ -96,7 +96,7 @@
         /**
          * Default attributes applied to the shortcode.
          *
-         * @var array
+         * @var array   $atts_defaults
          * @since 0.7.0
          */
         public $atts_defaults

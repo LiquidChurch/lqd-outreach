@@ -1,13 +1,13 @@
 <?php
     /**
-     * Liquid Outreach base function.
+     * Liquid Outreach Base Function.
      *
      * @since   0.11.5
      * @package Liquid_Outreach
      */
     
     /**
-     * Liquid Outreach base function class.
+     * Liquid Outreach Base Function Class.
      *
      * @since 0.11.5
      *

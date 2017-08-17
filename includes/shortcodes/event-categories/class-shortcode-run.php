@@ -12,7 +12,7 @@ class LO_Shortcodes_Event_Categories_Run extends LO_Shortcodes_Run_Base
     /**
      * The Shortcode Tag
      *
-     * @var string
+     * @var string  $shortcode
      * @since 0.4.0
      */
     public $shortcode = 'lo_event_categories';
@@ -20,7 +20,7 @@ class LO_Shortcodes_Event_Categories_Run extends LO_Shortcodes_Run_Base
     /**
      * Default attributes applied to the shortcode.
      *
-     * @var array
+     * @var array   $atts_defaults
      * @since 0.4.0
      */
     public $atts_defaults
