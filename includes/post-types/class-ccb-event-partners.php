@@ -206,10 +206,6 @@
                     'label' => 'Email',
                     'settings_key' => 'partner_email'
                 ],
-	            'campus'   => [
-	            	'label'         => 'Campus',
-		            'setting_key'   => 'partner_campus'
-	            ]
             );
 
             // iterate through $settings_arr and create radio buttons

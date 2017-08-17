@@ -1523,9 +1523,11 @@
 
                 $meta_input[$eventPartner_post_meta_prefix . 'location'] = [];
 
+                // Does an address exist for group?
                 $partner_data_address
                     = isset($partner_data['group']['addresses']['address']) ? $partner_data['group']['addresses']['address'] : [];
 
+                // Add address info.
                 isset($partner_data_address['street_address']) ?
                     $meta_input[$eventPartner_post_meta_prefix . 'location'][]
                         = $partner_data_address['street_address'] : NULL;
@@ -1550,6 +1552,15 @@
                     $meta_input[$eventPartner_post_meta_prefix . 'location'][]
                         = $partner_data_address['line_2'] : NULL;
 
+                // Add Campus info
+                $partner_campus
+                    = isset($partner_campus['group']['campus']) ? $partner_data['group']['campus'] : [];
+
+                isset($partner_campus['id']) ?
+                    $meta_input[$eventPartner_post_meta_prefix . 'campus']
+                        = $partner_campus['id'] : NULL;
+
+                // Add main leader info
                 $partner_data_main_lead
                     = isset($partner_data['group']['main_leader']) ? $partner_data['group']['main_leader'] : [];
 
