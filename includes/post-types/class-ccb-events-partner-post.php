@@ -10,7 +10,7 @@ class LO_Event_Partners_Post {
 	/**
 	 * Post object to wrap
 	 *
-	 * @var   WP_Post
+	 * @var   WP_Post $post
 	 * @since 0.2.7
 	 */
 	protected $post;
@@ -18,18 +18,16 @@ class LO_Event_Partners_Post {
     /**
      * Image data for the post.
      *
-     * @var array
+     * @var array $images
      */
     protected $images = array();
 	
 	/**
 	 * Constructor
 	 *
-	 * @since  0.2.7
 	 * @param  mixed $post Post object to wrap
-	 * @return void
-	 *
 	 * @throws Exception
+	 * @since  0.2.7
 	 */
 	public function __construct( $post ) {
 		if ( ! ( $post instanceof WP_Post ) ) {

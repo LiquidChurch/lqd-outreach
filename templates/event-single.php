@@ -4,6 +4,34 @@ $meta_prefix    = 'lo_ccb_events_';
 $register_gform = Liquid_Outreach::$enable_ccb_gravity ? $event_post->get_meta($meta_prefix . 'gform') : FALSE;
 $register_url   = $event_post->get_meta($meta_prefix . 'register_url');
 $info_settings  = lo_get_option('additional-info', 'all');
+
+add_action('gform_after_submission', 'checkit', 10, 2);
+function checkit($meta_prefix) {
+    $event_post = $this->get('post');
+	$openings = $event_post->get_meta($meta_prefix . 'openings');
+	if (is_int($openings) && ($openings == 0 or $openings < 0)) // just in case we somehow end up below zero
+	{
+		// Don't show register button
+	}
+	else {
+		if ( ! empty( $register_gform ) ) {
+			// Now we decrement.
+			if ( $openings == '0' ) {
+			    ?>
+                <script>
+                    (function ()
+                    {
+                        jQuery(document).ready(function()
+                        {
+                            jQuery("#openings").text("Closed");
+                        });
+                    })
+                </script>
+<?php
+            }
+		}
+	}
+}
 ?>
 <div class="container-fluid lo-custom-container panel lo-panel-custom">
     <div class="row lo-no-margin">
@@ -156,7 +184,7 @@ $info_settings  = lo_get_option('additional-info', 'all');
                     <div class="row">
                         <div class="col-md-5 "><strong>Openings</strong></div>
                         <div class="col-md-1">&#8594</div>
-                        <div class="col-md-6">
+                        <div class="col-md-6" id="openings">
                             <?php
                             $openings = $event_post->get_meta($meta_prefix . 'openings');
                             if ($openings == '0')
@@ -424,7 +452,6 @@ $info_settings  = lo_get_option('additional-info', 'all');
 
     </div><!--/.row-->
 </div>
-
 <script type="text/javascript">
     (function ($)
     {
@@ -453,6 +480,8 @@ $info_settings  = lo_get_option('additional-info', 'all');
             <?php
             }
             ?>
+
         });
+
     })(jQuery)
 </script>

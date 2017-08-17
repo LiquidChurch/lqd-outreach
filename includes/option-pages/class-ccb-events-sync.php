@@ -1,12 +1,13 @@
 <?php
-/**
- * Liquid Outreach CCB Sync.
- *
- * Provides the options page used to sync events and partner orgs from CCB.
- *
- * @since   0.0.3
- * @package Liquid_Outreach
- */
+    /**
+     * Liquid Outreach CCB Sync.
+     *
+     * Provides the options page used to sync events and partner organizations from CCB.
+     * Handles much of the actual syncing from temp tables to actual table.
+     *
+     * @since   0.0.3
+     * @package Liquid_Outreach
+     */
 
 
 /**
@@ -17,88 +18,94 @@
 class LO_Ccb_Events_Sync extends Lo_Abstract
 {
 
-    /**
-     * @since  0.0.6
-     * @var string
-     */
-    public static $lo_ccb_events_sync_form = 'lo_ccb_events_sync_form';
+        /**
+         * @since  0.0.6
+         * @var string $lo_ccb_events_sync_form
+         */
+        public static $lo_ccb_events_sync_form = 'lo_ccb_events_sync_form';
 
-    /**
-     * Page title.
-     *
-     * @var    string
-     * @since  0.0.3
-     */
-    protected $title = '';
+        /**
+         * Page title.
+         *
+         * @var    string $title
+         * @since  0.0.3
+         */
+        protected $title = '';
 
-    /**
-     * page key, and page slug.
-     *
-     * @var    string
-     * @since  0.0.3
-     */
-    protected $key = 'liquid_outreach_ccb_events_sync';
+        /**
+         * page key, and page slug.
+         *
+         * @var    string $key
+         * @since  0.0.3
+         */
+        protected $key = 'liquid_outreach_ccb_events_sync';
 
-    /**
-     * Options page metabox ID.
-     *
-     * @var    string
-     * @since  0.0.3
-     */
-    protected $metabox_id = '_liquid_outreach_ccb_events_sync_metabox';
+        /**
+         * Options page metabox ID.
+         *
+         * @var    string $metabox_id
+         * @since  0.0.3
+         */
+        protected $metabox_id = '_liquid_outreach_ccb_events_sync_metabox';
 
-    /**
-     * Options Page hook.
-     *
-     * @var string
-     */
-    protected $options_page = '';
+        /**
+         * Options Page hook.
+         *
+         * @var string $options_page
+         */
+        protected $options_page = '';
 
-    /**
-     * allowed post action
-     *
-     * @since  0.0.6
-     * @var array
-     */
-    private $acceptable_post_action
-        = array(
-            'liquid_outreach_ccb_events_sync',
-            'lo_admin_ajax_sync_ccb_events',
-            'lo_admin_ajax_delete_ccb_events',
-        );
+        /**
+         * Allowed Post Actions
+         *
+         * @since  0.0.6
+         * @var array $acceptable_post_action
+         */
+        private $acceptable_post_action
+            = array(
+                'liquid_outreach_ccb_events_sync',
+                'lo_admin_ajax_sync_ccb_events',
+                'lo_admin_ajax_delete_ccb_events',
+            );
 
-    /**
-     * @since  0.0.6
-     * @var bool
-     */
-    private $form_submitted = FALSE;
+        /**
+         * Whether Form Has Been Submitted Variable
+         *
+         * @since  0.0.6
+         * @var bool $form_submitted
+         */
+        private $form_submitted = FALSE;
 
-    /**
-     * @since  0.0.6
-     * @var bool
-     */
-    private $form_handle_status = FALSE;
+        /**
+         * Form Handle Status Variable
+         *
+         * @since  0.0.6
+         * @var bool $form_handle_status
+         */
+        private $form_handle_status = FALSE;
 
-    /**
-     * transient key list
-     *
-     * @since 0.3.6
-     * @var array
-     */
-    private $transient_key
-        = [
-            'groups_list'     => 'ccb_groups_api_data_groups_list',
-            'group_type_list' => 'ccb_groups_api_data_group_type_list',
-            'department_list' => 'ccb_groups_api_data_departments_list',
-        ];
+        /**
+         * Transient Key List Array
+         *
+         * For groups, group types, and departments
+         *
+         * @since 0.3.6
+         * @var array $transient_key
+         */
+        private $transient_key
+            = [
+                'groups_list'     => 'ccb_groups_api_data_groups_list',
+                'group_type_list' => 'ccb_groups_api_data_group_type_list',
+                'department_list' => 'ccb_groups_api_data_departments_list',
+            ];
 
-    /**
-     * Does upload directory exist?
-     *
-     * @since 0.24.0
-     * @var bool
-     */
-    private $upload_dir_exists = FALSE;
+        /**
+         * Does upload directory exist? Variable
+         *
+         * @since 0.24.0
+         * @var bool $upload_dir_exists
+         */
+        private $upload_dir_exists = FALSE;
 
     /**
      * Constructor.
@@ -132,19 +139,20 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
         add_action('lo_ccb_cron_event_member_sync', array($this, 'cron_event_member_sync_func'));
     }
 
-    /**
-     * check if post action is valid
-     * and process data for fetch ccb events
-     *
-     * @since  0.0.6
-     */
-    public function fetch_ccb_events_ccb_ajax_callback()
-    {
-        // If no form submission, bail
-        if (empty($_POST))
+        /**
+         * Check Post Action and Process Data for Fetch CCB Events
+         *
+         * Checks if the Post Action is valid and processes data fetched from CCB Events
+         *
+         * @since  0.0.6
+         */
+        public function fetch_ccb_events_ccb_ajax_callback()
         {
-            return FALSE;
-        }
+            // If no form submission, bail
+            if (empty($_POST))
+            {
+                return FALSE;
+            }
 
         // check required $_POST variables and security nonce
         if (
@@ -171,21 +179,21 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
         $this->form_handle_status = $this->{$method_key}();
     }
 
-    /**
-     * add admin menu page
-     *
-     * @since  0.0.6
-     */
-    public function add_admin_menu_page()
-    {
-        $this->options_page = add_submenu_page(
-            'edit.php?post_type=lo-events',
-            $this->title,
-            $this->title,
-            'manage_options',
-            $this->key,
-            array($this, 'admin_page_display')
-        );
+        /**
+         * Add Admin Menu Page and Enqueue CSS
+         *
+         * @since  0.0.6
+         */
+        public function add_admin_menu_page()
+        {
+            $this->options_page = add_submenu_page(
+                'edit.php?post_type=lo-events',
+                $this->title,
+                $this->title,
+                'manage_options',
+                $this->key,
+                array($this, 'admin_page_display')
+            );
 
         // Include CMB CSS in the head to avoid FOUC.
         add_action("admin_print_styles-{$this->options_page}",
@@ -306,24 +314,28 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
         $this->show_sync_details();
     }
 
-    /**
-     * Show sync details for events
-     *
-     * @since 0.0.9
-     */
-    protected function show_sync_details()
-    {
-        $sync_data       = $this->check_sync_data();
-        $group_list      = $this->get_group_list();
-        $group_type_list = $this->get_group_type_list();
-        $department_list = $this->get_department_list();
-        if (empty($sync_data['num_rows']))
+        /**
+         * Show Sync Buttons with Sync Stats, Also Delete Buttons
+         *
+         * Displays the total number of records retrieved by CCB Sync,
+         * the number that are already synced, those already synced who
+         * have updated data, and those records which are new
+         *
+         * @since 0.0.9
+         */
+        protected function show_sync_details()
         {
-            return FALSE;
-        }
-        ?>
-        <br/>
-        <hr/>
+            $sync_data       = $this->check_sync_data();
+            $group_list      = $this->get_group_list();
+            $group_type_list = $this->get_group_type_list();
+            $department_list = $this->get_department_list();
+            if (empty($sync_data['num_rows']))
+            {
+                return FALSE;
+            }
+            ?>
+            <br/>
+            <hr/>
 
         <div class="wrap ccb-options-page">
             <div class="cmb2-wrap form-table">
@@ -1211,27 +1223,27 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
         }
     }
 
-    /**
-     * ccb event sync handler method
-     * syncing data from temple table wp_posts
-     *
-     * @since 0.1.2
-     */
-    public function lo_admin_ajax_sync_ccb_events_handler()
-    {
-        global $wpdb;
-        $inserted               = 0;
-        $updated                = 0;
-        $skipped                = 0;
-        $event_post_meta_prefix = 'lo_ccb_events_';
-        $ccb_event_data         = $_POST['data'];
-        $filter_group           = ! empty($_POST['filter_group']) ? $_POST['filter_group'] : NULL;
-        $filter_group_type
-                                = ! empty($_POST['filter_group_type']) ? $_POST['filter_group_type'] : NULL;
-        $filter_dep             = ! empty($_POST['filter_dep']) ? $_POST['filter_dep'] : NULL;
-        $start_date_filter
-                                = ! empty($_POST['start_date']) ? strtotime($_POST['start_date']) : NULL;
-        $end_date_filter        = ! empty($_POST['end_date']) ? strtotime($_POST['end_date']) : NULL;
+        /**
+         * ccb event sync handler method
+         * syncing data from temp table to wp_posts
+         *
+         * @since 0.1.2
+         */
+        public function lo_admin_ajax_sync_ccb_events_handler()
+        {
+            global $wpdb;
+            $inserted               = 0;
+            $updated                = 0;
+            $skipped                = 0;
+            $event_post_meta_prefix = 'lo_ccb_events_';
+            $ccb_event_data         = $_POST['data'];
+            $filter_group           = ! empty($_POST['filter_group']) ? $_POST['filter_group'] : NULL;
+            $filter_group_type
+                                    = ! empty($_POST['filter_group_type']) ? $_POST['filter_group_type'] : NULL;
+            $filter_dep             = ! empty($_POST['filter_dep']) ? $_POST['filter_dep'] : NULL;
+            $start_date_filter
+                                    = ! empty($_POST['start_date']) ? strtotime($_POST['start_date']) : NULL;
+            $end_date_filter        = ! empty($_POST['end_date']) ? strtotime($_POST['end_date']) : NULL;
 
         $php_max_execution_time = ini_get('max_execution_time');
         if ($php_max_execution_time < 90)
@@ -1435,20 +1447,22 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
         die();
     }
 
-    /**
-     * get event stored api image
-     *
-     * @param $event_details
-     *
-     * @since 0.24.0
-     *
-     * @return string $upload_dir_url
-     */
-    public function get_event_image($event_details)
-    {
-        $upload         = wp_upload_dir();
-        $upload_dir     = $upload['basedir'] . '/lqd-outreach' . "/event-{$event_details['ccb_event_id']}-img.jpg";
-        $upload_dir_url = $upload['baseurl'] . '/lqd-outreach' . "/event-{$event_details['ccb_event_id']}-img.jpg";
+        /**
+         * Get Event Image
+         *
+         * If there is an image associated with the event, we grab it and
+         * upload to our WP install, this is necessary because
+         * the CCB API provides expiring URLs for images
+         *
+         * @param $event_details
+         * @return string $upload_dir_url
+         *
+         * @since 0.24.0
+         */
+        public function get_event_image($event_details) {
+            $upload          = wp_upload_dir();
+            $upload_dir      = $upload['basedir'] . '/lqd-outreach' . "/event-{$event_details['ccb_event_id']}-img.jpg";
+            $upload_dir_url  = $upload['baseurl'] . '/lqd-outreach' . "/event-{$event_details['ccb_event_id']}-img.jpg";
 
         if (file_exists($upload_dir))
         {
@@ -1460,20 +1474,22 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
         }
     }
 
-    /**
-     * get partner stored api image
-     *
-     * @param $partner_details
-     *
-     * @return string $upload_dir_url
-     *
-     * @since 0.24.0
-     */
-    public function get_partner_image($partner_details)
-    {
-        $upload         = wp_upload_dir();
-        $upload_dir     = $upload['basedir'] . '/lqd-outreach' . "/group-{$partner_details['group']['id']}-img.jpg";
-        $upload_dir_url = $upload['baseurl'] . '/lqd-outreach' . "/group-{$partner_details['group']['id']}-img.jpg";
+        /**
+         * Get Partner Image
+         *
+         * If there is an image associated with the partner, we grab it and
+         * upload to our WP install, this is necessary because
+         * the CCB API provides expiring URLs for images
+         *
+         * @param $partner_details
+         * @return string $upload_dir_url
+         *
+         * @since 0.24.0
+         */
+        public function get_partner_image($partner_details) {
+            $upload          = wp_upload_dir();
+            $upload_dir      = $upload['basedir'] . '/lqd-outreach' . "/group-{$partner_details['group']['id']}-img.jpg";
+            $upload_dir_url  = $upload['baseurl'] . '/lqd-outreach' . "/group-{$partner_details['group']['id']}-img.jpg";
 
         if (file_exists($upload_dir))
         {
@@ -1485,21 +1501,24 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
         }
     }
 
-    /**
-     * create partner post when syncing events
-     *
-     * @param $ccb_event_datum
-     *
-     * @since 0.3.6
-     */
-    public function create_partner_post($ccb_event_datum)
-    {
-        global $wpdb;
-        $eventPartner_post_meta_prefix = 'lo_ccb_event_partner_';
-        $meta_input                    = [
-            $eventPartner_post_meta_prefix .
-            "group_id" => $ccb_event_datum['group_id']
-        ];
+        /**
+         * Create Actual Partner Post
+         *
+         * This function takes data from the temp table and
+         * copies as a partner post
+         *
+         * @param $ccb_event_datum
+         *
+         * @since 0.3.6
+         */
+        public function create_partner_post($ccb_event_datum)
+        {
+            global $wpdb;
+            $eventPartner_post_meta_prefix = 'lo_ccb_event_partner_';
+            $meta_input                    = [
+                $eventPartner_post_meta_prefix .
+                "group_id" => $ccb_event_datum['group_id']
+            ];
 
         $partner_api_data = $wpdb->get_row(
             'SELECT * from wp_lo_ccb_groups_api_data
@@ -1563,44 +1582,45 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
 
         }
 
-        //create events partners post
-        $partner_query = new WP_Query("post_type=lo-event-partners&meta_key=" .
-                                      $eventPartner_post_meta_prefix .
-                                      "group_id&meta_value=" .
-                                      $ccb_event_datum['group_id']);
-        if ( ! $partner_query->have_posts())
-        {
-            $new_partner_post = wp_insert_post([
-                'post_title' => $ccb_event_datum['group_name'],
-                'post_type'  => 'lo-event-partners',
-                'meta_input' => $meta_input
-            ]);
+            //create events partners post
+            // check if a partner already exists
+            $partner_query = new WP_Query("post_type=lo-event-partners&meta_key=" .
+                                          $eventPartner_post_meta_prefix .
+                                          "group_id&meta_value=" .
+                                          $ccb_event_datum['group_id']);
+            // if no record exists
+            if ( ! $partner_query->have_posts())
+            {
+                $new_partner_post = wp_insert_post([
+                    'post_title' => $ccb_event_datum['group_name'],
+                    'post_type'  => 'lo-event-partners',
+                    'meta_input' => $meta_input
+                ]);
+            } else // if record exists
+            {
+                $partner_query->the_post();
+                global $post;
+                $update_partner_post = wp_update_post([
+                    'ID'         => $post->ID,
+                    'post_title' => $ccb_event_datum['group_name'],
+                    'meta_input' => $meta_input
+                ]);
+            }
         }
-        else
-        {
-            $partner_query->the_post();
-            global $post;
-            $update_partner_post = wp_update_post([
-                'ID'         => $post->ID,
-                'post_title' => $ccb_event_datum['group_name'],
-                'meta_input' => $meta_input
-            ]);
-        }
-    }
 
-    /**
-     * save partner image
-     *
-     * @param $partner_details
-     *
-     * @return  array $this
-     *
-     * @since 0.24.0
-     */
-    public function save_partner_image($partner_details)
-    {
-        if ( ! empty($partner_details['group']['image']))
+        /**
+         * Save Partner Image
+         *
+         * @param $partner_details
+         *
+         * @return  array $this
+         *
+         * @since 0.24.0
+         */
+        public function save_partner_image($partner_details)
         {
+            if ( ! empty($partner_details['group']['image']))
+            {
 
             $upload         = wp_upload_dir();
             $upload_dir     = $upload['basedir'];
@@ -1618,20 +1638,19 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
         return NULL;
     }
 
-    /**
-     * fetch event details using event_profile ccb_api
-     *
-     * @param $ccb_event_datum
-     *
-     * @return string $response
-     *
-     * @since 0.24.0
-     */
-    public function fetch_event_details_api($ccb_event_datum)
-    {
-        $this->plugin->lo_ccb_api_event_profile->api_map([
-            'event_id' => $ccb_event_datum['ccb_event_id']
-        ]);
+        /**
+         * fetch event details using event_profile ccb_api
+         *
+         * @param $ccb_event_datum
+         * @return string $response
+         *
+         * @since 0.24.0
+         */
+        public function fetch_event_details_api($ccb_event_datum)
+        {
+            $this->plugin->lo_ccb_api_event_profile->api_map([
+                'event_id' => $ccb_event_datum['ccb_event_id']
+            ]);
 
         $api_error = $this->plugin->lo_ccb_api_event_profile->api_error;
 
@@ -1646,19 +1665,18 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
         return NULL;
     }
 
-    /**
-     * save event image
-     *
-     * @param $event_details
-     *
-     * @return array $this
-     *
-     * @since 0.24.0
-     */
-    public function save_event_image($event_details)
-    {
-        if ( ! empty($event_details['image']))
+        /**
+         * save event image
+         *
+         * @param $event_details
+         * @return array $this
+         *
+         * @since 0.24.0
+         */
+        public function save_event_image($event_details)
         {
+            if ( ! empty($event_details['image']))
+            {
 
             $upload          = wp_upload_dir();
             $upload_dir      = $upload['basedir'];
@@ -1677,19 +1695,17 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
         return NULL;
     }
 
-    /**
-     * save file
-     *
-     * @param $upload
-     *
-     * @param $file_to_dwnld
-     *
-     * @return string $return
-     * @since 0.24.0
-     */
-    public function save_image($file_to_dwnld, $upload)
-    {
-        $return = NULL;
+        /**
+         * save file
+         *
+         * @param $upload
+         * @param $file_to_dwnld
+         * @return string $return
+         * @since 0.24.0
+         */
+        public function save_image($file_to_dwnld, $upload)
+        {
+            $return = NULL;
 
         if ( ! $this->upload_dir_exists)
         {
@@ -1731,17 +1747,18 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
         return $return;
     }
 
-    /**
-     * set post title from mapping
-     *
-     * @since 0.21.2
-     *
-     * @param $title
-     */
-    public function set_post_title($title)
-    {
-        $settings_key = $this->plugin->lo_ccb_events_name_map_settings->meta_prefix;
-        $map          = lo_get_option('name-map', $settings_key . 'name_mapping');
+        /**
+         * set post title from mapping
+         *
+         * @param $title
+         * @return $title
+         *
+         * @since 0.21.2
+         */
+        public function set_post_title($title)
+        {
+            $settings_key = $this->plugin->lo_ccb_events_name_map_settings->meta_prefix;
+            $map          = lo_get_option('name-map', $settings_key . 'name_mapping');
 
         if (empty($map))
         {

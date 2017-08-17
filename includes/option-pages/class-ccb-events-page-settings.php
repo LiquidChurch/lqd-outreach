@@ -30,6 +30,7 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
      * @since 0.8.0
      */
     protected $key = 'liquid_outreach_ccb_events_page_settings';
+
     /**
      * Options page metabox id
      *
@@ -37,6 +38,7 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
      * @since 0.8.0
      */
     protected $metabox_id = 'liquid_outreach_ccb_events_page_settings_metabox';
+
     /**
      * Options page meta prefix
      *
@@ -44,6 +46,7 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
      * @since 0.20.2
      */
     protected $meta_prefix = 'lo_events_page_';
+
     /**
      * Options Page title
      *
@@ -51,6 +54,7 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
      * @since 0.8.0
      */
     protected $title = '';
+
     /**
      * Options Page hook
      *
@@ -88,7 +92,13 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
     }
 
     /**
-     * remove wp_clear_scheduled_hook for cron interval
+     * Remove Event Attendance Cron
+     *
+     * Remove wp_clear_scheduled_hook for cron interval
+     *
+     * @param $updated
+     * @param $action
+     * @param $settingsThis
      * @since 0.11.7
      */
     public function clear_scheduled_hook($updated, $action, $settingsThis) {
@@ -98,7 +108,13 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
     }
 
     /**
-     * for changes after permalink settings value is changed
+     * Flush Permalink Rewrites
+     *
+     * For changes after permalink settings value is changed.
+     *
+     * @param $updated
+     * @param $action
+     * @param $settingsThis
      * @since 0.10.1
      */
     public function after_permalink_settings_save($updated, $action, $settingsThis) {
@@ -148,7 +164,6 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
         ));
 
         // Set our CMB2 fields
-
         $default_page = [
             'projects' => (get_page_by_path('projects')),
             'search' => (get_page_by_path('search-projects')),
@@ -157,7 +172,7 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
 
         $cmb->add_field(array(
             'name' => __('CCB API Username', 'liquid-outreach'),
-            'desc' => __('Please enter your username for accessing CCB API.', 'liquid-outreach'),
+            'desc' => __('Please enter your username for accessing the CCB API.', 'liquid-outreach'),
             'id' => $this->meta_prefix . 'ccb_api_username',
             'type' => 'text',
             'attributes' => ['required' => 'required'],
@@ -166,7 +181,7 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
 
         $cmb->add_field(array(
             'name' => __('CCB API Password', 'liquid-outreach'),
-            'desc' => __('Please enter your password for accessing CCB API.', 'liquid-outreach'),
+            'desc' => __('Please enter your password for accessing the CCB API.', 'liquid-outreach'),
             'id' => $this->meta_prefix . 'ccb_api_password',
             'type' => 'text',
             'attributes' => [
@@ -197,7 +212,8 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
         ));
 
         $cmb->add_field(array(
-            'name' => 'Category Animation',
+            'name' => 'Flip Category Buttons',
+            'desc' => __('Do you want the large category buttons to flip when moused over?', 'liquid-outreach'),
             'id' => $this->meta_prefix . 'category_animation',
             'type' => 'radio_inline',
             'default' => true,
@@ -209,6 +225,7 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
 
         $cmb->add_field(array(
             'name' => __('Default Header Image', 'liquid-outreach'),
+            'desc' => __('Choose a header image that will be used if the category doesn\'t have its own header specified.', 'liquid-outreach' ),
             'id' => $this->meta_prefix . 'default_header_image',
             'type' => 'file',
         ));
@@ -225,6 +242,7 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
 
         $category_mapping_id = $cmb->add_field(array(
             'name' => __('Category Base Page Mapping', 'liquid-outreach'),
+            'desc' => __('If you want to have a page that shows only a specific category of events.', 'liquid-outreach'),
             'id' => $this->meta_prefix . 'cat_base_page_mapping',
             'type' => 'group',
             'options' => array(
@@ -245,7 +263,7 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
 
         $cmb->add_group_field($category_mapping_id, array(
             'name' => 'Select Page',
-            'desc' => '',
+            'desc' => 'The page you want the above specified category to appear on.',
             'id' => 'page',
             'type' => 'select',
             'options_cb' => ['LO_Ccb_Events_Page_Settings', 'show_pages'],
@@ -315,9 +333,7 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
      * @since  0.8.0
      *
      * @param  string $field Field to retrieve
-     *
-     * @return mixed          Field value or exception is thrown
-     *
+     * @return mixed         Field value or exception is thrown
      * @throws Exception
      */
     public function __get($field)
@@ -332,7 +348,9 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
 
     /**
      * get page list
-     * \
+     *
+     * Uses WP_Query to return a list of pages
+     *
      * @return mixed
      * @since 0.25.0
      */

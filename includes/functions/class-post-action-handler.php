@@ -59,7 +59,6 @@
          *
          * @since  0.11.5
          *
-         * @param $actions
          * @return mixed
          */
         public function do_custom_bulk_actions()

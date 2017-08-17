@@ -9,18 +9,25 @@
 class Lo_Ccb_api_event_profiles extends Lo_Ccb_api_main
 {
     /**
+     * Define the CCB API service we are using
+     *
      * @var string
      * @since 0.0.5
      */
     protected $api_name    = "event_profiles";
     
     /**
+     * Define the required CCB srv to execute request
+     * on CCB API service event_profiles
+     *
      * @var string
      * @since 0.0.5
      */
     protected $api_req_str = "srv=event_profiles";
     
     /**
+     * The URL used to access the CCB API
+     *
      * @var string
      * @since 0.0.5
      */
@@ -44,7 +51,9 @@ class Lo_Ccb_api_event_profiles extends Lo_Ccb_api_main
     }
     
     /**
+     * Create CCB API map
      *
+     * @param $data
      * @since 0.0.5
      */
     public function api_map($data = [])
@@ -56,6 +65,7 @@ class Lo_Ccb_api_event_profiles extends Lo_Ccb_api_main
     }
     
     /**
+     * Modify the CCB API request call based on required fields
      *
      * @since 0.0.5
      */
@@ -65,6 +75,8 @@ class Lo_Ccb_api_event_profiles extends Lo_Ccb_api_main
     }
     
     /**
+     * Handle Errors
+     *
      * @return WP_Error
      * @since 0.0.5
      */
@@ -86,6 +98,7 @@ class Lo_Ccb_api_event_profiles extends Lo_Ccb_api_main
     }
     
     /**
+     * Execute call against CCB API
      *
      * @since 0.0.5
      */

@@ -19,7 +19,7 @@
         /**
          * Parent plugin class.
          *
-         * @var Liquid_Outreach
+         * @var Liquid_Outreach $plugin
          * @since  0.1.0
          */
         protected $plugin = null;
@@ -27,13 +27,13 @@
 	    /**
 	     * Bypass temp. cache
 	     *
-	     * @var boolean
+	     * @var boolean $flush
 	     * @since  0.2.7
 	     */
 	    public $flush = false;
 	
 	    /**
-	     * @var bool
+	     * @var bool $overrides_processed
 	     * @since  0.2.7
 	     */
 	    protected $overrides_processed = false;
@@ -41,7 +41,7 @@
 	    /**
 	     * The identifier for this object
 	     *
-	     * @var string
+	     * @var string $id
 	     * @since  0.2.7
 	     */
 	    protected $id = 'lo-event-partners';
@@ -49,7 +49,7 @@
 	    /**
 	     * Default WP_Query args
 	     *
-	     * @var   array
+	     * @var   array $query_args
 	     * @since 0.2.4
 	     */
 	    protected $query_args = array(
@@ -60,7 +60,7 @@
 	    );
 	
 	    /**
-	     * @var string
+	     * @var string $meta_prefix
 	     * @since  0.2.7
 	     */
 	    public $meta_prefix = 'lo_ccb_event_partner_';
@@ -72,9 +72,9 @@
          *
          * See documentation in CPT_Core, and in wp-includes/post.php.
          *
-         * @since  0.1.0
-         *
          * @param  Liquid_Outreach $plugin Main plugin object.
+         *
+         * @since  0.1.0
          */
         public function __construct($plugin)
         {
@@ -183,7 +183,8 @@
                 'cmb_styles' => false, // false to disable the CMB stylesheet
                 // 'closed'     => true, // Keep the metabox closed by default
             ));
-        
+
+	        // Defines the radio button options available to turn fields on/off
             $settings_arr = array(
                 'location'    => [
                     'label' => 'Address',
@@ -205,8 +206,13 @@
                     'label' => 'Email',
                     'settings_key' => 'partner_email'
                 ],
+	            'campus'   => [
+	            	'label'         => 'Campus',
+		            'setting_key'   => 'partner_campus'
+	            ]
             );
-        
+
+            // iterate through $settings_arr and create radio buttons
             foreach ($settings_arr as $index => $item) {
                 $cmb_page_settings->add_field( array(
                     'name' => $item['label'],
@@ -302,6 +308,14 @@
                 'id'   => $prefix . 'list_of_projects',
                 'type' => 'list_related_ccb_events',
             ));
+
+            //Campus Meta
+	        $cmb_additional->add_field(array(
+	        	'name'  =>  __('Campus', 'liquid-outreach'),
+		        'desc'  =>  __('', 'liquid-outreach'),
+		        'id'    =>  $prefix . 'campus',
+		        'type'  =>  'text',
+	        ));
             
             //group_id meta
 //            $cmb_additional->add_field(array(
@@ -321,6 +335,7 @@
 	     *
 	     * @since  0.2.7
 	     *
+	     * @var    $args
 	     * @return WP_Query|LO_Event_Partners_Post object
 	     */
 	    public function get_many($args)
@@ -339,7 +354,7 @@
 			    isset($args['augment_posts'])
 			    && $args['augment_posts']
 			    && $partners->have_posts()
-			    // Don't augment for queries w/ greater than 100 posts, for perf. reasons.
+			    // Don't augment for queries w/ greater than 100 posts, for performance reasons.
 			    && $partners->post_count < 100
 		    ) {
 			    foreach ($partners->posts as $key => $post) {
@@ -423,8 +438,9 @@
         /**
          * Overriding get_args from parent
          *
-         * @since  0.11.5
          * @return array
+         *
+         * @since  0.11.5
          */
         public function get_args()
         {

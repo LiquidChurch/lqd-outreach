@@ -11,6 +11,7 @@
      * Liquid Outreach Ccb post base class.
      *
      * @since 0.11.5
+     * @extends CPT_Core
      *
      * @see   https://github.com/WebDevStudios/CPT_Core
      */
@@ -23,11 +24,15 @@
          * @since  0.2.4
          */
         public $flush = false;
+
         /**
+         * Set meta prefix
+         *
          * @var string
          * @since  0.2.4
          */
         public $meta_prefix = '';
+
         /**
          * Parent plugin class.
          *
@@ -35,22 +40,29 @@
          * @since  0.0.1
          */
         protected $plugin = null;
+
         /**
+         * Set overrides processed to false
+         *
          * @var bool
          * @since  0.2.4
          */
         protected $overrides_processed = false;
+
         /**
          * The identifier for this object
+         *
+         * Not currently utilized
          *
          * @var string
          * @since  0.2.4
          */
         //        protected $id = '';
+
         /**
-         * Default WP_Query args
+         * Default WP_Query Args
          *
-         * @var   array
+         * @var   array $query_args
          * @since 0.2.4
          */
         protected $query_args
@@ -74,11 +86,10 @@
         /**
          * Provides access to protected class properties.
          *
-         * @since  0.2.4
-         *
-         * @param  boolean $key Specific CPT parameter to return
-         *
+         * @param  string $key Specific CPT parameter to return
          * @return mixed        Specific CPT parameter or array of singular, plural and registered name
+         *
+         * @since  0.2.4
          */
         public function post_type($key = 'post_type')
         {
@@ -153,11 +164,10 @@
         /**
          * Registers admin columns to display. Hooked in via CPT_Core.
          *
-         * @since  0.0.1
-         *
          * @param  array $columns Array of registered column names/labels.
-         *
          * @return array          Modified array.
+         *
+         * @since  0.0.1
          */
         public function columns($columns)
         {
@@ -173,10 +183,10 @@
         /**
          * Handles admin column display. Hooked in via CPT_Core.
          *
-         * @since  0.0.1
-         *
          * @param array   $column  Column currently being rendered.
          * @param integer $post_id ID of post to display column for.
+         *
+         * @since  0.0.1
          */
         public function columns_display($column, $post_id)
         {

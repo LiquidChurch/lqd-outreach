@@ -1,6 +1,6 @@
 <?php
 /**
- * Liquid Outreach Ccb Events Name Mapping Settings.
+ * Liquid Outreach Ccb Event Name Auto-Remapping Options Page
  *
  * @since   0.21.2
  * @package Liquid_Outreach
@@ -8,7 +8,7 @@
 
 
 /**
- * Liquid Outreach Ccb Events Name Mapping Settings class.
+ * Liquid Outreach Ccb Event Name Auto-Remapping Settings class.
  *
  * @since 0.21.2
  */
@@ -29,6 +29,7 @@ class LO_Ccb_Events_Name_Map_Settings extends LO_Base_Option_Page
      * @var string
      * @since 0.21.2
      */
+
     protected $key = 'liquid_outreach_ccb_events_name_map_settings';
     /**
      * Options page metabox id
@@ -37,6 +38,7 @@ class LO_Ccb_Events_Name_Map_Settings extends LO_Base_Option_Page
      * @since 0.21.2
      */
     protected $metabox_id = 'liquid_outreach_ccb_events_name_map_settings_metabox';
+
     /**
      * Options page meta prefix
      *
@@ -44,6 +46,7 @@ class LO_Ccb_Events_Name_Map_Settings extends LO_Base_Option_Page
      * @since 0.21.2
      */
     protected $meta_prefix = 'lo_events_name_map_';
+
     /**
      * Options Page title
      *
@@ -51,6 +54,7 @@ class LO_Ccb_Events_Name_Map_Settings extends LO_Base_Option_Page
      * @since 0.21.2
      */
     protected $title = '';
+
     /**
      * Options Page hook
      *
@@ -67,7 +71,7 @@ class LO_Ccb_Events_Name_Map_Settings extends LO_Base_Option_Page
     public function __construct()
     {
         // Set our title
-        $this->title = __('Outreach Name Mapping', 'liquid-outreach');
+        $this->title = __('Outreach Event Auto Renamer', 'liquid-outreach');
 
         $this->hooks();
     }
@@ -124,7 +128,7 @@ class LO_Ccb_Events_Name_Map_Settings extends LO_Base_Option_Page
         // Set our CMB2 fields
 
         $name_mapping_id = $cmb->add_field(array(
-            'name' => __('Name Mapping', 'liquid-outreach'),
+            'name' => __('Name Mappings', 'liquid-outreach'),
             'id' => $this->meta_prefix . 'name_mapping',
             'type' => 'group',
             'options' => array(
@@ -135,14 +139,14 @@ class LO_Ccb_Events_Name_Map_Settings extends LO_Base_Option_Page
         ));
 
         $cmb->add_group_field($name_mapping_id, array(
-            'name' => esc_html__('Match Title', 'liquid-outreach'),
+            'name' => esc_html__('Title to Match', 'liquid-outreach'),
             'desc' => '',
             'id' => 'title',
             'type' => 'text',
         ));
 
         $cmb->add_group_field($name_mapping_id, array(
-            'name' => esc_html__('Replace Title', 'liquid-outreach'),
+            'name' => esc_html__('Replacement Title', 'liquid-outreach'),
             'desc' => 'Matched title post will be renamed to this',
             'id' => 'replace_title',
             'type' => 'text',
@@ -156,11 +160,8 @@ class LO_Ccb_Events_Name_Map_Settings extends LO_Base_Option_Page
      * @since  0.21.2
      *
      * @param  string $field Field to retrieve
-     *
-     * @return mixed          Field value or exception is thrown
-     *
+     * @return mixed         Field value or exception is thrown
      * @throws Exception
-     *
      */
     public function __get($field)
     {

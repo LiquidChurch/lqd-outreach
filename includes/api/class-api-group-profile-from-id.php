@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Liquid Outreach API Group Profile from ID
+ * Liquid Outreach CCB API Group Profile from ID
  *
  * @since 0.3.5
  * @package Liquid_Outreach
@@ -9,25 +9,32 @@
 class Lo_Ccb_api_group_profile_from_id extends Lo_Ccb_api_main
 {
     /**
-     * @var string
+     * Define the CCB API service we are using
+     *
+     * @var string  $api_name
      * @since 0.3.5
      */
     protected $api_name    = "group_profile_from_id";
     
     /**
-     * @var string
+     * Define the required CCB srv to execute request
+     * on CCB API service group_profile_from_id
+     *
+     * @var string  $api_req_str
      * @since 0.3.5
      */
     protected $api_req_str = "srv=group_profile_from_id";
     
     /**
-     * @var string
+     * The URL used to access the CCB API
+     *
+     * @var string  $api_url
      * @since 0.3.5
      */
     protected $api_url = "";
     
     /**
-     * @var
+     * @var $api_fields
      * @since 0.3.5
      */
     protected $api_fields;
@@ -44,7 +51,9 @@ class Lo_Ccb_api_group_profile_from_id extends Lo_Ccb_api_main
     }
     
     /**
+     * Create CCB API map
      *
+     * @param $data
      * @since 0.3.5
      */
     public function api_map($data = [])
@@ -56,6 +65,7 @@ class Lo_Ccb_api_group_profile_from_id extends Lo_Ccb_api_main
     }
     
     /**
+     * Modify the CCB API request call based on required fields
      *
      * @since 0.3.5
      */
@@ -65,7 +75,9 @@ class Lo_Ccb_api_group_profile_from_id extends Lo_Ccb_api_main
     }
     
     /**
-     * @return WP_Error
+     * Create Fields Map
+     *
+     * @param   $api_data
      * @since 0.3.5
      */
     public function map_fields($api_data)
@@ -82,6 +94,7 @@ class Lo_Ccb_api_group_profile_from_id extends Lo_Ccb_api_main
     }
     
     /**
+     * Execute call against CCB API
      *
      * @since 0.3.5
      */

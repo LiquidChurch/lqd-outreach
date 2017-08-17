@@ -1,6 +1,6 @@
 <?php
 /**
- * Liquid Outreach Ccb Events Partner Category Mapping Settings.
+ * Liquid Outreach Ccb Partner Organizations Auto Categorize Options Page
  *
  * @since   0.20.2
  * @package Liquid_Outreach
@@ -8,7 +8,7 @@
 
 
 /**
- * Liquid Outreach Ccb Events Partner Category Mapping Settings class.
+ * Liquid Outreach Ccb Events Partner Auto Categorize Options Class
  *
  * @since 0.20.2
  */
@@ -30,6 +30,7 @@ class LO_Ccb_Events_Partner_Cat_Map_Settings extends LO_Base_Option_Page
      * @since 0.20.2
      */
     protected $key = 'liquid_outreach_ccb_events_partner_cat_map_settings';
+
     /**
      * Options page metabox id
      *
@@ -37,6 +38,7 @@ class LO_Ccb_Events_Partner_Cat_Map_Settings extends LO_Base_Option_Page
      * @since 0.20.2
      */
     protected $metabox_id = 'liquid_outreach_ccb_events_partner_cat_map_settings_metabox';
+
     /**
      * Options page meta prefix
      *
@@ -44,6 +46,7 @@ class LO_Ccb_Events_Partner_Cat_Map_Settings extends LO_Base_Option_Page
      * @since 0.20.2
      */
     protected $meta_prefix = 'lo_events_partner_cat_map_';
+
     /**
      * Options Page title
      *
@@ -51,6 +54,7 @@ class LO_Ccb_Events_Partner_Cat_Map_Settings extends LO_Base_Option_Page
      * @since 0.20.2
      */
     protected $title = '';
+
     /**
      * Options Page hook
      *
@@ -67,7 +71,7 @@ class LO_Ccb_Events_Partner_Cat_Map_Settings extends LO_Base_Option_Page
     public function __construct()
     {
         // Set our title
-        $this->title = __('Partners Category Mapping', 'liquid-outreach');
+        $this->title = __('Outreach Partner Auto Categorize', 'liquid-outreach');
 
         $this->hooks();
     }
@@ -135,7 +139,7 @@ class LO_Ccb_Events_Partner_Cat_Map_Settings extends LO_Base_Option_Page
         ));
 
         $cmb->add_group_field($category_mapping_id, array(
-            'name' => esc_html__('Match Title', 'liquid-outreach'),
+            'name' => esc_html__('Name of Organization to Match', 'liquid-outreach'),
             'desc' => '',
             'id' => 'title',
             'type' => 'text',
@@ -158,9 +162,7 @@ class LO_Ccb_Events_Partner_Cat_Map_Settings extends LO_Base_Option_Page
      * @since  0.20.2
      *
      * @param  string $field Field to retrieve
-     *
      * @return mixed          Field value or exception is thrown
-     *
      * @throws Exception
      */
     public function __get($field)

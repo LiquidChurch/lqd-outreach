@@ -24,7 +24,8 @@
                     <!--<a href="<? //php echo $page_link['main'] ?>">Projects</a> -->
                 </li>
                 <li>
-                    <a href="<?php echo $page_link['search'] ?>">Search
+                    <!-- Changed this from Search to Browse temporarily. -->
+                    <a href="<?php echo $page_link['search'] ?>">Browse
                         Projects</a>
                 </li>
                 <li class="dropdown lo-dropdown-submenu">

@@ -23,11 +23,13 @@ class LO_Ccb_Events extends LO_Ccb_Base_Post
      * @since  0.2.4
      */
     public $flush = FALSE;
+
     /**
      * @var string
      * @since  0.2.4
      */
     public $meta_prefix = 'lo_ccb_events_';
+
     /**
      * Parent plugin class.
      *
@@ -35,11 +37,13 @@ class LO_Ccb_Events extends LO_Ccb_Base_Post
      * @since  0.0.1
      */
     protected $plugin = NULL;
+
     /**
      * @var bool
      * @since  0.2.4
      */
     protected $overrides_processed = FALSE;
+
     /**
      * The identifier for this object
      *
@@ -47,6 +51,7 @@ class LO_Ccb_Events extends LO_Ccb_Base_Post
      * @since  0.2.4
      */
     protected $id = 'lo-events';
+
     /**
      * Default WP_Query args
      *
@@ -65,7 +70,6 @@ class LO_Ccb_Events extends LO_Ccb_Base_Post
      * Constructor.
      *
      * Register Custom Post Types.
-     *
      * See documentation in CPT_Core, and in wp-includes/post.php.
      *
      * @since  0.0.1
