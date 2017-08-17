@@ -615,7 +615,7 @@ final class Liquid_Outreach
 
             $event_attendance_count_update = isset($ccb_events_page_settings['lo_events_page_event_attendance_count_update']) ? $ccb_events_page_settings['lo_events_page_event_attendance_count_update'] : '30min';
 
-            wp_schedule_event(time(), $event_attendance_count_update, 'lo_ccb_cron_event_member_sync');
+            wp_schedule_event(time(), $event_attendance_count_update, 'lo_ccb_cron_event_member_sync', [null]);
 
         }
     }
