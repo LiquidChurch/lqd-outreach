@@ -27,7 +27,7 @@
         /**
          * Parent plugin class
          *
-         * @var   var   $plugin
+         * @var   object   $plugin
          * @since 0.0.4
          */
         protected $plugin = null;

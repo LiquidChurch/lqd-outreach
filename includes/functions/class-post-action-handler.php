@@ -1,6 +1,6 @@
 <?php
     /**
-     * Liquid Outreach post action handler.
+     * Liquid Outreach Post Action Handler.
      *
      * @since   0.11.5
      * @package Liquid_Outreach
@@ -38,7 +38,7 @@
         }
     
         /**
-         * Add Publish as a custom bulk action
+         * Add Publish as a Custom Bulk Action
          *
          * @since  0.11.5
          *
@@ -53,7 +53,7 @@
         }
     
         /**
-         * Execute custom bulk action
+         * Execute Custom Bulk Action
          *
          * Currently only supports bulk publishing of posts.
          *

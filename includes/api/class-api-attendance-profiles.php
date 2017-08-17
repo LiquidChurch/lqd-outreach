@@ -1,49 +1,42 @@
 <?php
 
 /**
- * Liquid Outreach API Event Profile
+ * Liquid Outreach API Attendance Profiles
  *
- * @since 0.24.0
+ * @since 0.26.1
  * @package Liquid_Outreach
  */
-class Lo_Ccb_api_event_profile extends Lo_Ccb_api_main
+class Lo_Ccb_api_attendance_profiles extends Lo_Ccb_api_main
 {
     /**
-     * Define the CCB API service we are using
-     *
-     * @var string $api_name    CCB Event Profile Service
-     * @since 0.24.0
+     * @var string
+     * @since 0.26.1
      */
-    protected $api_name    = "event_profile";
+    protected $api_name    = "attendance_profiles";
     
     /**
-     * Define the required CCB srv to execute request
-     * on CCB API service event_profile
-     *
-     * @var string $api_req_str
-     * @since 0.24.0
+     * @var string
+     * @since 0.26.1
      */
-    protected $api_req_str = "srv=event_profile";
+    protected $api_req_str = "srv=attendance_profiles";
     
     /**
-     * The URL used to access the CCB API
-     *
-     * @var string  $api_url
-     * @since 0.24.0
+     * @var string
+     * @since 0.26.1
      */
     protected $api_url = "";
     
     /**
      * @var
-     * @since 0.24.0
+     * @since 0.26.1
      */
     protected $api_fields;
     
     /**
-     * Lo_Ccb_api_event_profile constructor.
+     * Lo_Ccb_api_event_profiles constructor.
      *
      * @param $plugin
-     * @since 0.24.0
+     * @since 0.26.1
      */
     public function __construct($plugin)
     {
@@ -51,9 +44,8 @@ class Lo_Ccb_api_event_profile extends Lo_Ccb_api_main
     }
     
     /**
-     * Create CCB API map
-     * @param $data
-     * @since 0.24.0
+     *
+     * @since 0.26.1
      */
     public function api_map($data = [])
     {
@@ -64,9 +56,8 @@ class Lo_Ccb_api_event_profile extends Lo_Ccb_api_main
     }
     
     /**
-     * Modify the CCB API request call based on required fields
      *
-     * @since 0.24.0
+     * @since 0.26.1
      */
     public function mod_req_str() {
         $add_req_str = http_build_query($this->api_fields);
@@ -74,28 +65,36 @@ class Lo_Ccb_api_event_profile extends Lo_Ccb_api_main
     }
     
     /**
-     * Handle Errors
      * @return WP_Error
-     * @since 0.24.0
+     * @since 0.26.1
      */
     public function map_fields($data)
     {
-        $this->api_fields = [
-            'id' => $data['event_id'],
-            'include_guest_list' => !empty($_POST['guest_list']) ? $_POST['guest_list'] : true,
-            'include_image_link' => !empty($_POST['per_page']) ? $_POST['include_image_link'] : true
+        $post_fields = [
+            'id' => !empty($data['event_id']) ? $data['event_id'] : '',
+            'start_date' => !empty($data['start_date']) ? $data['start_date'] : date('Y-m-d', time()),
+            'end_date' => !empty($data['end_date']) ? $data['end_date'] : date('Y-m-d', time())
         ];
+
+        if(!empty($post_fields['id'])) {
+            $this->api_fields['id'] = $post_fields['id'];
+        }
+        if(!empty($post_fields['start_date'])) {
+            $this->api_fields['start_date'] = $post_fields['start_date'];
+        }
+        if(!empty($post_fields['end_date'])) {
+            $this->api_fields['end_date'] = $post_fields['end_date'];
+        }
     }
     
     /**
-     * Execute call against CCB API
      *
-     * @since 0.24.0
+     * @since 0.26.1
      */
     public function call_ccb_api()
     {
         parent::call_ccb_api();
-    
+        
         $this->api_url = $this->api_base . '?' . $this->api_req_str;
         $this->api_args = array_merge(
             $this->api_args,

@@ -105,7 +105,7 @@ if ( ! class_exists('WP_Logging'))
         private function get_logs_to_prune()
         {
 
-            $how_old = apply_filters('wp_logging_prune_when', '1 hour ago');
+            $how_old = apply_filters('wp_logging_prune_when', '15 minutes ago');
 
             $args = array(
                 'post_type'      => 'wp_log',
@@ -244,7 +244,7 @@ if ( ! class_exists('WP_Logging'))
 
             $log_data = array(
                 'post_title'   => strtoupper(str_replace('_', '-', $title)),
-                'post_content' => $message,
+                'post_content' => is_array($message) ? json_encode($message) : $message,
                 'post_parent'  => $parent,
                 'log_type'     => $type
             );

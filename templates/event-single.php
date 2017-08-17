@@ -4,37 +4,39 @@ $meta_prefix    = 'lo_ccb_events_';
 $register_gform = Liquid_Outreach::$enable_ccb_gravity ? $event_post->get_meta($meta_prefix . 'gform') : FALSE;
 $register_url   = $event_post->get_meta($meta_prefix . 'register_url');
 $info_settings  = lo_get_option('additional-info', 'all');
+
 add_action('gform_after_submission', 'checkit', 10, 2);
-function checkit($meta_prefix) {
+function checkit($meta_prefix)
+{
     $event_post = $this->get('post');
-	$openings = $event_post->get_meta($meta_prefix . 'openings');
-	if ($openings == 0 or $openings < 0) // just in case we somehow end up below zero
-	{
-		// Don't show register button
-	}
-	else {
-		if ( ! empty( $register_gform ) ) {
-			// Now we decrement.
-			if ( $openings > 0 ) {
-				$decremented = $openings - 1;
-				update_post_meta( $event_post->post->ID, $meta_prefix . 'openings', $decremented, $openings );
-			}
-			if ( $openings == 0 ) {
-			    ?>
+    $openings   = $event_post->get_meta($meta_prefix . 'openings');
+    if (is_int($openings) && ($openings == 0 or $openings < 0)) // just in case we somehow end up below zero
+    {
+        // Don't show register button
+    }
+    else
+    {
+        if ( ! empty($register_gform))
+        {
+            // Now we decrement.
+            if ($openings == '0')
+            {
+                ?>
                 <script>
                     (function ()
                     {
-                        jQuery(document).ready(function()
+                        jQuery(document).ready(function ()
                         {
                             jQuery("#openings").text("Closed");
                         });
                     })
                 </script>
-<?php
+                <?php
             }
-		}
-	}
+        }
+    }
 }
+
 ?>
 <div class="container-fluid lo-custom-container panel lo-panel-custom">
     <div class="row lo-no-margin">
@@ -52,18 +54,26 @@ function checkit($meta_prefix) {
             <div class="col-md-8">
 
                 <?php
-                if ( ! empty($register_gform))
+                $openings = $event_post->get_meta($meta_prefix . 'openings');
+                if ((is_int($openings) && ($openings == 0 or $openings < 0))) // just in case we somehow end up below zero
                 {
-
+                    // Don't show register button
                 }
-                else if ( ! empty($register_url))
+                else
                 {
-                    ?>
-                    <a href="<?php echo $register_url ?>" <?php echo empty($register_url) ? 'disabled' : '' ?>
-                       class="btn btn-primary pull-left lo-event-register-btn-top">Register Now
-                    </a>
-                    <hr/>
-                    <?php
+                    if ( ! empty($register_gform))
+                    {
+
+                    }
+                    else if ( ! empty($register_url))
+                    {
+                        ?>
+                        <a href="<?php echo $register_url ?>" <?php echo empty($register_url) ? 'disabled' : '' ?>
+                           class="btn btn-primary pull-left lo-event-register-btn-top">Register Now
+                        </a>
+                        <hr/>
+                        <?php
+                    }
                 }
                 ?>
 
@@ -94,26 +104,41 @@ function checkit($meta_prefix) {
 
 
                 <?php
-	                if ( ! empty( $register_gform ) ) {
-			                ?>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <a href="javascript:void(0);"
-                                       id="lo-show-gravity-form-btn"
-                                       class="btn btn-primary pull-left lo-event-register-btn-top">
-                                        Show Register Form
-                                    </a>
-                                </div>
+                // Adding this at 4:09 AM
+                $openings = $event_post->get_meta($meta_prefix . 'openings');
+                if ((is_int($openings) && ($openings == 0 or $openings < 0))) // just in case we somehow end up below zero
+                {
+                    // Don't show register button
+                }
+                else
+                {
+                    if ( ! empty($register_gform))
+                    {
+                        // Now show them the register button.
+                        ?>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a href="javascript:void(0);"
+                                   id="lo-show-gravity-form-btn"
+                                   class="btn btn-primary pull-left lo-event-register-btn-top">
+                                    Show Register Form
+                                </a>
                             </div>
-			                <?php
-	                }
-	                else {
-		                if ( ! empty( $register_url ) ) ?>
-                            <a href="<?php echo $register_url ?>" <?php echo empty( $register_url ) ? 'disabled' : '' ?>
-                        class="btn btn-primary pull-left lo-event-register-btn-top">Register Now
-                        </a>
-		                <?php
-	                }
+                        </div>
+                        <?php
+                    }
+                    else
+                    {
+                        if ( ! empty($register_url))
+                        {
+                            ?>
+                            <a href="<?php echo $register_url ?>" <?php echo empty($register_url) ? 'disabled' : '' ?>
+                               class="btn btn-primary pull-left lo-event-register-btn-top">Register Now
+                            </a>
+                            <?php
+                        }
+                    } // Better check all of this while you are at it.
+                }
                 ?>
 
             </div>
