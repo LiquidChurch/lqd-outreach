@@ -1361,13 +1361,13 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                 {
                     $event_member_data = $this->fetch_event_details_api($ccb_event_datum);
 
-                    if (empty($event_member_data) && isset($event_member_data['events']['event']['guest_list']))
+                    if (!empty($event_member_data) && isset($event_member_data['events']['event']['guest_list']['guest']))
                     {
-                        $event_post_data['meta_input'][$event_post_meta_prefix . 'openings'] = $ccb_event_datum['registration_limit'];
+                        $event_post_data['meta_input'][$event_post_meta_prefix . 'openings'] = ($ccb_event_datum['registration_limit'] - count($event_member_data['events']['event']['guest_list']['guest']));
                     }
                     else
                     {
-                        $event_post_data['meta_input'][$event_post_meta_prefix . 'openings'] = ($ccb_event_datum['registration_limit'] - count($event_member_data['events']['event']['guest_list']));
+                        $event_post_data['meta_input'][$event_post_meta_prefix . 'openings'] = $ccb_event_datum['registration_limit'];
                     }
 
                 }
@@ -2088,13 +2088,13 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
             {
                 $event_member_data = $this->fetch_event_details_api($synced_datum);
 
-                if (empty($event_member_data) && isset($event_member_data['events']['event']['guest_list']))
+                if (!empty($event_member_data) && isset($event_member_data['events']['event']['guest_list']['guest']))
                 {
-                    $event_post_data['meta_input'][$event_post_meta_prefix . 'openings'] = $synced_datum['registration_limit'];
+                    $event_post_data['meta_input'][$event_post_meta_prefix . 'openings'] = ($synced_datum['registration_limit'] - count($event_member_data['events']['event']['guest_list']['guest']));
                 }
                 else
                 {
-                    $event_post_data['meta_input'][$event_post_meta_prefix . 'openings'] = ($synced_datum['registration_limit'] - count($event_member_data['events']['event']['guest_list']));
+                    $event_post_data['meta_input'][$event_post_meta_prefix . 'openings'] = $synced_datum['registration_limit'];
                 }
 
             }
