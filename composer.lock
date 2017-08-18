@@ -107,16 +107,16 @@
         },
         {
             "name": "webdevstudios/cmb2",
-            "version": "dev-master",
+            "version": "dev-trunk",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CMB2/CMB2.git",
-                "reference": "d9d23e090fb2ae93883035c04796836f7e3c5a19"
+                "reference": "63f09c0715c223def9ab6f39343737b661e68411"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CMB2/CMB2/zipball/d9d23e090fb2ae93883035c04796836f7e3c5a19",
-                "reference": "d9d23e090fb2ae93883035c04796836f7e3c5a19",
+                "url": "https://api.github.com/repos/CMB2/CMB2/zipball/63f09c0715c223def9ab6f39343737b661e68411",
+                "reference": "63f09c0715c223def9ab6f39343737b661e68411",
                 "shasum": ""
             },
             "require": {
@@ -160,7 +160,7 @@
                 "plugin",
                 "wordpress"
             ],
-            "time": "2017-08-08 14:50:22"
+            "time": "2017-08-17 22:24:37"
         },
         {
             "name": "webdevstudios/cpt-core",
