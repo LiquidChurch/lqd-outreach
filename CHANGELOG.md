@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 - Provide Shortcode Parameters
 - Integrate with Gravity Forms <--> CCB Sync
 - Auto-Check Remaining Spots When User Registers [0.26.1]
+- Add Campus, Allow Sorting By  [0.26.2]
 
 ### Changed
 

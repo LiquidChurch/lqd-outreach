@@ -171,7 +171,7 @@
         
             $prefix = $this->meta_prefix;
             $option_prefix = 'lo_events_info_';
-        
+
             // Define our metaboxes and fields.
             $cmb_page_settings = new_cmb2_box(array(
                 'id'           => $prefix . 'display_settings',
@@ -251,7 +251,7 @@
                 // 'cmb_styles' => false, // false to disable the CMB stylesheet
                 // 'closed'     => true, // Keep the metabox closed by default
             ));
-            
+
             //location meta
             $cmb_additional->add_field(array(
                 'name'       => __('Location', 'liquid-outreach'),
@@ -311,12 +311,16 @@
 
             //Campus Meta
 	        $cmb_additional->add_field(array(
-	        	'name'  =>  __('Campus', 'liquid-outreach'),
-		        'desc'  =>  __('', 'liquid-outreach'),
-		        'id'    =>  $prefix . 'campus',
-		        'type'  =>  'text',
+                'name'       =>  __('Campus', 'liquid-outreach'),
+                'desc'       =>  __('', 'liquid-outreach'),
+                'id'         =>  $prefix . 'campus',
+                'type'       =>  'text',
+                'attributes' => array(
+                    'readonly' => 'readonly',
+                ),
 	        ));
-            
+
+
             //group_id meta
 //            $cmb_additional->add_field(array(
 //                'name' => __('CCB Group ID', 'liquid-outreach'),
