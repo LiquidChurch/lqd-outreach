@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Provide Shortcode Parameters
 - Integrate with Gravity Forms <--> CCB Sync
-- Auto-Check Remaining Spots When User Registers
+- Auto-Check Remaining Spots When User Registers [0.26.1]
 
 ### Changed
 
