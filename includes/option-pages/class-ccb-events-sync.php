@@ -1584,8 +1584,8 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
 
             $partner_data_campus = isset($partner_data['group']['campus']) ? $partner_data['group']['campus'] : [];
 
-            isset($partner_data_campus['value']) ? $meta_input[$eventPartner_post_meta_prefix . 'campus'] = $partner_data_campus['value'] : NULL;
-            isset($partner_data_campus['id']) ? $meta_input[$eventPartner_post_meta_prefix . 'campus_id'] = $partner_data_campus['id'] : NULL;
+            $meta_input[$eventPartner_post_meta_prefix . 'campus']    = isset($partner_data_campus['value']) ? $partner_data_campus['value'] : '';
+            $meta_input[$eventPartner_post_meta_prefix . 'campus_id'] = isset($partner_data_campus['id']) ? $partner_data_campus['id'] : '';
 
             $meta_input[$eventPartner_post_meta_prefix . 'image'] = $this->get_partner_image($partner_data);
 

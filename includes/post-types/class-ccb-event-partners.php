@@ -236,7 +236,7 @@
         public function fields()
         {
             $this->cmb_page_display_settings();
-            
+
             // Set our prefix.
             $prefix = $this->meta_prefix;
             
@@ -276,7 +276,7 @@
                 'id'   => $prefix . 'team_leader',
                 'type' => 'text',
             ));
-            
+
             //phone meta
             $cmb_additional->add_field(array(
                 'name' => __('Phone', 'liquid-outreach'),

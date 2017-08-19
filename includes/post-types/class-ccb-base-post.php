@@ -72,7 +72,7 @@
                 'posts_per_page' => 1,
                 'no_found_rows'  => true,
             );
-        
+
         /**
          * Initiate our hooks.
          *
@@ -81,6 +81,8 @@
         public function hooks()
         {
             add_action('cmb2_init', array($this, 'fields'));
+            add_action('pre_get_posts', array($this, 'my_campus_orderby'));
+            add_filter('manage_edit-lo-event-partners_sortable_columns', array($this, 'my_sortable_campus_column'));
         }
         
         /**
@@ -177,9 +179,64 @@
                 $columns['lo-event-start-date'] = __('Event Start Date', 'liquid-outreach');
             }
 
+            if ($this->id == 'lo-event-partners')
+            {
+                $last                       = array_splice($columns, 2);
+                $columns['lo-event-campus'] = __('Campus', 'liquid-outreach');
+            }
+
             return array_merge($columns, $last);
         }
-        
+
+        /**
+         *
+         * To make the campus column sortable
+         *
+         * @param $columns
+         *
+         * @return mixed
+         *
+         * @since  0.26.2
+         */
+        public function my_sortable_campus_column($columns)
+        {
+
+            $columns['lo-event-campus'] = __('Campus', 'liquid-outreach');
+
+            return $columns;
+        }
+
+        /**
+         *
+         * Sort Campus Column Alphabetically
+         *
+         * @param $query
+         *
+         * @since  0.26.2
+         */
+        function my_campus_orderby($query)
+        {
+            if ( ! is_admin())
+            {
+                return;
+            }
+
+            $screen = get_current_screen();
+            if ($screen->id != 'edit-lo-event-partners')
+            {
+                return;
+            }
+
+
+            $orderby = $query->get('orderby');
+
+            if ('Campus' == $orderby)
+            {
+                $query->set('meta_key', 'lo_ccb_event_partner_campus');
+                $query->set('orderby', 'meta_value');
+            }
+        }
+
         /**
          * Handles admin column display. Hooked in via CPT_Core.
          *
@@ -195,6 +252,16 @@
                     $date = get_post_meta($post_id, 'lo_ccb_events_start_date', true);
                     $date = !empty($date) ? date("Y-m-d H:i", $date) : '';
                     echo $date;
+                }
+            }
+
+            if ($this->id == 'lo-event-partners')
+            {
+                if ($column == 'lo-event-campus')
+                {
+                    $campus = get_post_meta($post_id, 'lo_ccb_event_partner_campus', TRUE);
+
+                    echo $campus;
                 }
             }
         }
