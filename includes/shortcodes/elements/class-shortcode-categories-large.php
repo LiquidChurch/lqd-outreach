@@ -3,6 +3,8 @@
 /**
  * Liquid Outreach Categories Element Shortcode
  *
+ * Shortcode to display categories as large graphic images
+ *
  * @since   0.7.0
  * @package Liquid_Outreach
  */

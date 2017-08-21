@@ -16,7 +16,7 @@
         protected $plugin = null;
         
         /**
-         * ajax call detect
+         * Detect AJAX Calls
          *
          * @since  0.0.6
          * @var bool|null   $ajax_call

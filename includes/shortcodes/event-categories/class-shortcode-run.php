@@ -46,6 +46,7 @@ class LO_Shortcodes_Event_Categories_Run extends LO_Shortcodes_Run_Base
 
         $content_arr = [];
 
+        // Do we want to show a flip animation for categories when viewing categories page
         $lo_events_page_category_animation = lo_get_option( 'page', 'lo_events_page_category_animation' );
 
         $content_arr['disable'] = $disable = [
