@@ -247,6 +247,14 @@ final class Liquid_Outreach
     public static $enable_ccb_gravity = FALSE;
 
     /**
+     * for add extra plugin functionality
+     *
+     * @var $lo_ccb_plugin_function
+     * @since 0.27.0
+     */
+    protected $lo_ccb_plugin_function;
+
+    /**
      * Sets up our plugin.
      *
      * @since  0.0.0
@@ -571,6 +579,9 @@ final class Liquid_Outreach
         $this->lo_ccb_base_function             = new LO_Ccb_Base_Function($this);
 
         $this->lo_ccb_events_sync = new LO_Ccb_Events_Sync($this);
+
+        $this->lo_ccb_plugin_function = new LO_Ccb_Plugin_Function($this);
+
     }
 
     /**
