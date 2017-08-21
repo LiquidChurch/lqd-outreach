@@ -64,8 +64,13 @@
         public function do_custom_bulk_actions()
         {
             $wp_list_table = _get_list_table('WP_Posts_List_Table');
-            $action = $wp_list_table->current_action();
-            $sendback = admin_url() . 'edit.php?post_type=' . $_REQUEST['post_type'];
+            $action        = $wp_list_table->current_action();
+            $sendback      = admin_url() . 'edit.php';
+            if (isset($_REQUEST['post_type']))
+            {
+                $paged    = isset($_REQUEST['paged']) ? $_REQUEST['paged'] : '1';
+                $sendback = admin_url() . 'edit.php?post_type=' . $_REQUEST['post_type'] . '&paged=' . $paged;
+            }
         
             if (!empty($action)) {
             
