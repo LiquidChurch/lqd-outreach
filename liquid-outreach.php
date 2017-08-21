@@ -77,7 +77,7 @@ final class Liquid_Outreach
     /**
      * URL of plugin directory.
      *
-     * @var    string
+     * @var    string   $url
      * @since  0.0.0
      */
     public static $url = '';
@@ -85,7 +85,7 @@ final class Liquid_Outreach
     /**
      * Path of plugin directory.
      *
-     * @var    string
+     * @var    string   $path
      * @since  0.0.0
      */
     public static $path = '';
@@ -93,7 +93,7 @@ final class Liquid_Outreach
     /**
      * Plugin basename.
      *
-     * @var    string
+     * @var    string   $basename
      * @since  0.0.0
      */
     public static $basename = '';

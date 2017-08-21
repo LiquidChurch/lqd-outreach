@@ -34,12 +34,16 @@ abstract class LO_Shortcodes_Run_Base extends WDS_Shortcodes
     public $ccb_event_categories;
 
     /**
+     * Page Settings Variable
+     *
      * @var mixed $page_settings
      * @since 0.25.0
      */
     public $page_settings;
 
     /**
+     * Force Category Page Variable
+     *
      * @var string $force_cat_page
      * @since 0.25.0
      */
@@ -66,11 +70,19 @@ abstract class LO_Shortcodes_Run_Base extends WDS_Shortcodes
         $this->page_settings = lo_get_option('page', 'all');
     }
 
+	/**
+	 * Check If Shortcode Has Force Category Page Parameter
+	 */
     public function shortcode()
     {
         $this->force_cat_page = ! empty($_GET['lo-cat-page']) ? $_GET['lo-cat-page'] : $this->att('force_cat_slug');
     }
 
+	/**
+	 * Get Inline CSS Styles
+	 *
+	 * @return array
+	 */
     public function get_inline_styles()
     {
         $style              = '';
@@ -96,6 +108,10 @@ abstract class LO_Shortcodes_Run_Base extends WDS_Shortcodes
         return array($style, $has_icon_font_size);
     }
 
+	/**
+	 * Get Base Pages
+	 * @return array
+	 */
     public function get_base_pages()
     {
         $arr                                = [];
