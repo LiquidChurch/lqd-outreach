@@ -362,12 +362,12 @@
         {
             $api_resp
                 = isset($this->api_response_arr['ccb_api']['response']) ? $this->api_response_arr['ccb_api']['response'] : array();
-            if (!empty($api_resp['errors']['error'])) {
+            if (!empty($api_resp['errors']['error']['error'])) {
                 $this->api_error = array(
                     'error_type' => 'api_error',
-                    'error'      => isset($api_resp['errors']['error']['number']) ? $api_resp['errors']['error']['number'] : '',
-                    'error_code' => isset($api_resp['errors']['error']['type']) ? $api_resp['errors']['error']['type'] : '',
-                    'error_msg'  => isset($api_resp['errors']['error']['value']) ? $api_resp['errors']['error']['value'] : ''
+                    'error'      => isset($api_resp['errors']['error']['error']['number']) ? $api_resp['errors']['error']['error']['number'] : '',
+                    'error_code' => isset($api_resp['errors']['error']['error']['type']) ? $api_resp['errors']['error']['error']['type'] : '',
+                    'error_msg'  => isset($api_resp['errors']['error']['error']['value']) ? $api_resp['errors']['error']['error']['value'] : ''
                 );
                 lo_debug('add', array(
                     $this->api_name . ' -> api_response_error',
