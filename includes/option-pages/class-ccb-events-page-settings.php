@@ -262,9 +262,25 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
         ));
 
         $cmb->add_group_field($category_mapping_id, array(
-            'name' => 'Select Page',
-            'desc' => 'The page you want the above specified category to appear on.',
+            'name' => 'Select Index Page',
+            'desc' => 'The (Index) page you want the above specified category to appear on.',
             'id' => 'page',
+            'type' => 'select',
+            'options_cb' => ['LO_Ccb_Events_Page_Settings', 'show_pages'],
+        ));
+
+        $cmb->add_group_field($category_mapping_id, array(
+            'name' => 'Select Browse Page',
+            'desc' => 'The (Browse) page you want the above specified category to appear on.',
+            'id' => 'page_browse',
+            'type' => 'select',
+            'options_cb' => ['LO_Ccb_Events_Page_Settings', 'show_pages'],
+        ));
+
+        $cmb->add_group_field($category_mapping_id, array(
+            'name' => 'Select Category Page',
+            'desc' => 'The (Category) page you want the above specified category to appear on.',
+            'id' => 'page_category',
             'type' => 'select',
             'options_cb' => ['LO_Ccb_Events_Page_Settings', 'show_pages'],
         ));
