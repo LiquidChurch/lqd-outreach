@@ -10,8 +10,8 @@
 
 ## Description ##
 
-This WordPress plugin provides a robust UI for viewing outreach events and organizations data pulled from Church 
-Community Builder (CCB) via its API.
+This WordPress plugin provides a robust UI for viewing outreach events and organizations data pulled from [Church 
+Community Builder (CCB)](http://www.churchcommunitybuilder.com/) via its [API](https://designccb.s3.amazonaws.com/helpdesk/files/official_docs/api.html).
 
 ## Installation ##
 
