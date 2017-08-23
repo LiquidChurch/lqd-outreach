@@ -15,13 +15,24 @@ Community Builder (CCB)](http://www.churchcommunitybuilder.com/) via its [API](h
 
 ## Installation ##
 
+### Requirements ###
+1. Composer - Used for auto-loading and also for installing other packages needed by Liquid Outreach.
+1. JT Sternberg's Shortcode Button - Will be installed by Composer.
+1. TGM Plugin Activation - Will be installed by Composer.
+1. WebDevStudio's CMB2 - Will be installed by Composer.
+1. WebDevStudio's CPT Core - Will be installed by Composer.
+1. WebDevStudio's Taxonomy Core - Will be installed by Composer.
+1. WebDevStudio's WDS Shortcodes - Will be installed by Composer.
+
 ### Manual Installation ###
 
+1. Run `composer install` in the `lqd-outreach` directory to pull in the required code from third parties.
 1. Upload the entire `/lqd-outreach` directory to the `/wp-content/plugins/` directory.
-2. Activate Liquid Outreach through the 'Plugins' menu in WordPress.
+1. Activate Liquid Outreach through the 'Plugins' menu in WordPress.
 
 ## Frequently Asked Questions ##
-
+### Where Can I Find Additional Documentation?
+Additional documentation is available in the [Wiki](https://github.com/LiquidChurch/lqd-outreach/wiki).
 
 ## Screenshots ##
 
