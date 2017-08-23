@@ -1288,7 +1288,7 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                     continue;
                 }
 
-                $this->create_partner_post($ccb_event_datum);
+                $partner_data = $this->create_partner_post($ccb_event_datum);
 
                 //create an event post
                 $event_post_data = [
@@ -1326,6 +1326,12 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
 
                         $event_post_meta_prefix .
                         'image' => $this->get_event_image($ccb_event_datum),
+
+                        $event_post_meta_prefix .
+                        'campus' => isset($partner_data['meta_input']['lo_ccb_event_partner_campus']) ? $partner_data['meta_input']['lo_ccb_event_partner_campus'] : null,
+
+                        $event_post_meta_prefix .
+                        'campus_id' => isset($partner_data['meta_input']['lo_ccb_event_partner_campus_id']) ? $partner_data['meta_input']['lo_ccb_event_partner_campus_id'] : null,
                     ]
                 ];
 
@@ -1600,7 +1606,7 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
         // if no record exists
         if ( ! $partner_query->have_posts())
         {
-            $new_partner_post = wp_insert_post([
+            $postID = wp_insert_post([
                 'post_title' => $ccb_event_datum['group_name'],
                 'post_type'  => 'lo-event-partners',
                 'meta_input' => $meta_input
@@ -1610,12 +1616,20 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
         {
             $partner_query->the_post();
             global $post;
-            $update_partner_post = wp_update_post([
-                'ID'         => $post->ID,
-                'post_title' => $ccb_event_datum['group_name'],
-                'meta_input' => $meta_input
+            $postID = wp_update_post([
+                $ccb_event_datum['group_id'] => [
+                    'ID'         => $post->ID,
+                    'post_title' => $ccb_event_datum['group_name'],
+                    'meta_input' => $meta_input
+                ]
             ]);
         }
+
+        return [
+                'post_id' => $postID,
+                'post_title' => $ccb_event_datum['group_name'],
+                'meta_input' => $meta_input,
+        ];
     }
 
     /**
