@@ -27,7 +27,7 @@
     "webdevstudios/cpt-core": "dev-master",
     "webdevstudios/taxonomy_core": "dev-master",
     "webdevstudios/wds-shortcodes": "dev-master",
-    "tgmpa/tgmpa-plugin-activation": "dev-master",
-    "jsternberg/shortcode-button": "dev-master"
+    "tgmpa/tgm-plugin-activation": "dev-master",
+    "jtsternberg/shortcode-button": "dev-master"
   }
 }
