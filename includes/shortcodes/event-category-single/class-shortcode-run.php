@@ -48,6 +48,14 @@ class LO_Shortcodes_Event_Category_Single_Run extends LO_Shortcodes_Run_Base
 
         $content_arr = [];
 
+        $content_arr['menu_option_index']      = $this->menu['menu_option_index'];
+        $content_arr['menu_option_search']     = $this->menu['menu_option_search'];
+        $content_arr['menu_option_categories'] = $this->menu['menu_option_categories'];
+        $content_arr['menu_option_city']       = $this->menu['menu_option_city'];
+        $content_arr['menu_option_days']       = $this->menu['menu_option_days'];
+        $content_arr['menu_option_partners']   = $this->menu['menu_option_partners'];
+        $content_arr['menu_option_campus']     = $this->menu['menu_option_campus'];
+
         $content_arr['disable'] = $disable = [
             'header' => (bool)$this->att('disable_header') == '1' || $this->att('disable_header') == 'true' ? 1 : 0,
             'nav' => (bool)$this->att('disable_nav') == '1' || $this->att('disable_nav') == 'true' ? 1 : 0,

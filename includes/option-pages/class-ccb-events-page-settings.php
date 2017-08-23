@@ -163,6 +163,13 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
             ),
         ));
 
+        $cmb->add_field(array(
+            'name' => 'Enter API credential',
+            'desc' => '',
+            'type' => 'title',
+            'id'   => 'api_cred_title'
+        ));
+
         // Set our CMB2 fields
         $default_page = [
             'projects' => (get_page_by_path('projects')),
@@ -192,6 +199,13 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
         ));
 
         $cmb->add_field(array(
+            'name' => 'Event attendance cron timer',
+            'desc' => '',
+            'type' => 'title',
+            'id'   => 'cron_timer_title'
+        ));
+
+        $cmb->add_field(array(
             'name' => __('Event Attendance Count Update Interval', 'liquid-outreach'),
             'desc' => '',
             'id' => $this->meta_prefix . 'event_attendance_count_update',
@@ -212,6 +226,13 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
         ));
 
         $cmb->add_field(array(
+            'name' => 'Category animation',
+            'desc' => '',
+            'type' => 'title',
+            'id'   => 'category_animation_title'
+        ));
+
+        $cmb->add_field(array(
             'name' => 'Flip Category Buttons',
             'desc' => __('Do you want the large category buttons to flip when moused over?', 'liquid-outreach'),
             'id' => $this->meta_prefix . 'category_animation',
@@ -224,10 +245,24 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
         ));
 
         $cmb->add_field(array(
+            'name' => 'Header Image',
+            'desc' => '',
+            'type' => 'title',
+            'id'   => 'header_image_title'
+        ));
+
+        $cmb->add_field(array(
             'name' => __('Default Header Image', 'liquid-outreach'),
             'desc' => __('Choose a header image that will be used if the category doesn\'t have its own header specified.', 'liquid-outreach' ),
             'id' => $this->meta_prefix . 'default_header_image',
             'type' => 'file',
+        ));
+
+        $cmb->add_field(array(
+            'name' => 'Default base pages',
+            'desc' => '',
+            'type' => 'title',
+            'id'   => 'base_page_title'
         ));
 
         $cmb->add_field(array(
@@ -240,9 +275,127 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
             'default' => !empty($default_page['projects']) ? $default_page['projects']->ID : ''
         ));
 
-        $category_mapping_id = $cmb->add_field(array(
-            'name' => __('Category Base Page Mapping', 'liquid-outreach'),
+        $cmb->add_field(array(
+            'name' => __('Select Search Page', 'liquid-outreach'),
+            'desc' => 'Place these shortcodes inside the page content area - ' .
+                      '<br/>[lo_event_search]',
+            'id' => $this->meta_prefix . 'lo_search_page',
+            'type' => 'select',
+            'options_cb' => ['LO_Ccb_Events_Page_Settings', 'show_wp_pages'],
+            'default' => !empty($default_page['search']) ? $default_page['projects']->ID : ''
+        ));
+
+        $cmb->add_field(array(
+            'name' => __('Select Category Page', 'liquid-outreach'),
+            'desc' => 'Place these shortcodes inside the page content area - ' .
+                      '<br/>[lo_event_categories]',
+            'id' => $this->meta_prefix . 'lo_category_page',
+            'type' => 'select',
+            'options_cb' => ['LO_Ccb_Events_Page_Settings', 'show_wp_pages'],
+            'default' => !empty($default_page['categories']) ? $default_page['projects']->ID : ''
+        ));
+
+        $cmb->add_field(array(
+            'name' => 'Select default menu options below',
+            'desc' => '',
+            'type' => 'title',
+            'id'   => 'menu_option_title'
+        ));
+
+        $cmb->add_field(array(
+            'name'    => 'Index',
+            'desc'    => '',
+            'id'      => 'menu_option_index',
+            'type'    => 'radio_inline',
+            'options' => array(
+                'true' => __( 'Show', 'cmb2' ),
+                'false'   => __( 'Hide', 'cmb2' ),
+            ),
+            'default' => 'true',
+        ));
+
+        $cmb->add_field(array(
+            'name'    => 'Search',
+            'desc'    => '',
+            'id'      => 'menu_option_search',
+            'type'    => 'radio_inline',
+            'options' => array(
+                'true' => __( 'Show', 'cmb2' ),
+                'false'   => __( 'Hide', 'cmb2' ),
+            ),
+            'default' => 'true',
+        ));
+
+        $cmb->add_field(array(
+            'name'    => 'Categories',
+            'desc'    => '',
+            'id'      => 'menu_option_categories',
+            'type'    => 'radio_inline',
+            'options' => array(
+                'true' => __( 'Show', 'cmb2' ),
+                'false'   => __( 'Hide', 'cmb2' ),
+            ),
+            'default' => 'true',
+        ));
+
+        $cmb->add_field(array(
+            'name'    => 'City',
+            'desc'    => '',
+            'id'      => 'menu_option_city',
+            'type'    => 'radio_inline',
+            'options' => array(
+                'true' => __( 'Show', 'cmb2' ),
+                'false'   => __( 'Hide', 'cmb2' ),
+            ),
+            'default' => 'true',
+        ));
+
+        $cmb->add_field(array(
+            'name'    => 'Days',
+            'desc'    => '',
+            'id'      => 'menu_option_days',
+            'type'    => 'radio_inline',
+            'options' => array(
+                'true' => __( 'Show', 'cmb2' ),
+                'false'   => __( 'Hide', 'cmb2' ),
+            ),
+            'default' => 'true',
+        ));
+
+        $cmb->add_field(array(
+            'name'    => 'Partners',
+            'desc'    => '',
+            'id'      => 'menu_option_partners',
+            'type'    => 'radio_inline',
+            'options' => array(
+                'true' => __( 'Show', 'cmb2' ),
+                'false'   => __( 'Hide', 'cmb2' ),
+            ),
+            'default' => 'true',
+        ));
+
+        $cmb->add_field(array(
+            'name'    => 'Campus',
+            'desc'    => '',
+            'id'      => 'menu_option_campus',
+            'type'    => 'radio_inline',
+            'options' => array(
+                'true' => __( 'Show', 'cmb2' ),
+                'false'   => __( 'Hide', 'cmb2' ),
+            ),
+            'default' => 'false',
+        ));
+
+        $cmb->add_field(array(
+            'name' => 'Category Mapping',
             'desc' => __('If you want to have a page that shows only a specific category of events.', 'liquid-outreach'),
+            'type' => 'title',
+            'id'   => 'category_mapping_title'
+        ));
+
+        $category_mapping_id = $cmb->add_field(array(
+            'name' => '',
+            'desc' => '',
             'id' => $this->meta_prefix . 'cat_base_page_mapping',
             'type' => 'group',
             'options' => array(
@@ -253,12 +406,26 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
         ));
 
         $cmb->add_group_field($category_mapping_id, array(
+            'name' => 'Category',
+            'desc' => '',
+            'type' => 'title',
+            'id'   => 'category_title'
+        ));
+
+        $cmb->add_group_field($category_mapping_id, array(
             'name' => 'Select Category',
             'desc' => '',
             'id' => 'category',
             'taxonomy' => 'event-category', //Enter Taxonomy Slug
             'type' => 'taxonomy_select',
             'remove_default' => 'true' // Removes the default metabox provided by WP core. Pending release as of Aug-10-16
+        ));
+
+        $cmb->add_group_field($category_mapping_id, array(
+            'name' => 'Category Base Pages',
+            'desc' => '',
+            'type' => 'title',
+            'id'   => 'category_base_page_title'
         ));
 
         $cmb->add_group_field($category_mapping_id, array(
@@ -285,24 +452,104 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
             'options_cb' => ['LO_Ccb_Events_Page_Settings', 'show_pages'],
         ));
 
-        $cmb->add_field(array(
-            'name' => __('Select Search Page', 'liquid-outreach'),
-            'desc' => 'Place these shortcodes inside the page content area - ' .
-                '<br/>[lo_event_search]',
-            'id' => $this->meta_prefix . 'lo_search_page',
-            'type' => 'select',
-            'options_cb' => ['LO_Ccb_Events_Page_Settings', 'show_wp_pages'],
-            'default' => !empty($default_page['search']) ? $default_page['projects']->ID : ''
+        $cmb->add_group_field($category_mapping_id, array(
+            'name' => 'Select menu options for the category below',
+            'desc' => '',
+            'type' => 'title',
+            'id'   => 'menu_option_title'
         ));
 
+        $cmb->add_group_field($category_mapping_id, array(
+            'name'    => 'Index',
+            'desc'    => '',
+            'id'      => 'menu_option_index',
+            'type'    => 'radio_inline',
+            'options' => array(
+                'true' => __( 'Show', 'cmb2' ),
+                'false'   => __( 'Hide', 'cmb2' ),
+            ),
+            'default' => 'true',
+        ));
+
+        $cmb->add_group_field($category_mapping_id, array(
+            'name'    => 'Search',
+            'desc'    => '',
+            'id'      => 'menu_option_search',
+            'type'    => 'radio_inline',
+            'options' => array(
+                'true' => __( 'Show', 'cmb2' ),
+                'false'   => __( 'Hide', 'cmb2' ),
+            ),
+            'default' => 'true',
+        ));
+
+        $cmb->add_group_field($category_mapping_id, array(
+            'name'    => 'Categories',
+            'desc'    => '',
+            'id'      => 'menu_option_categories',
+            'type'    => 'radio_inline',
+            'options' => array(
+                'true' => __( 'Show', 'cmb2' ),
+                'false'   => __( 'Hide', 'cmb2' ),
+            ),
+            'default' => 'true',
+        ));
+
+        $cmb->add_group_field($category_mapping_id, array(
+            'name'    => 'City',
+            'desc'    => '',
+            'id'      => 'menu_option_city',
+            'type'    => 'radio_inline',
+            'options' => array(
+                'true' => __( 'Show', 'cmb2' ),
+                'false'   => __( 'Hide', 'cmb2' ),
+            ),
+            'default' => 'true',
+        ));
+
+        $cmb->add_group_field($category_mapping_id, array(
+            'name'    => 'Days',
+            'desc'    => '',
+            'id'      => 'menu_option_days',
+            'type'    => 'radio_inline',
+            'options' => array(
+                'true' => __( 'Show', 'cmb2' ),
+                'false'   => __( 'Hide', 'cmb2' ),
+            ),
+            'default' => 'true',
+        ));
+
+        $cmb->add_group_field($category_mapping_id, array(
+            'name'    => 'Partners',
+            'desc'    => '',
+            'id'      => 'menu_option_partners',
+            'type'    => 'radio_inline',
+            'options' => array(
+                'true' => __( 'Show', 'cmb2' ),
+                'false'   => __( 'Hide', 'cmb2' ),
+            ),
+            'default' => 'true',
+        ));
+
+        $cmb->add_group_field($category_mapping_id, array(
+            'name'    => 'Campus',
+            'desc'    => '',
+            'id'      => 'menu_option_campus',
+            'type'    => 'radio_inline',
+            'options' => array(
+                'true' => __( 'Show', 'cmb2' ),
+                'false'   => __( 'Hide', 'cmb2' ),
+            ),
+            'default' => 'false',
+        ));
+
+
+
         $cmb->add_field(array(
-            'name' => __('Select Category Page', 'liquid-outreach'),
-            'desc' => 'Place these shortcodes inside the page content area - ' .
-                '<br/>[lo_event_categories]',
-            'id' => $this->meta_prefix . 'lo_category_page',
-            'type' => 'select',
-            'options_cb' => ['LO_Ccb_Events_Page_Settings', 'show_wp_pages'],
-            'default' => !empty($default_page['categories']) ? $default_page['projects']->ID : ''
+            'name' => 'Permalink',
+            'desc' => __('', 'liquid-outreach'),
+            'type' => 'title',
+            'id'   => 'permalink_title'
         ));
 
         $cmb->add_field(array(

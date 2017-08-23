@@ -77,69 +77,6 @@ class LO_Shortcodes_Nav_Element_Admin extends LO_Shortcodes_Admin_Base
             'remove_default' => 'true' // Removes the default metabox provided by WP core. Pending release as of Aug-10-16
         );
 
-        $fields[] = array(
-            'name' => 'Select menu options below',
-            'desc' => '',
-            'type' => 'title',
-            'id'   => 'menu_option_title'
-        );
-
-        $fields[] = array(
-            'name'    => 'Index',
-            'desc'    => '',
-            'id'      => 'menu_option_index',
-            'type'    => 'checkbox',
-            'default' => TRUE,
-        );
-
-        $fields[] = array(
-            'name'    => 'Search',
-            'desc'    => '',
-            'id'      => 'menu_option_search',
-            'type'    => 'checkbox',
-            'default' => TRUE,
-        );
-
-        $fields[] = array(
-            'name'    => 'Categories',
-            'desc'    => '',
-            'id'      => 'menu_option_categories',
-            'type'    => 'checkbox',
-            'default' => TRUE,
-        );
-
-        $fields[] = array(
-            'name'    => 'City',
-            'desc'    => '',
-            'id'      => 'menu_option_city',
-            'type'    => 'checkbox',
-            'default' => TRUE,
-        );
-
-        $fields[] = array(
-            'name'    => 'Days',
-            'desc'    => '',
-            'id'      => 'menu_option_days',
-            'type'    => 'checkbox',
-            'default' => TRUE,
-        );
-
-        $fields[] = array(
-            'name'    => 'Partners',
-            'desc'    => '',
-            'id'      => 'menu_option_partners',
-            'type'    => 'checkbox',
-            'default' => TRUE,
-        );
-
-        $fields[] = array(
-            'name'    => 'Campus',
-            'desc'    => '',
-            'id'      => 'menu_option_campus',
-            'type'    => 'checkbox',
-            'default' => TRUE,
-        );
-
         return $fields;
     }
 }
@@ -164,14 +101,7 @@ class LO_Shortcodes_Nav_Element_Run extends LO_Shortcodes_Run_Base
      */
     public $atts_defaults
         = array(
-            'force_cat_slug'         => NULL,
-            'menu_option_index'      => FALSE,
-            'menu_option_search'     => FALSE,
-            'menu_option_categories' => FALSE,
-            'menu_option_city'       => FALSE,
-            'menu_option_days'       => FALSE,
-            'menu_option_partners'   => FALSE,
-            'menu_option_campus'   => FALSE,
+            'force_cat_slug' => NULL,
         );
 
     /**
@@ -203,14 +133,14 @@ class LO_Shortcodes_Nav_Element_Run extends LO_Shortcodes_Run_Base
 
         $content_arr['cities'] = $cities = liquid_outreach()->lo_ccb_events->get_all_city_list();
 
-        $content_arr['force_cat_page'] = $this->force_cat_page;
-        $content_arr['menu_option_index'] = $this->att('menu_option_index');
-        $content_arr['menu_option_search'] = $this->att('menu_option_search');
-        $content_arr['menu_option_categories'] = $this->att('menu_option_categories');
-        $content_arr['menu_option_city'] = $this->att('menu_option_city');
-        $content_arr['menu_option_days'] = $this->att('menu_option_days');
-        $content_arr['menu_option_partners'] = $this->att('menu_option_partners');
-        $content_arr['menu_option_campus'] = $this->att('menu_option_campus');
+        $content_arr['force_cat_page']         = $this->force_cat_page;
+        $content_arr['menu_option_index']      = $this->menu['menu_option_index'];
+        $content_arr['menu_option_search']     = $this->menu['menu_option_search'];
+        $content_arr['menu_option_categories'] = $this->menu['menu_option_categories'];
+        $content_arr['menu_option_city']       = $this->menu['menu_option_city'];
+        $content_arr['menu_option_days']       = $this->menu['menu_option_days'];
+        $content_arr['menu_option_partners']   = $this->menu['menu_option_partners'];
+        $content_arr['menu_option_campus']     = $this->menu['menu_option_campus'];
 
         $content_arr['page_settings'] = $this->page_settings;
 

@@ -28,6 +28,7 @@ class LO_Shortcodes_Event_Categories_Run extends LO_Shortcodes_Run_Base
             'disable_header' => false,
             'disable_nav' => false,
             'disable_search' => false,
+            'force_cat_slug'         => NULL,
         );
 
     /**
@@ -45,6 +46,15 @@ class LO_Shortcodes_Event_Categories_Run extends LO_Shortcodes_Run_Base
         wp_enqueue_script('lo-index', Liquid_Outreach::$url . '/assets/js/index.js');
 
         $content_arr = [];
+
+        $content_arr['force_cat_page'] = $this->force_cat_page;
+        $content_arr['menu_option_index'] = $this->menu['menu_option_index'];
+        $content_arr['menu_option_search'] = $this->menu['menu_option_search'];
+        $content_arr['menu_option_categories'] = $this->menu['menu_option_categories'];
+        $content_arr['menu_option_city'] = $this->menu['menu_option_city'];
+        $content_arr['menu_option_days'] = $this->menu['menu_option_days'];
+        $content_arr['menu_option_partners'] = $this->menu['menu_option_partners'];
+        $content_arr['menu_option_campus'] = $this->menu['menu_option_campus'];
 
         // Do we want to show a flip animation for categories when viewing categories page
         $lo_events_page_category_animation = lo_get_option( 'page', 'lo_events_page_category_animation' );

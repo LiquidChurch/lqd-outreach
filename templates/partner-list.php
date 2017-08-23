@@ -11,6 +11,13 @@ if (!isset($disable['nav']) || !$disable['nav']) {
         'categories' => $this->get('categories'),
         'cities' => $this->get('cities'),
         'page_link' => $page_link,
+        'menu_option_index'      => $this->get('menu_option_index'),
+        'menu_option_search'     => $this->get('menu_option_search'),
+        'menu_option_categories' => $this->get('menu_option_categories'),
+        'menu_option_city'       => $this->get('menu_option_city'),
+        'menu_option_days'       => $this->get('menu_option_days'),
+        'menu_option_partners'   => $this->get('menu_option_partners'),
+        'menu_option_campus'     => $this->get('menu_option_campus'),
     ]);
 }
 ?>

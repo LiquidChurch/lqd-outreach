@@ -28,6 +28,7 @@ class LO_Shortcodes_Event_Search_Run extends LO_Shortcodes_Run_Base
             'disable_header' => false,
             'disable_nav' => false,
             'disable_cateogy_list' => false,
+            'force_cat_slug'         => NULL,
         );
 
     /**
@@ -46,6 +47,15 @@ class LO_Shortcodes_Event_Search_Run extends LO_Shortcodes_Run_Base
         wp_enqueue_script('lo-index', Liquid_Outreach::$url . '/assets/js/index.js');
 
         $content_arr = [];
+
+        $content_arr['force_cat_page'] = $this->force_cat_page;
+        $content_arr['menu_option_index'] = $this->menu['menu_option_index'];
+        $content_arr['menu_option_search'] = $this->menu['menu_option_search'];
+        $content_arr['menu_option_categories'] = $this->menu['menu_option_categories'];
+        $content_arr['menu_option_city'] = $this->menu['menu_option_city'];
+        $content_arr['menu_option_days'] = $this->menu['menu_option_days'];
+        $content_arr['menu_option_partners'] = $this->menu['menu_option_partners'];
+        $content_arr['menu_option_campus'] = $this->menu['menu_option_campus'];
 
         $content_arr['disable'] = $disable = [
             'header' => (bool)$this->att('disable_header') == '1' || $this->att('disable_header') == 'true' ? 1 : 0,

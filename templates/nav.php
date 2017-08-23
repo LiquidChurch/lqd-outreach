@@ -81,7 +81,8 @@ $page_link     = $this->get('page_link');
                             {
                                 if ( ! empty($page_link['page_query_arr']))
                                 {
-                                    $link = $page_link['search'] . "&lo-event-loc={$val}";
+                                    $query = parse_url($page_link['search'], PHP_URL_QUERY) ? "&lo-event-loc={$val}" : "?lo-event-loc={$val}";
+                                    $link = $page_link['search'] . $query;
                                 }
                                 else
                                 {
@@ -118,7 +119,8 @@ $page_link     = $this->get('page_link');
                             {
                                 if ( ! empty($page_link['page_query_arr']))
                                 {
-                                    $link = $page_link['search'] . "&lo-event-day={$weekday}";
+                                    $query = parse_url($page_link['search'], PHP_URL_QUERY) ? "&lo-event-day={$weekday}" : "?lo-event-day={$weekday}";
+                                    $link = $page_link['search'] . $query;
                                 }
                                 else
                                 {

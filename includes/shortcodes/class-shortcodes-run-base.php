@@ -50,6 +50,14 @@ abstract class LO_Shortcodes_Run_Base extends WDS_Shortcodes
     public $force_cat_page = NULL;
 
     /**
+     * Plugin menu option
+     *
+     * @var
+     * @since 0.27.0
+     */
+    public $menu;
+
+    /**
      * Constructor
      *
      * @since 0.2.0
@@ -70,19 +78,41 @@ abstract class LO_Shortcodes_Run_Base extends WDS_Shortcodes
         $this->page_settings = lo_get_option('page', 'all');
     }
 
-	/**
-	 * Check If Shortcode Has Force Category Page Parameter
-	 */
+    /**
+     * Set plugin $this->menu var
+     *
+     * @since 0.27.0
+     */
+    public function set_plugin_menu()
+    {
+        if (empty($this->force_cat_page))
+        {
+            $this->menu = [
+                'menu_option_index'      => $this->page_settings['menu_option_index'],
+                'menu_option_search'     => $this->page_settings['menu_option_search'],
+                'menu_option_categories' => $this->page_settings['menu_option_categories'],
+                'menu_option_city'       => $this->page_settings['menu_option_city'],
+                'menu_option_days'       => $this->page_settings['menu_option_days'],
+                'menu_option_partners'   => $this->page_settings['menu_option_partners'],
+                'menu_option_campus'     => $this->page_settings['menu_option_campus'],
+            ];
+        }
+    }
+
+    /**
+     * Check If Shortcode Has Force Category Page Parameter
+     */
     public function shortcode()
     {
         $this->force_cat_page = ! empty($_GET['lo-cat-page']) ? $_GET['lo-cat-page'] : $this->att('force_cat_slug');
+        $this->set_plugin_menu();
     }
 
-	/**
-	 * Get Inline CSS Styles
-	 *
-	 * @return array
-	 */
+    /**
+     * Get Inline CSS Styles
+     *
+     * @return array
+     */
     public function get_inline_styles()
     {
         $style              = '';
@@ -108,10 +138,11 @@ abstract class LO_Shortcodes_Run_Base extends WDS_Shortcodes
         return array($style, $has_icon_font_size);
     }
 
-	/**
-	 * Get Base Pages
-	 * @return array
-	 */
+    /**
+     * Get Base Pages
+     *
+     * @return array
+     */
     public function get_base_pages()
     {
         $arr                                = [];
@@ -126,17 +157,31 @@ abstract class LO_Shortcodes_Run_Base extends WDS_Shortcodes
 
             $page_query = http_build_query($arr['page_link']['page_query_arr']);
 
-            $arr['page_link']['main']   = '';
-            $arr['page_link']['search'] = get_permalink($this->page_settings['lo_events_page_lo_search_page']) . '?' . $page_query;
-            $arr['page_link']['cat']    = get_permalink($this->page_settings['lo_events_page_lo_category_page']) . '?' . $page_query;
+            $lo_page_settings = $this->page_settings['lo_events_page_cat_base_page_mapping'];
+            $page_mapping     = [];
 
-            foreach ($this->page_settings['lo_events_page_cat_base_page_mapping'] as $map_index => $map_value)
+            foreach ($lo_page_settings as $index => $lo_page_setting)
             {
-                if ($this->force_cat_page == $map_value['category'])
+                if (isset($lo_page_setting['category']) && ($lo_page_setting['category'] == $this->force_cat_page))
                 {
-                    $arr['page_link']['main'] = get_permalink($map_value['page']);
+                    $page_mapping = $lo_page_setting;
                     break;
                 }
+            }
+
+            if ( ! empty($page_mapping))
+            {
+
+                $arr['page_link']['main']   = get_permalink($page_mapping['page']);
+                $arr['page_link']['search'] = get_permalink($page_mapping['page_browse']);
+                $arr['page_link']['cat']    = get_permalink($page_mapping['page_category']);
+            }
+            else
+            {
+
+                $arr['page_link']['main']   = get_permalink($this->page_settings['lo_events_page_lo_home_page']) . '?' . $page_query;
+                $arr['page_link']['search'] = get_permalink($this->page_settings['lo_events_page_lo_search_page']) . '?' . $page_query;
+                $arr['page_link']['cat']    = get_permalink($this->page_settings['lo_events_page_lo_category_page']) . '?' . $page_query;
             }
         }
         else
