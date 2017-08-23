@@ -1290,84 +1290,65 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
 
                 $partner_data = $this->create_partner_post($ccb_event_datum);
 
+                $ccb_event_datum_address = '';
+                if ( ! empty($ccb_event_datum['address']))
+                {
+                    $ccb_event_datum_address = is_array($ccb_event_datum['address']) ? implode(PHP_EOL, $ccb_event_datum['address']) : $ccb_event_datum['address'];
+                }
+
                 //create an event post
                 $event_post_data = [
                     'title'      => $this->set_post_title($ccb_event_datum['title']),
                     'content'    => $ccb_event_datum['description'],
                     'meta_input' => [
-                        $event_post_meta_prefix .
-                        'kid_friendly' => $ccb_event_datum['kid_friendly'],
+                        $event_post_meta_prefix . 'kid_friendly' => $ccb_event_datum['kid_friendly'],
 
-                        $event_post_meta_prefix .
-                        'start_date' => strtotime($ccb_event_datum['start_time']),
+                        $event_post_meta_prefix . 'start_date' => strtotime($ccb_event_datum['start_time']),
 
-                        $event_post_meta_prefix .
-                        'weekday_name' => strtolower(date('l',
-                            strtotime($ccb_event_datum['start_time']))),
+                        $event_post_meta_prefix . 'weekday_name' => strtolower(date('l', strtotime($ccb_event_datum['start_time']))),
 
-                        $event_post_meta_prefix .
-                        'address' => ! empty($ccb_event_datum['address']) ? (is_array($ccb_event_datum['address']) ? (implode(PHP_EOL,
-                            $ccb_event_datum['address'])) : $ccb_event_datum['address']) : '',
+                        $event_post_meta_prefix . 'address' => $ccb_event_datum_address,
 
-                        $event_post_meta_prefix .
-                        'city' => ! isset($ccb_event_datum['address']['city']) ? '' : $ccb_event_datum['address']['city'],
+                        $event_post_meta_prefix . 'city' => ! isset($ccb_event_datum['address']['city']) ? '' : $ccb_event_datum['address']['city'],
 
-                        $event_post_meta_prefix .
-                        'team_lead_id' => $ccb_event_datum['organizer_id'],
+                        $event_post_meta_prefix . 'team_lead_id' => $ccb_event_datum['organizer_id'],
 
-                        $event_post_meta_prefix .
-                        'group_id' => $ccb_event_datum['group_id'],
+                        $event_post_meta_prefix . 'group_id' => $ccb_event_datum['group_id'],
 
-                        $event_post_meta_prefix .
-                        'ccb_event_id' => $ccb_event_datum['ccb_event_id'],
+                        $event_post_meta_prefix . 'ccb_event_id' => $ccb_event_datum['ccb_event_id'],
 
-                        $event_post_meta_prefix .
-                        'register_url' => $ccb_event_datum['registration_url'],
+                        $event_post_meta_prefix . 'register_url' => $ccb_event_datum['registration_url'],
 
-                        $event_post_meta_prefix .
-                        'image' => $this->get_event_image($ccb_event_datum),
+                        $event_post_meta_prefix . 'image' => $this->get_event_image($ccb_event_datum),
 
-                        $event_post_meta_prefix .
-                        'campus' => isset($partner_data['meta_input']['lo_ccb_event_partner_campus']) ? $partner_data['meta_input']['lo_ccb_event_partner_campus'] : null,
+                        $event_post_meta_prefix . 'campus' => isset($partner_data['meta_input']['lo_ccb_event_partner_campus']) ? $partner_data['meta_input']['lo_ccb_event_partner_campus'] : NULL,
 
-                        $event_post_meta_prefix .
-                        'campus_id' => isset($partner_data['meta_input']['lo_ccb_event_partner_campus_id']) ? $partner_data['meta_input']['lo_ccb_event_partner_campus_id'] : null,
+                        $event_post_meta_prefix . 'campus_id' => isset($partner_data['meta_input']['lo_ccb_event_partner_campus_id']) ? $partner_data['meta_input']['lo_ccb_event_partner_campus_id'] : NULL,
                     ]
                 ];
 
-                $event_organizer_data
-                    = $this->get_event_organizer_data($ccb_event_datum['ccb_event_id'],
-                    $ccb_event_datum['organizer_id']);
+                $event_organizer_data = $this->get_event_organizer_data($ccb_event_datum['ccb_event_id'], $ccb_event_datum['organizer_id']);
 
                 if ($event_organizer_data['error'] == FALSE)
                 {
-                    $event_post_data['meta_input'][$event_post_meta_prefix .
-                                                   'team_lead_fname']
-                        = $event_organizer_data['individual_data']['first_name'];
+                    $event_post_data['meta_input'][$event_post_meta_prefix . 'team_lead_fname'] = $event_organizer_data['individual_data']['first_name'];
 
-                    $event_post_data['meta_input'][$event_post_meta_prefix .
-                                                   'team_lead_lname']
-                        = $event_organizer_data['individual_data']['last_name'];
+                    $event_post_data['meta_input'][$event_post_meta_prefix . 'team_lead_lname'] = $event_organizer_data['individual_data']['last_name'];
 
-                    $event_post_data['meta_input'][$event_post_meta_prefix .
-                                                   'team_lead_email']
-                        = $event_organizer_data['individual_data']['phone'];
+                    $event_post_data['meta_input'][$event_post_meta_prefix . 'team_lead_email'] = $event_organizer_data['individual_data']['phone'];
 
-                    $event_post_data['meta_input'][$event_post_meta_prefix .
-                                                   'team_lead_phone']
-                        = $event_organizer_data['individual_data']['email'];
+                    $event_post_data['meta_input'][$event_post_meta_prefix . 'team_lead_phone'] = $event_organizer_data['individual_data']['email'];
                 }
 
                 if ($ccb_event_datum['registration_limit'] == 0)
                 {
-                    $event_post_data['meta_input'][$event_post_meta_prefix . 'openings']
-                        = 'no-limit';
+                    $event_post_data['meta_input'][$event_post_meta_prefix . 'openings'] = 'no-limit';
                 }
                 else if (strtotime($ccb_event_datum['start_time']) > time())
                 {
                     $event_member_data = $this->fetch_event_details_api($ccb_event_datum);
 
-                    if (!empty($event_member_data) && isset($event_member_data['events']['event']['guest_list']['guest']))
+                    if ( ! empty($event_member_data) && isset($event_member_data['events']['event']['guest_list']['guest']))
                     {
                         $event_post_data['meta_input'][$event_post_meta_prefix . 'openings'] = ($ccb_event_datum['registration_limit'] - count($event_member_data['events']['event']['guest_list']['guest']));
                     }
@@ -1531,9 +1512,7 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
         ];
 
         $partner_api_data = $wpdb->get_row(
-            'SELECT * from wp_lo_ccb_groups_api_data
-                        WHERE `ccb_group_id`=' . $ccb_event_datum['group_id'],
-            ARRAY_A
+            'SELECT * from wp_lo_ccb_groups_api_data WHERE `ccb_group_id`=' . $ccb_event_datum['group_id'], ARRAY_A
         );
         $partner_data     = json_decode($partner_api_data['data'], 1);
 
@@ -1626,9 +1605,9 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
         }
 
         return [
-                'post_id' => $postID,
-                'post_title' => $ccb_event_datum['group_name'],
-                'meta_input' => $meta_input,
+            'post_id'    => $postID,
+            'post_title' => $ccb_event_datum['group_name'],
+            'meta_input' => $meta_input,
         ];
     }
 
@@ -1818,8 +1797,7 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
     protected function get_event_organizer_data($ccb_event_id, $organizer_id)
     {
         $api_error       = FALSE;
-        $transient_key   = "ccb_event_$ccb_event_id" . "_organizer_$organizer_id" .
-                           "_data";
+        $transient_key   = "ccb_event_$ccb_event_id" . "_organizer_$organizer_id" . "_data";
         $cache_data      = get_transient($transient_key);
         $individual_data = [];
 
@@ -1834,11 +1812,9 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
             if (empty($api_error))
             {
 
-                $request
-                    = $this->plugin->lo_ccb_api_individual_profile->api_response_arr['ccb_api']['request'];
+                $request = $this->plugin->lo_ccb_api_individual_profile->api_response_arr['ccb_api']['request'];
 
-                $response
-                    = $this->plugin->lo_ccb_api_individual_profile->api_response_arr['ccb_api']['response'];
+                $response = $this->plugin->lo_ccb_api_individual_profile->api_response_arr['ccb_api']['response'];
 
                 if ( ! empty($response['individuals']['count']))
                 {
@@ -2107,7 +2083,7 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
             {
                 $event_member_data = $this->fetch_event_details_api($synced_datum);
 
-                if (!empty($event_member_data) && isset($event_member_data['events']['event']['guest_list']['guest']))
+                if ( ! empty($event_member_data) && isset($event_member_data['events']['event']['guest_list']['guest']))
                 {
                     $event_post_data['meta_input'][$event_post_meta_prefix . 'openings'] = ($synced_datum['registration_limit'] - count($event_member_data['events']['event']['guest_list']['guest']));
                 }
@@ -2152,10 +2128,9 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
         if (empty($api_error))
         {
 
-            $request
-                               = $this->plugin->lo_ccb_api_event_profiles->api_response_arr['ccb_api']['request'];
-            $response
-                               = $this->plugin->lo_ccb_api_event_profiles->api_response_arr['ccb_api']['response'];
+            $request  = $this->plugin->lo_ccb_api_event_profiles->api_response_arr['ccb_api']['request'];
+            $response = $this->plugin->lo_ccb_api_event_profiles->api_response_arr['ccb_api']['response'];
+
             $request_arguments = $request['parameters']['argument'];
             $page_arguments    = $this->search_for_sub_arr('name', 'page',
                 $request_arguments);
@@ -2170,9 +2145,7 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                 {
                     $this->save_event_image($event);
 
-                    $exist = $wpdb->get_row("SELECT * FROM $table_name WHERE ccb_event_id = " .
-                                            $event['id'],
-                        ARRAY_A);
+                    $exist = $wpdb->get_row("SELECT * FROM $table_name WHERE ccb_event_id = " . $event['id'], ARRAY_A);
 
                     $group_sync_result   = NULL;
                     $group_sync_status[] = $group_sync_result = $this->save_ccb_groups_temp_table($event);
