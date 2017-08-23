@@ -1,9 +1,11 @@
 <?php
+$page_link      = $this->get('page_link');
 $event_post     = $this->get('post');
 $meta_prefix    = 'lo_ccb_events_';
 $register_gform = Liquid_Outreach::$enable_ccb_gravity ? $event_post->get_meta($meta_prefix . 'gform') : FALSE;
 $register_url   = $event_post->get_meta($meta_prefix . 'register_url');
 $info_settings  = lo_get_option('additional-info', 'all');
+$force_cat_page = $this->get('force_cat_page');
 
 add_action('gform_after_submission', 'checkit', 10, 2);
 function checkit($meta_prefix)
@@ -375,10 +377,10 @@ function checkit($meta_prefix)
                             </div>
                             <div class="col-md-1">&#8594</div>
                             <div class="col-md-6">
-                                <a href="<?php echo home_url("search-projects/?lo-event-org=" .
-                                                             get_post_meta($post->ID,
-                                                                 'lo_ccb_event_partner_group_id',
-                                                                 TRUE)) ?>">
+                                <?php
+                                $group_id = get_post_meta($post->ID, 'lo_ccb_event_partner_group_id', TRUE);
+                                ?>
+                                <a href="<?php echo $page_link['search'] . "?lo-event-org=" . $group_id ?>">
                                     <?php echo $post->post_title ?>
                                 </a>
                             </div>

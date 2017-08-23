@@ -85,17 +85,43 @@ abstract class LO_Shortcodes_Run_Base extends WDS_Shortcodes
      */
     public function set_plugin_menu()
     {
-        if (empty($this->force_cat_page))
+        $this->menu = [
+            'menu_option_index'      => $this->page_settings['menu_option_index'],
+            'menu_option_search'     => $this->page_settings['menu_option_search'],
+            'menu_option_categories' => $this->page_settings['menu_option_categories'],
+            'menu_option_city'       => $this->page_settings['menu_option_city'],
+            'menu_option_days'       => $this->page_settings['menu_option_days'],
+            'menu_option_partners'   => $this->page_settings['menu_option_partners'],
+            'menu_option_campus'     => $this->page_settings['menu_option_campus'],
+        ];
+
+        if (!empty($this->force_cat_page))
         {
-            $this->menu = [
-                'menu_option_index'      => $this->page_settings['menu_option_index'],
-                'menu_option_search'     => $this->page_settings['menu_option_search'],
-                'menu_option_categories' => $this->page_settings['menu_option_categories'],
-                'menu_option_city'       => $this->page_settings['menu_option_city'],
-                'menu_option_days'       => $this->page_settings['menu_option_days'],
-                'menu_option_partners'   => $this->page_settings['menu_option_partners'],
-                'menu_option_campus'     => $this->page_settings['menu_option_campus'],
-            ];
+            $lo_page_settings = isset($this->page_settings['lo_events_page_cat_base_page_mapping']) ? $this->page_settings['lo_events_page_cat_base_page_mapping'] : [];
+
+            $page_mapping     = [];
+
+            foreach ($lo_page_settings as $index => $lo_page_setting)
+            {
+                if (isset($lo_page_setting['category']) && ($lo_page_setting['category'] == $this->force_cat_page))
+                {
+                    $page_mapping = $lo_page_setting;
+                    break;
+                }
+            }
+
+            if ( ! empty($page_mapping))
+            {
+                $this->menu = [
+                    'menu_option_index'      => $page_mapping['menu_option_index'],
+                    'menu_option_search'     => $page_mapping['menu_option_search'],
+                    'menu_option_categories' => $page_mapping['menu_option_categories'],
+                    'menu_option_city'       => $page_mapping['menu_option_city'],
+                    'menu_option_days'       => $page_mapping['menu_option_days'],
+                    'menu_option_partners'   => $page_mapping['menu_option_partners'],
+                    'menu_option_campus'     => $page_mapping['menu_option_campus'],
+                ];
+            }
         }
     }
 
@@ -157,7 +183,7 @@ abstract class LO_Shortcodes_Run_Base extends WDS_Shortcodes
 
             $page_query = http_build_query($arr['page_link']['page_query_arr']);
 
-            $lo_page_settings = $this->page_settings['lo_events_page_cat_base_page_mapping'];
+            $lo_page_settings = isset($this->page_settings['lo_events_page_cat_base_page_mapping']) ? $this->page_settings['lo_events_page_cat_base_page_mapping'] : [];
             $page_mapping     = [];
 
             foreach ($lo_page_settings as $index => $lo_page_setting)

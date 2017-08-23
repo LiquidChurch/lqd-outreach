@@ -48,6 +48,7 @@ class LO_Shortcodes_Partner_Single_Run extends LO_Shortcodes_Run_Base
 
         $content_arr = [];
 
+        $content_arr['force_cat_page'] = $this->force_cat_page;
         $content_arr['menu_option_index']      = $this->menu['menu_option_index'];
         $content_arr['menu_option_search']     = $this->menu['menu_option_search'];
         $content_arr['menu_option_categories'] = $this->menu['menu_option_categories'];

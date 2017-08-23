@@ -1,6 +1,7 @@
 <?php
 	$events      = $this->get( 'events' );
 	$pagination  = $this->get( 'pagination' );
+	$force_cat_page  = $this->get( 'force_cat_page' );
 	$meta_prefix = 'lo_ccb_events_';
 ?>
 <div class="container">
@@ -40,7 +41,10 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a href="<?php echo $event->permalink() ?>"><?php echo $event->title() ?></a>
+                                        <?php
+                                        $permalink = $force_cat_page ? $event->permalink() . '?lo-cat-page=care-packages-donations' : $event->permalink();
+                                        ?>
+                                        <a href="<?php echo $permalink ?>"><?php echo $event->title() ?></a>
                                     </td>
                                     <td>
 										<?php
