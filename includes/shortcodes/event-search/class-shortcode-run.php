@@ -70,7 +70,7 @@ class LO_Shortcodes_Event_Search_Run extends LO_Shortcodes_Run_Base
             'posts_per_page' => 10,
         ));
 
-        if (isset($_GET['lo-event-s']) || isset($_GET['lo-event-loc']) || isset($_GET['lo-event-day']) || isset($_GET['lo-event-org'])) {
+        if (isset($_GET['lo-event-s']) || isset($_GET['lo-event-loc']) || isset($_GET['lo-event-day']) || isset($_GET['lo-event-org']) || isset($_GET['lo-campus'])) {
             $events = liquid_outreach()->lo_ccb_events->get_search_result($args);
             if (empty($events->posts)) {
                 $event_empty_msg = 'Sorry, No data found for the search criteria.';

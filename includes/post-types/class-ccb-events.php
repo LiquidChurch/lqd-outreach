@@ -528,6 +528,7 @@ class LO_Ccb_Events extends LO_Ccb_Base_Post
                 'org' => isset($_GET['lo-event-org']) ? $_GET['lo-event-org'] : '',
                 'day' => isset($_GET['lo-event-day']) ? $_GET['lo-event-day'] : '',
                 'loc' => isset($_GET['lo-event-loc']) ? $_GET['lo-event-loc'] : '',
+                'camp' => isset($_GET['lo-campus']) ? $_GET['lo-campus'] : '',
             ];
         }
 
@@ -552,6 +553,7 @@ class LO_Ccb_Events extends LO_Ccb_Base_Post
                 ]
             ];
         }
+
         if ( ! empty($search_query['org']))
         {
             $args['meta_query'][] = [
@@ -560,6 +562,7 @@ class LO_Ccb_Events extends LO_Ccb_Base_Post
                 'compare' => '='
             ];
         }
+
         if ( ! empty($search_query['day']))
         {
             $args['meta_query'][] = [
@@ -568,11 +571,21 @@ class LO_Ccb_Events extends LO_Ccb_Base_Post
                 'compare' => '='
             ];
         }
+
         if ( ! empty($search_query['loc']))
         {
             $args['meta_query'][] = [
                 'key'     => $this->meta_prefix . 'city',
                 'value'   => $search_query['loc'],
+                'compare' => '='
+            ];
+        }
+
+        if ( ! empty($search_query['camp']))
+        {
+            $args['meta_query'][] = [
+                'key'     => $this->meta_prefix . 'campus_id',
+                'value'   => $search_query['camp'],
                 'compare' => '='
             ];
         }

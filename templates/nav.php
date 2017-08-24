@@ -148,7 +148,7 @@ $force_cat_page = $this->get('force_cat_page');
                             <span class="caret"></span></a>
                         <ul class="dropdown-menu lo-dropdown-menu" style="width: 150%;">
                             <?php
-                            $campus_list = LO_Ccb_Base_Function::get_campus_list();
+                            $campus_list = LO_Ccb_Base_Function::get_campus_list($force_cat_page);
 
                             foreach ($campus_list as $campus)
                             {
