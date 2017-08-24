@@ -3,7 +3,7 @@
 /**
  * Liquid Outreach API Event Profiles
  *
- * @since 0.0.5
+ * @since   0.0.5
  * @package Liquid_Outreach
  */
 class Lo_Ccb_api_event_profiles extends Lo_Ccb_api_main
@@ -14,8 +14,8 @@ class Lo_Ccb_api_event_profiles extends Lo_Ccb_api_main
      * @var string
      * @since 0.0.5
      */
-    protected $api_name    = "event_profiles";
-    
+    protected $api_name = "event_profiles";
+
     /**
      * Define the required CCB srv to execute request
      * on CCB API service event_profiles
@@ -24,7 +24,7 @@ class Lo_Ccb_api_event_profiles extends Lo_Ccb_api_main
      * @since 0.0.5
      */
     protected $api_req_str = "srv=event_profiles";
-    
+
     /**
      * The URL used to access the CCB API
      *
@@ -32,28 +32,30 @@ class Lo_Ccb_api_event_profiles extends Lo_Ccb_api_main
      * @since 0.0.5
      */
     protected $api_url = "";
-    
+
     /**
      * @var
      * @since 0.0.5
      */
     protected $api_fields;
-    
+
     /**
      * Lo_Ccb_api_event_profiles constructor.
      *
      * @param $plugin
+     *
      * @since 0.0.5
      */
     public function __construct($plugin)
     {
         parent::__construct($plugin);
     }
-    
+
     /**
      * Create CCB API map
      *
      * @param $data
+     *
      * @since 0.0.5
      */
     public function api_map($data = [])
@@ -63,17 +65,18 @@ class Lo_Ccb_api_event_profiles extends Lo_Ccb_api_main
         $this->call_ccb_api();
         $this->process_api_response();
     }
-    
+
     /**
      * Modify the CCB API request call based on required fields
      *
      * @since 0.0.5
      */
-    public function mod_req_str() {
-        $add_req_str = http_build_query($this->api_fields);
+    public function mod_req_str()
+    {
+        $add_req_str       = http_build_query($this->api_fields);
         $this->api_req_str .= '&' . $add_req_str;
     }
-    
+
     /**
      * Handle Errors
      *
@@ -83,20 +86,21 @@ class Lo_Ccb_api_event_profiles extends Lo_Ccb_api_main
     public function map_fields()
     {
         $post_fields = [
-            'modified_since' => !empty($_POST['modified_since']) ? date('Y-m-d', strtotime($_POST['modified_since'])) : ''
+            'modified_since' => ! empty($_POST['modified_since']) ? date('Y-m-d', strtotime($_POST['modified_since'])) : ''
         ];
 
         $this->api_fields = [
-            'page' => !empty($_POST['page']) ? $_POST['page'] : 1,
-            'per_page' => !empty($_POST['per_page']) ? $_POST['per_page'] : 25,
-            'include_image_link' => !empty($_POST['per_page']) ? $_POST['include_image_link'] : true
+            'page'               => ! empty($_POST['page']) ? $_POST['page'] : 1,
+            'per_page'           => ! empty($_POST['per_page']) ? $_POST['per_page'] : 25,
+            'include_image_link' => ! empty($_POST['per_page']) ? $_POST['include_image_link'] : TRUE
         ];
-        
-        if(!empty($post_fields['modified_since'])) {
+
+        if ( ! empty($post_fields['modified_since']))
+        {
             $this->api_fields['modified_since'] = $post_fields['modified_since'];
         }
     }
-    
+
     /**
      * Execute call against CCB API
      *
@@ -105,18 +109,18 @@ class Lo_Ccb_api_event_profiles extends Lo_Ccb_api_main
     public function call_ccb_api()
     {
         parent::call_ccb_api();
-    
-        $this->api_url = $this->api_base . '?' . $this->api_req_str;
+
+        $this->api_url  = $this->api_base . '?' . $this->api_req_str;
         $this->api_args = array_merge(
             $this->api_args,
             array(
-                'method' => 'POST',
-                'timeout' => 45,
+                'method'      => 'POST',
+                'timeout'     => 45,
                 'redirection' => 5,
                 'httpversion' => '1.0',
-                'blocking' => true,
-                'body' => array(),
-                'cookies' => array()
+                'blocking'    => TRUE,
+                'body'        => array(),
+                'cookies'     => array()
             ));
 
         $this->api_response = wp_remote_post($this->api_url, $this->api_args);

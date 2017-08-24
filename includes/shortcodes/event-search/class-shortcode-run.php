@@ -12,7 +12,7 @@ class LO_Shortcodes_Event_Search_Run extends LO_Shortcodes_Run_Base
     /**
      * The Shortcode Tag
      *
-     * @var string  $shortcode
+     * @var string $shortcode
      * @since 0.2.1
      */
     public $shortcode = 'lo_event_search';
@@ -20,15 +20,15 @@ class LO_Shortcodes_Event_Search_Run extends LO_Shortcodes_Run_Base
     /**
      * Default attributes applied to the shortcode.
      *
-     * @var array   $atts_defaults
+     * @var array $atts_defaults
      * @since 0.2.1
      */
     public $atts_defaults
         = array(
-            'disable_header' => false,
-            'disable_nav' => false,
-            'disable_cateogy_list' => false,
-            'force_cat_slug'         => NULL,
+            'disable_header'       => FALSE,
+            'disable_nav'          => FALSE,
+            'disable_cateogy_list' => FALSE,
+            'force_cat_slug'       => NULL,
         );
 
     /**
@@ -48,48 +48,54 @@ class LO_Shortcodes_Event_Search_Run extends LO_Shortcodes_Run_Base
 
         $content_arr = [];
 
-        $content_arr['force_cat_page'] = $this->force_cat_page;
-        $content_arr['menu_option_index'] = $this->menu['menu_option_index'];
-        $content_arr['menu_option_search'] = $this->menu['menu_option_search'];
+        $content_arr['force_cat_page']         = $this->force_cat_page;
+        $content_arr['menu_option_index']      = $this->menu['menu_option_index'];
+        $content_arr['menu_option_search']     = $this->menu['menu_option_search'];
         $content_arr['menu_option_categories'] = $this->menu['menu_option_categories'];
-        $content_arr['menu_option_city'] = $this->menu['menu_option_city'];
-        $content_arr['menu_option_days'] = $this->menu['menu_option_days'];
-        $content_arr['menu_option_partners'] = $this->menu['menu_option_partners'];
-        $content_arr['menu_option_campus'] = $this->menu['menu_option_campus'];
+        $content_arr['menu_option_city']       = $this->menu['menu_option_city'];
+        $content_arr['menu_option_days']       = $this->menu['menu_option_days'];
+        $content_arr['menu_option_partners']   = $this->menu['menu_option_partners'];
+        $content_arr['menu_option_campus']     = $this->menu['menu_option_campus'];
 
         $content_arr['disable'] = $disable = [
-            'header' => (bool)$this->att('disable_header') == '1' || $this->att('disable_header') == 'true' ? 1 : 0,
-            'nav' => (bool)$this->att('disable_nav') == '1' || $this->att('disable_nav') == 'true' ? 1 : 0,
+            'header'       => (bool)$this->att('disable_header') == '1' || $this->att('disable_header') == 'true' ? 1 : 0,
+            'nav'          => (bool)$this->att('disable_nav') == '1' || $this->att('disable_nav') == 'true' ? 1 : 0,
             'cateogy_list' => (bool)$this->att('disable_cateogy_list') == '1' || $this->att('disable_cateogy_list') == 'true' ? 1 : 0
         ];
 
         $args = $this->get_initial_query_args();
 
         $args = wp_parse_args($args, array(
-            'post_type' => liquid_outreach()->lo_ccb_events->post_type(),
+            'post_type'      => liquid_outreach()->lo_ccb_events->post_type(),
             'posts_per_page' => 10,
         ));
 
-        if (isset($_GET['lo-event-s']) || isset($_GET['lo-event-loc']) || isset($_GET['lo-event-day']) || isset($_GET['lo-event-org']) || isset($_GET['lo-campus'])) {
+        if (isset($_GET['lo-event-s']) || isset($_GET['lo-event-loc']) || isset($_GET['lo-event-day']) || isset($_GET['lo-event-org']) || isset($_GET['lo-campus']))
+        {
             $events = liquid_outreach()->lo_ccb_events->get_search_result($args);
-            if (empty($events->posts)) {
+            if (empty($events->posts))
+            {
                 $event_empty_msg = 'Sorry, No data found for the search criteria.';
             }
-        } else {
+        }
+        else
+        {
             $events = liquid_outreach()->lo_ccb_events->get_many($args);
-            if (empty($events->posts)) {
+            if (empty($events->posts))
+            {
                 $event_empty_msg = 'Sorry, No data found.';
             }
         }
 
-        $max = !empty($events->max_num_pages) ? $events->max_num_pages : 0;
+        $max        = ! empty($events->max_num_pages) ? $events->max_num_pages : 0;
         $pagination = $this->get_pagination($max);
 
-        $content_arr['events'] = !empty($events->posts) ? $events->posts : [];
+        $content_arr['events']          = ! empty($events->posts) ? $events->posts : [];
         $content_arr['event_empty_msg'] = isset($event_empty_msg) ? $event_empty_msg : '';
-        $content_arr['pagination'] = $pagination;
+        $content_arr['pagination']      = $pagination;
 
-        if(!$disable['nav'] || !$disable['cateogy_list']) {
+        if ( ! $disable['nav'] || ! $disable['cateogy_list'])
+        {
 
             $content_arr = array_merge($content_arr, $this->get_category_list());
 
@@ -116,14 +122,15 @@ class LO_Shortcodes_Event_Search_Run extends LO_Shortcodes_Run_Base
      */
     public function get_initial_query_args()
     {
-        $paged = (int)get_query_var('paged') ? get_query_var('paged') : 1;
-        $offset = (($paged - 1) * 10);
+        $paged     = (int)get_query_var('paged') ? get_query_var('paged') : 1;
+        $offset    = (($paged - 1) * 10);
         $tax_query = [];
-        if($this->force_cat_page != null) {
-            $tax_query[] =             array(
+        if ($this->force_cat_page != NULL)
+        {
+            $tax_query[] = array(
                 'taxonomy' => liquid_outreach()->lo_ccb_event_categories->taxonomy(),
-                'field' => 'slug',
-                'terms' => $this->force_cat_page,
+                'field'    => 'slug',
+                'terms'    => $this->force_cat_page,
             );
         }
 
@@ -143,7 +150,8 @@ class LO_Shortcodes_Event_Search_Run extends LO_Shortcodes_Run_Base
     {
         $nav = array('prev_link' => '', 'next_link' => '');
 
-        if (!$this->bool_att('remove_pagination')) {
+        if ( ! $this->bool_att('remove_pagination'))
+        {
             $nav['prev_link'] = get_previous_posts_link(__('<span>&larr;</span> Previous',
                 'liquid-outreach'), $total_pages);
             $nav['next_link'] = get_next_posts_link(__('Next <span>&rarr;</span>',

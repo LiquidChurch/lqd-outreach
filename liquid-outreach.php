@@ -77,7 +77,7 @@ final class Liquid_Outreach
     /**
      * URL of plugin directory.
      *
-     * @var    string   $url
+     * @var    string $url
      * @since  0.0.0
      */
     public static $url = '';
@@ -85,7 +85,7 @@ final class Liquid_Outreach
     /**
      * Path of plugin directory.
      *
-     * @var    string   $path
+     * @var    string $path
      * @since  0.0.0
      */
     public static $path = '';
@@ -93,7 +93,7 @@ final class Liquid_Outreach
     /**
      * Plugin basename.
      *
-     * @var    string   $basename
+     * @var    string $basename
      * @since  0.0.0
      */
     public static $basename = '';
@@ -611,31 +611,48 @@ final class Liquid_Outreach
     public function cron_job()
     {
         add_filter('cron_schedules', array($this, 'my_cron_schedules'));
-		$crons=_get_cron_array();
-		if($this->search_cron($crons,'lo_ccb_cron_event_member_sync')){
+        $crons = _get_cron_array();
+        if ($this->search_cron($crons, 'lo_ccb_cron_event_member_sync'))
+        {
 
-		}else{
-			$ccb_events_page_settings = get_option("liquid_outreach_ccb_events_page_settings", 'lo_events_page_event_attendance_count_update');
-			$event_attendance_count_update = isset($ccb_events_page_settings['lo_events_page_event_attendance_count_update']) ? $ccb_events_page_settings['lo_events_page_event_attendance_count_update'] : '30min';
-			if ( ! wp_next_scheduled( 'lo_ccb_cron_event_member_sync ' ) ) {
-			wp_schedule_event(time(), $event_attendance_count_update, 'lo_ccb_cron_event_member_sync', [null]);
-			}
-		}
-	}
+        }
+        else
+        {
+            $ccb_events_page_settings      = get_option("liquid_outreach_ccb_events_page_settings", 'lo_events_page_event_attendance_count_update');
+            $event_attendance_count_update = isset($ccb_events_page_settings['lo_events_page_event_attendance_count_update']) ? $ccb_events_page_settings['lo_events_page_event_attendance_count_update'] : '30min';
+            if ( ! wp_next_scheduled('lo_ccb_cron_event_member_sync '))
+            {
+                wp_schedule_event(time(), $event_attendance_count_update, 'lo_ccb_cron_event_member_sync', [NULL]);
+            }
+        }
+    }
 
-	public function search_cron($arr, $key) {
-		if (array_key_exists($key, $arr)) {
-			return true;
-		}
-		foreach ($arr as $element) {
-			if (is_array($element)) {
-				if ($this->search_cron($element, $key)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+    /**
+     * @param $arr
+     * @param $key
+     *
+     * @return bool
+     * @since 0.27.0
+     */
+    public function search_cron($arr, $key)
+    {
+        if (array_key_exists($key, $arr))
+        {
+            return TRUE;
+        }
+        foreach ($arr as $element)
+        {
+            if (is_array($element))
+            {
+                if ($this->search_cron($element, $key))
+                {
+                    return TRUE;
+                }
+            }
+        }
+
+        return FALSE;
+    }
 
     /**
      * Modify cron schedules

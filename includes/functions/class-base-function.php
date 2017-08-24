@@ -47,18 +47,25 @@ class LO_Ccb_Base_Function
      */
     public static function check_details_display_enabled($postID, $key)
     {
-        $show = get_post_meta($postID, $key, TRUE);
-        if ($show == '')
+        $lo_events_info_global_settings = get_option('liquid_outreach_ccb_events_info_settings');
+        if ($lo_events_info_global_settings[$key])
         {
+            $show = get_post_meta($postID, $key, TRUE);
+            if ($show == '')
+            {
 
-            $settings = lo_get_option('additional-info', $key);
+                $settings = lo_get_option('additional-info', $key);
 
-            return ! empty($settings) ? '1' : '0';
-
+                return ! empty($settings) ? '1' : '0';
+            }
+            else
+            {
+                return $show;
+            }
         }
         else
         {
-            return $show;
+            return 0;
         }
     }
 
