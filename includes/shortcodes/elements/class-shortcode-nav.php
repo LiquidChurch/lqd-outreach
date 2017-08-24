@@ -59,6 +59,11 @@ class LO_Shortcodes_Nav_Element_Admin extends LO_Shortcodes_Admin_Base
     /**
      * Adds fields to the button modal using CMB2
      *
+     * When using the WP Post/Page Editor there will be a shortcode button
+     * for configuring the display of the menu navigation for the plugin.
+     * This code defines what fields are presented to the user when they click
+     * on the shortcode button and are viewing the resultant modal window.
+     *
      * @since 0.7.0
      *
      * @param $fields

@@ -1300,15 +1300,15 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                     $ccb_event_datum_address = is_array($ccb_event_datum['address']) ? implode(PHP_EOL, $ccb_event_datum['address']) : $ccb_event_datum['address'];
                 }
 
-                $campus = isset($partner_data['meta_input']['lo_ccb_event_partner_campus']) ? $partner_data['meta_input']['lo_ccb_event_partner_campus'] : NULL;
-                $campus_id = isset($partner_data['meta_input']['lo_ccb_event_partner_campus_id']) ? $partner_data['meta_input']['lo_ccb_event_partner_campus_id'] : NULL;
-                $campus_with_id = null;
-                if(!empty($campus) && !empty($campus_id))
+                $campus         = isset($partner_data['meta_input']['lo_ccb_event_partner_campus']) ? $partner_data['meta_input']['lo_ccb_event_partner_campus'] : NULL;
+                $campus_id      = isset($partner_data['meta_input']['lo_ccb_event_partner_campus_id']) ? $partner_data['meta_input']['lo_ccb_event_partner_campus_id'] : NULL;
+                $campus_with_id = NULL;
+                if ( ! empty($campus) && ! empty($campus_id))
                 {
                     $campus_with_id = $campus_id . '|' . $campus;
                 }
 
-                    //create an event post
+                //create an event post
                 $event_post_data = [
                     'title'      => $this->set_post_title($ccb_event_datum['title']),
                     'content'    => $ccb_event_datum['description'],
@@ -1333,8 +1333,8 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
 
                         $event_post_meta_prefix . 'image' => $this->get_event_image($ccb_event_datum),
 
-                        $event_post_meta_prefix . 'campus' => $campus_with_id,
-                        $event_post_meta_prefix . 'campus_id' => $campus_id,
+                        $event_post_meta_prefix . 'campus'      => $campus_with_id,
+                        $event_post_meta_prefix . 'campus_id'   => $campus_id,
                         $event_post_meta_prefix . 'campus_name' => $campus,
                     ]
                 ];
@@ -2098,6 +2098,10 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                 if ( ! empty($event_member_data) && isset($event_member_data['events']['event']['guest_list']['guest']))
                 {
                     $event_post_data['meta_input'][$event_post_meta_prefix . 'openings'] = ($synced_datum['registration_limit'] - count($event_member_data['events']['event']['guest_list']['guest']));
+                    if ($event_post_data['meta_input'][$event_post_meta_prefix . 'openings'] < 0)
+                    {
+                        $event_post_data['meta_input'][$event_post_meta_prefix . 'openings'] = 0;
+                    };
                 }
                 else
                 {

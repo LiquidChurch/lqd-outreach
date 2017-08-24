@@ -6,36 +6,42 @@ $register_gform = Liquid_Outreach::$enable_ccb_gravity ? $event_post->get_meta($
 $register_url   = $event_post->get_meta($meta_prefix . 'register_url');
 $info_settings  = lo_get_option('additional-info', 'all');
 $force_cat_page = $this->get('force_cat_page');
+$event_post     = $this->get('post');
+$openings       = $event_post->get_meta($meta_prefix . 'openings');
+if ($openings == 'no-limit')
+{
+    $openings = 99999;
+}
 
 add_action('gform_after_submission', 'checkit', 10, 2);
 function checkit($meta_prefix)
 {
     $event_post = $this->get('post');
     $openings   = $event_post->get_meta($meta_prefix . 'openings');
-    if (is_int($openings) && ($openings == 0 or $openings < 0)) // just in case we somehow end up below zero
+    if ($openings == 'no-limit')
     {
-        // Don't show register button
+        $openings = 99999;
     }
-    else
+    if ($openings <= 0) // just in case we somehow end up below zero
     {
         if ( ! empty($register_gform))
         {
-            // Now we decrement.
-            if ($openings == '0')
-            {
-                ?>
-                <script>
-                    (function ()
+            ?>
+            <script>
+                (function ()
+                {
+                    jQuery(document).ready(function ()
                     {
-                        jQuery(document).ready(function ()
-                        {
-                            jQuery("#openings").text("Closed");
-                        });
-                    })
-                </script>
-                <?php
-            }
+                        jQuery("#openings").text("Closed");
+                    });
+                })
+            </script>
+            <?php
         }
+    }
+    else
+    {
+
     }
 }
 
@@ -56,8 +62,7 @@ function checkit($meta_prefix)
             <div class="col-md-8">
 
                 <?php
-                $openings = $event_post->get_meta($meta_prefix . 'openings');
-                if ((is_int($openings) && ($openings == 0 or $openings < 0))) // just in case we somehow end up below zero
+                if ($openings <= 0) // just in case we somehow end up below zero
                 {
                     // Don't show register button
                 }
@@ -106,9 +111,7 @@ function checkit($meta_prefix)
 
 
                 <?php
-                // Adding this at 4:09 AM
-                $openings = $event_post->get_meta($meta_prefix . 'openings');
-                if ((is_int($openings) && ($openings == 0 or $openings < 0))) // just in case we somehow end up below zero
+                if (($openings <= 0)) // just in case we somehow end up below zero
                 {
                     // Don't show register button
                 }
@@ -118,7 +121,7 @@ function checkit($meta_prefix)
                     {
                         // Now show them the register button.
                         ?>
-                        <div class="row">
+                        <div class="row lo-event-register">
                             <div class="col-md-12">
                                 <a href="javascript:void(0);"
                                    id="lo-show-gravity-form-btn"
@@ -194,12 +197,11 @@ function checkit($meta_prefix)
                         <div class="col-md-1">&#8594</div>
                         <div class="col-md-6" id="openings">
                             <?php
-                            $openings = $event_post->get_meta($meta_prefix . 'openings');
-                            if ($openings == '0')
+                            if ($openings <= 0)
                             {
                                 echo 'Closed';
                             }
-                            else if ($openings == 'no-limit')
+                            else if ($openings == 99999)
                             {
                                 echo '<span style="font-size: 22px;">&infin;</span>';
                             }
@@ -429,7 +431,7 @@ function checkit($meta_prefix)
                 {
                     $login_gform = ccb_gravity_get_option('option', 'ccb_gravity_option_ccb_login_gform');
                     ?>
-                    <div class="col-md-12">
+                    <div class="col-md-12 lqd-login">
                         <?php
                         echo do_shortcode("[gravityform id={$login_gform} title=true description=true ajax=false]");
                         ?>
@@ -448,13 +450,18 @@ function checkit($meta_prefix)
                     <?php
                 }
                 ?>
-                <div class="col-md-12">
+                <div class="col-md-12 lqd-register">
                     <?php
                     echo do_shortcode("[gravityform id={$register_gform} title=true description=false ajax=true]");
                     ?>
                 </div>
             </div>
             <?php
+        }
+        else
+        {
+
+            echo do_shortcode('[ccb_gform login_form_id="25" login_form_title="true" login_form_description="true" user_form_id="26" user_form_title="true" user_form_description="true"]');
         }
         ?>
 

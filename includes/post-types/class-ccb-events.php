@@ -31,6 +31,12 @@ class LO_Ccb_Events extends LO_Ccb_Base_Post
     public $meta_prefix = 'lo_ccb_events_';
 
     /**
+     * @var string
+     * @since  0.2.5
+     */
+    public $groups_db_prefix = 'lo_ccb_groups_api_data';
+
+    /**
      * Parent plugin class.
      *
      * @var Liquid_Outreach
@@ -129,7 +135,88 @@ class LO_Ccb_Events extends LO_Ccb_Base_Post
         $this->plugin = $plugin;
         $this->hooks();
 
+
+        /*edit 23. Aug */
+        add_filter('manage_lo-events_posts_columns', array($this, 'edit_lo_events_columns'));
+        add_action('manage_lo-events_posts_custom_column', array($this, 'lo_events_column'), 10, 2);
+        add_filter('manage_edit-lo-events_sortable_columns', array($this, 'lo_events_sortable_columns'));
+        add_action('pre_get_posts', array($this, 'lo_events_orderby'));
+        /*end*/
+
         add_action('plugins_loaded', array($this, 'filter_values'), 4);
+    }
+
+    /**
+     * Adding extra columns to the events list
+     *
+     * @since 0.27.0
+     */
+    public function edit_lo_events_columns($event_list_columns)
+    {
+        $date = $event_list_columns['date'];
+        unset($event_list_columns['date']);
+        $event_list_columns['group'] = __('Campus', 'lo-events');
+        $event_list_columns['date']  = $date;
+
+        return $event_list_columns;
+    }
+
+    /**
+     * Getting data for custom coloumn
+     *
+     * @param $event_list_column
+     * @param $post_id
+     *
+     * @since 0.27.0
+     */
+    public function lo_events_column($event_list_column, $post_id)
+    {
+        global $wpdb, $table_prefix;
+        switch ($event_list_column)
+        {
+            case 'group' :
+                $group_id   = get_post_meta($post_id, $this->meta_prefix . 'group_id', TRUE);
+                $group_data = $wpdb->get_var('SELECT data FROM ' . $table_prefix . $this->groups_db_prefix . ' WHERE ccb_group_id = ' . $group_id);
+                $group_name = json_decode($group_data);
+                echo $group_name->group->campus->value;
+                break;
+        }
+    }
+
+    /**
+     * Settings custom coloumn sortable
+     *
+     * @param $event_list_columns
+     *
+     * @return mixed
+     * @since 0.27.0
+     */
+    public function lo_events_sortable_columns($event_list_columns)
+    {
+        $event_list_columns['group'] = 'group';
+
+        return $event_list_columns;
+    }
+
+    /**
+     * run order by custom coloumn query
+     *
+     * @param $lo_events_query
+     *
+     * @since 0.27.0
+     */
+    public function lo_events_orderby($lo_events_query)
+    {
+        if ( ! is_admin())
+        {
+            return;
+        }
+        $orderby = $lo_events_query->get('orderby');
+        if ('group' == $orderby)
+        {
+            $lo_events_query->set('meta_key', $this->meta_prefix . 'group_id');
+            $lo_events_query->set('orderby', 'meta_value_num');
+        }
     }
 
     /**
@@ -282,10 +369,10 @@ class LO_Ccb_Events extends LO_Ccb_Base_Post
         {
             //gravity form select option
             $cmb_additional->add_field(array(
-                'name' => __('Select Gravity Form', 'liquid-outreach'),
-                'desc' => __('When this is selected, above page url will not be used.', 'liquid-outreach'),
-                'id'   => $prefix . 'gform',
-                'type' => 'select',
+                'name'       => __('Select Gravity Form', 'liquid-outreach'),
+                'desc'       => __('When this is selected, above page url will not be used.', 'liquid-outreach'),
+                'id'         => $prefix . 'gform',
+                'type'       => 'select',
                 'options_cb' => ['LO_Ccb_Events', 'get_gform_list'],
             ));
         }
@@ -520,14 +607,15 @@ class LO_Ccb_Events extends LO_Ccb_Base_Post
                 'org' => $args['event_org'],
             ];
             unset($args['bypass_uri_query'], $args['event_org']);
-        } else
+        }
+        else
         {
             $search_query = [
-                'key' => isset($_GET['lo-event-s']) ? $_GET['lo-event-s'] : '',
-                'cat' => isset($_GET['lo-event-cat']) ? $_GET['lo-event-cat'] : '',
-                'org' => isset($_GET['lo-event-org']) ? $_GET['lo-event-org'] : '',
-                'day' => isset($_GET['lo-event-day']) ? $_GET['lo-event-day'] : '',
-                'loc' => isset($_GET['lo-event-loc']) ? $_GET['lo-event-loc'] : '',
+                'key'  => isset($_GET['lo-event-s']) ? $_GET['lo-event-s'] : '',
+                'cat'  => isset($_GET['lo-event-cat']) ? $_GET['lo-event-cat'] : '',
+                'org'  => isset($_GET['lo-event-org']) ? $_GET['lo-event-org'] : '',
+                'day'  => isset($_GET['lo-event-day']) ? $_GET['lo-event-day'] : '',
+                'loc'  => isset($_GET['lo-event-loc']) ? $_GET['lo-event-loc'] : '',
                 'camp' => isset($_GET['lo-campus']) ? $_GET['lo-campus'] : '',
             ];
         }
