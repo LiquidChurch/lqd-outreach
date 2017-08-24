@@ -20,6 +20,7 @@ if ( ! isset($disable['nav']) || ! $disable['nav'])
         'menu_option_days'       => $this->get('menu_option_days'),
         'menu_option_partners'   => $this->get('menu_option_partners'),
         'menu_option_campus'     => $this->get('menu_option_campus'),
+        'force_cat_page'         => $this->get('force_cat_page'),
     ]);
 }
 ?>

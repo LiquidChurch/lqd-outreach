@@ -1215,10 +1215,9 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                 }
 
                 // Deleting the event post form the temporary PAI data table.
-                $wpdb->delete($wpdb->prefix . 'lo_ccb_events_api_data',
-                    ['ccb_event_id' => $datum['ccb_event_id']]);
-                $wpdb->delete($wpdb->prefix . 'lo_ccb_groups_api_data',
-                    ['ccb_group_id' => $datum['group_id']]);
+                $wpdb->delete($wpdb->prefix . 'lo_ccb_events_api_data', ['ccb_event_id' => $datum['ccb_event_id']]);
+                $wpdb->delete($wpdb->prefix . 'lo_ccb_groups_api_data', ['ccb_group_id' => $datum['group_id']]);
+                delete_transient('partner_post_' . $datum['group_id']);
             }
         }
     }
@@ -1288,7 +1287,12 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                     continue;
                 }
 
-                $partner_data = $this->create_partner_post($ccb_event_datum);
+                $partner_data = get_transient('partner_post_' . $ccb_event_datum['group_id']);
+                if (empty($partner_data))
+                {
+                    $partner_data = $this->create_partner_post($ccb_event_datum);
+                    set_transient('partner_post_' . $ccb_event_datum['group_id'], $partner_data, (60 * 60));
+                }
 
                 $ccb_event_datum_address = '';
                 if ( ! empty($ccb_event_datum['address']))
@@ -1296,7 +1300,15 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
                     $ccb_event_datum_address = is_array($ccb_event_datum['address']) ? implode(PHP_EOL, $ccb_event_datum['address']) : $ccb_event_datum['address'];
                 }
 
-                //create an event post
+                $campus = isset($partner_data['meta_input']['lo_ccb_event_partner_campus']) ? $partner_data['meta_input']['lo_ccb_event_partner_campus'] : NULL;
+                $campus_id = isset($partner_data['meta_input']['lo_ccb_event_partner_campus_id']) ? $partner_data['meta_input']['lo_ccb_event_partner_campus_id'] : NULL;
+                $campus_with_id = null;
+                if(!empty($campus) && !empty($campus_id))
+                {
+                    $campus_with_id = $campus_id . '|' . $campus;
+                }
+
+                    //create an event post
                 $event_post_data = [
                     'title'      => $this->set_post_title($ccb_event_datum['title']),
                     'content'    => $ccb_event_datum['description'],
@@ -1321,9 +1333,9 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
 
                         $event_post_meta_prefix . 'image' => $this->get_event_image($ccb_event_datum),
 
-                        $event_post_meta_prefix . 'campus' => isset($partner_data['meta_input']['lo_ccb_event_partner_campus']) ? $partner_data['meta_input']['lo_ccb_event_partner_campus'] : NULL,
-
-                        $event_post_meta_prefix . 'campus_id' => isset($partner_data['meta_input']['lo_ccb_event_partner_campus_id']) ? $partner_data['meta_input']['lo_ccb_event_partner_campus_id'] : NULL,
+                        $event_post_meta_prefix . 'campus' => $campus_with_id,
+                        $event_post_meta_prefix . 'campus_id' => $campus_id,
+                        $event_post_meta_prefix . 'campus_name' => $campus,
                     ]
                 ];
 
@@ -1521,51 +1533,51 @@ class LO_Ccb_Events_Sync extends Lo_Abstract
 
             $meta_input[$eventPartner_post_meta_prefix . 'location'] = [];
 
-            $partner_data_address
-                = isset($partner_data['group']['addresses']['address']) ? $partner_data['group']['addresses']['address'] : [];
+            $partner_data_address = isset($partner_data['group']['addresses']['address']) ? $partner_data['group']['addresses']['address'] : [];
 
-            isset($partner_data_address['street_address']) ?
-                $meta_input[$eventPartner_post_meta_prefix . 'location'][]
-                    = $partner_data_address['street_address'] : NULL;
+            isset($partner_data_address['street_address'])
+                ? $meta_input[$eventPartner_post_meta_prefix . 'location'][] = $partner_data_address['street_address']
+                : NULL;
 
-            isset($partner_data_address['city']) ?
-                $meta_input[$eventPartner_post_meta_prefix . 'location'][]
-                    = $partner_data_address['city'] : NULL;
+            isset($partner_data_address['city'])
+                ? $meta_input[$eventPartner_post_meta_prefix . 'location'][] = $partner_data_address['city']
+                : NULL;
 
-            isset($partner_data_address['state']) ?
-                $meta_input[$eventPartner_post_meta_prefix . 'location'][]
-                    = $partner_data_address['state'] : NULL;
+            isset($partner_data_address['state'])
+                ? $meta_input[$eventPartner_post_meta_prefix . 'location'][] = $partner_data_address['state']
+                : NULL;
 
-            isset($partner_data_address['zip']) ?
-                $meta_input[$eventPartner_post_meta_prefix . 'location'][]
-                    = $partner_data_address['zip'] : NULL;
+            isset($partner_data_address['zip'])
+                ? $meta_input[$eventPartner_post_meta_prefix . 'location'][] = $partner_data_address['zip']
+                : NULL;
 
-            isset($partner_data_address['line_1']) ?
-                $meta_input[$eventPartner_post_meta_prefix . 'location'][]
-                    = $partner_data_address['line_1'] : NULL;
+            isset($partner_data_address['line_1'])
+                ? $meta_input[$eventPartner_post_meta_prefix . 'location'][] = $partner_data_address['line_1']
+                : NULL;
 
-            isset($partner_data_address['line_2']) ?
-                $meta_input[$eventPartner_post_meta_prefix . 'location'][]
-                    = $partner_data_address['line_2'] : NULL;
+            isset($partner_data_address['line_2'])
+                ? $meta_input[$eventPartner_post_meta_prefix . 'location'][] = $partner_data_address['line_2']
+                : NULL;
 
-            $partner_data_main_lead
-                = isset($partner_data['group']['main_leader']) ? $partner_data['group']['main_leader'] : [];
+            $partner_data_main_lead = isset($partner_data['group']['main_leader'])
+                ? $partner_data['group']['main_leader']
+                : [];
 
-            isset($partner_data_main_lead['full_name']) ?
-                $meta_input[$eventPartner_post_meta_prefix . 'team_leader']
-                    = $partner_data_main_lead['full_name'] : NULL;
+            isset($partner_data_main_lead['full_name'])
+                ? $meta_input[$eventPartner_post_meta_prefix . 'team_leader'] = $partner_data_main_lead['full_name']
+                : NULL;
 
-            isset($partner_data_main_lead['id']) ?
-                $meta_input[$eventPartner_post_meta_prefix . 'team_leader_id']
-                    = $partner_data_main_lead['id'] : NULL;
+            isset($partner_data_main_lead['id'])
+                ? $meta_input[$eventPartner_post_meta_prefix . 'team_leader_id'] = $partner_data_main_lead['id']
+                : NULL;
 
-            isset($partner_data_main_lead['phones']['phone']['value']) ?
-                $meta_input[$eventPartner_post_meta_prefix . 'phone']
-                    = $partner_data_main_lead['phones']['phone']['value'] : NULL;
+            isset($partner_data_main_lead['phones']['phone']['value'])
+                ? $meta_input[$eventPartner_post_meta_prefix . 'phone'] = $partner_data_main_lead['phones']['phone']['value']
+                : NULL;
 
-            isset($partner_data_main_lead['email']) ?
-                $meta_input[$eventPartner_post_meta_prefix . 'email']
-                    = $partner_data_main_lead['email'] : NULL;
+            isset($partner_data_main_lead['email'])
+                ? $meta_input[$eventPartner_post_meta_prefix . 'email'] = $partner_data_main_lead['email']
+                : NULL;
 
             $partner_data_campus = isset($partner_data['group']['campus']) ? $partner_data['group']['campus'] : [];
 

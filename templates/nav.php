@@ -1,6 +1,7 @@
 <?php
-$page_settings = $this->get('page_settings');
-$page_link     = $this->get('page_link');
+$page_settings  = $this->get('page_settings');
+$page_link      = $this->get('page_link');
+$force_cat_page = $this->get('force_cat_page');
 ?>
 
 <nav class="navbar navbar-default lo-nav-custom" role="navigation">
@@ -79,15 +80,7 @@ $page_link     = $this->get('page_link');
                             echo '<ul class="dropdown-menu lo-dropdown-menu">';
                             foreach ($this->get('cities') as $val)
                             {
-                                if ( ! empty($page_link['page_query_arr']))
-                                {
-                                    $query = parse_url($page_link['search'], PHP_URL_QUERY) ? "&lo-event-loc={$val}" : "?lo-event-loc={$val}";
-                                    $link = $page_link['search'] . $query;
-                                }
-                                else
-                                {
-                                    $link = $page_link['search'] . "?lo-event-loc={$val}";
-                                }
+                                $link = $page_link['search'] . "?lo-event-loc={$val}";
                                 echo '<li><a href="' . $link . '">' . ucwords($val) . '</a></li>';
                             }
                             echo '</ul>';
@@ -117,15 +110,7 @@ $page_link     = $this->get('page_link');
 
                             foreach ($weekdays as $weekday)
                             {
-                                if ( ! empty($page_link['page_query_arr']))
-                                {
-                                    $query = parse_url($page_link['search'], PHP_URL_QUERY) ? "&lo-event-day={$weekday}" : "?lo-event-day={$weekday}";
-                                    $link = $page_link['search'] . $query;
-                                }
-                                else
-                                {
-                                    $link = $page_link['search'] . "?lo-event-day={$weekday}";
-                                }
+                                $link = $page_link['search'] . "?lo-event-day={$weekday}";
                                 echo '<li><a href="' . $link . '">' . $weekday . '</a></li>';
                             }
                             ?>
@@ -149,7 +134,30 @@ $page_link     = $this->get('page_link');
                             $link = $slug_base;
                         }
                         ?>
-                         <a href="<?php echo home_url($link) ?>">Partner Organizations</a>
+                        <a href="<?php echo home_url($link) ?>">Partner Organizations</a>
+                    </li>
+                    <?php
+                }
+                if ('true' == $this->get('menu_option_campus'))
+                {
+                    ?>
+                    <li class="dropdown lo-dropdown-submenu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                           aria-haspopup="true" aria-expanded="false">
+                            Campuses
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu lo-dropdown-menu" style="width: 150%;">
+                            <?php
+                            $campus_list = LO_Ccb_Base_Function::get_campus_list();
+
+                            foreach ($campus_list as $campus)
+                            {
+                                $campus_arr = explode('|', $campus);
+                                $link       = $page_link['search'] . "?lo-campus={$campus_arr[0]}";
+                                echo '<li><a href="' . $link . '">' . $campus_arr[1] . '</a></li>';
+                            }
+                            ?>
+                        </ul>
                     </li>
                     <?php
                 }
