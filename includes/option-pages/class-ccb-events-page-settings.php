@@ -198,6 +198,18 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
             'default' => '',
         ));
 
+        // DM-08-25-17
+        $cmb->add_field(array(
+        	'name'  => __('CCB URL', 'liquid-outreach'),
+	        'desc'  => __('Please enter your CCB URL (e.g. nameofchurch.ccbchurch.com).', 'liquid-outreach'),
+	        'id'    => $this->meta_prefix . 'ccb_api_base',
+	        'type'  => 'text',
+	        'attributes'    => [
+	        	'required'  => 'required',
+	        ],
+	        'default'   => '',
+        ));
+
         $cmb->add_field(array(
             'name' => 'Event attendance cron timer',
             'desc' => '',

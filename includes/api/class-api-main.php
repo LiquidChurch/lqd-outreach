@@ -47,15 +47,15 @@
          * @since 0.0.4
          */
         protected $api_name = '';
-        
-        /**
-         * The URL used to access the CCB API
-         *
-         * @var string  $api_base
-         * @since 0.0.4
-         */
-        protected $api_base = "https://liquidchurch.ccbchurch.com/api.php"; // TODO: Add this as an option on plugin options page, remove hard coding.
-        
+
+	    /**
+	     * The URL used to access the CCB API
+	     *
+	     * @var string  $api_base
+	     * @since 0.0.4
+	     */
+	    protected $api_base = '';
+
         /**
          * Arguments we are making to the CCB API
          *
@@ -110,12 +110,14 @@
         public function set_initial_api_args() {
             $username = lo_get_option( 'page', 'lo_events_page_ccb_api_username' );
             $password = lo_get_option( 'page', 'lo_events_page_ccb_api_password' );
+            $base_url = lo_get_option( 'page', 'lo_events_page_ccb_api_base' );
     
             $this->api_args = array(
                 'headers' => array(
                     'Authorization' => 'Basic ' . base64_encode($username . ":" . $password)
                 )
             );
+            $this->api_base = $base_url;
         }
         
         protected function call_ccb_api() {
