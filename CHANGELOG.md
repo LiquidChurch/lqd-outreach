@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 - Auto-Check Remaining Spots When User Registers [0.26.1]
 - Add Campus, Allow Sorting By  [0.26.2]
 - Add Shortcode Parameter: Show/Hide Partner Orgs [0.27.0]
+- Add Everyone Who Registers to Group [0.27.1]
 
 ### Changed
 
