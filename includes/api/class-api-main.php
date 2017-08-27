@@ -117,7 +117,7 @@
                     'Authorization' => 'Basic ' . base64_encode($username . ":" . $password)
                 )
             );
-            $this->api_base = $base_url;
+            $this->api_base = "https://" . $base_url . "/api.php";
         }
         
         protected function call_ccb_api() {
