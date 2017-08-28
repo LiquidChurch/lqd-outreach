@@ -531,9 +531,18 @@ function checkit($meta_prefix)
         <?php
             if(isset($_POST) && ! empty($_POST)) {
             ?>
-            $('html, body').animate({
-                scrollTop: $(".lo-gravity-form-container").offset().top
-            }, 2000);
+
+            if($(".gform_validation_error").length > 0) {
+                $('html, body').animate({
+                    scrollTop: $(".lo-gravity-login-form-container").offset().top
+                }, 2000);
+                $(".lo-gravity-form-container").hide();
+            } else {
+                $('html, body').animate({
+                    scrollTop: $(".lo-gravity-form-container").offset().top
+                }, 2000);
+            }
+
             <?php
             }
             ?>

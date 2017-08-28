@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 - Add Shortcode Parameter: Show/Hide Partner Orgs [0.27.0]
 - Add Everyone Who Registers to Group [0.27.1]
 - Update Registration Form Appearance [0.27.2]
+- Error Handling: Messaging on Login [0.27.3]
 
 ### Changed
 
