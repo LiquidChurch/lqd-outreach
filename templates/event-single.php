@@ -120,17 +120,48 @@ function checkit($meta_prefix)
                     if ( ! empty($register_gform))
                     {
                         // Now show them the register button.
-                        ?>
-                        <div class="row lo-event-register">
-                            <div class="col-md-12">
-                                <a href="javascript:void(0);"
-                                   id="lo-show-gravity-form-btn"
-                                   class="btn btn-primary pull-left lo-event-register-btn-top">
-                                    Show Register Form
-                                </a>
+                        if (CCB_GRAVITY_manage_session::if_user_logged_in())
+                        {
+                            ?>
+                            <div class="row lo-event-register">
+                                <div class="col-md-4">
+                                    <a href="javascript:void(0);"
+                                       id="lo-show-gravity-form-btn"
+                                       class="btn btn-primary pull-left lo-event-register-btn-top"
+                                       data-form-show="<?php echo (int)(isset($_POST) && ! empty($_POST)) ? 1 : 0 ?>">
+                                        <?php
+                                        if(isset($_POST) && ! empty($_POST)) {
+                                            echo 'Hide Register Form';
+                                        } else {
+                                            echo 'Show Register Form';
+                                        }
+                                        ?>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                        <?php
+                            <?php
+                        }
+                        else
+                        {
+                            ?>
+                            <div class="row lo-event-register">
+                                <div class="col-md-4">
+                                    <a href="javascript:void(0);"
+                                       id="lo-show-gravity-login-form-btn"
+                                       class="btn btn-primary pull-left lo-event-register-btn-top">
+                                        Login to LiquidConnect to Register
+                                    </a>
+                                </div>
+                                <div class="col-md-4">
+                                    <a href="javascript:void(0);"
+                                       id="lo-show-gravity-not-login-reg-form-btn"
+                                       class="btn btn-primary pull-left lo-event-register-btn-top">
+                                        Register Without A LiquidConnect Account
+                                    </a>
+                                </div>
+                            </div>
+                            <?php
+                        }
                     }
                     else
                     {
@@ -422,47 +453,46 @@ function checkit($meta_prefix)
         </div>
 
         <?php
-        if ( ! empty($register_gform))
+        if ( ! empty($register_gform) && ! CCB_GRAVITY_manage_session::if_user_logged_in())
         {
             ?>
-            <div class="row lo-gravity-form-container" <?php echo (isset($_POST) && ! empty($_POST)) ? 'style="display: block;"' : 'style="display: none;"' ?>>
+            <!--cbb login form-->
+            <div class="row lo-gravity-login-form-container" <?php echo (isset($_POST) && ! empty($_POST)) ? 'style="display: block;"' : 'style="display: none;"' ?>>
                 <?php
-                if ( ! CCB_GRAVITY_manage_session::if_user_logged_in())
-                {
-                    $login_gform = ccb_gravity_get_option('option', 'ccb_gravity_option_ccb_login_gform');
-                    ?>
-                    <div class="col-md-12 lqd-login">
-                        <?php
-                        echo do_shortcode("[gravityform id={$login_gform} title=true description=true ajax=false]");
-                        ?>
-                    </div>
-                    <?php
-                }
-                else
-                {
-                    $args = array(
-                        'user_data' => isset($_SESSION['ccb_plugin']['user_profile']) ? $_SESSION['ccb_plugin']['user_profile'] : array()
-                    );
-                    echo '<div class="col-md-12">';
-                    echo CCB_GRAVITY_Template_Loader::get_template('gform/ccb-gform-user-logged-in', $args);
-                    echo '</div>';
-                    ?>
-                    <?php
-                }
+                $login_gform = ccb_gravity_get_option('option', 'ccb_gravity_option_ccb_login_gform');
                 ?>
-                <div class="col-md-12 lqd-register">
+                <div class="col-md-12 lqd-login">
                     <?php
-                    echo do_shortcode("[gravityform id={$register_gform} title=true description=false ajax=true]");
+                    echo do_shortcode("[gravityform id={$login_gform} title=true description=true ajax=false]");
                     ?>
                 </div>
             </div>
             <?php
         }
-        else
-        {
+        ?>
 
-            echo do_shortcode('[ccb_gform login_form_id="25" login_form_title="true" login_form_description="true" user_form_id="26" user_form_title="true" user_form_description="true"]');
-        }
+        <!--Event registration form-->
+        <div class="row lo-gravity-form-container" <?php echo (isset($_POST) && ! empty($_POST)) ? 'style="display: block;"' : 'style="display: none;"' ?>>
+            <?php
+            if (CCB_GRAVITY_manage_session::if_user_logged_in())
+            {
+                $args = array(
+                    'user_data' => isset($_SESSION['ccb_plugin']['user_profile']) ? $_SESSION['ccb_plugin']['user_profile'] : array()
+                );
+                echo '<div class="col-md-12">';
+                echo CCB_GRAVITY_Template_Loader::get_template('gform/ccb-gform-user-logged-in', $args);
+                echo '</div>';
+                ?>
+                <?php
+            }
+            ?>
+            <div class="col-md-12 lqd-register">
+                <?php
+                echo do_shortcode("[gravityform id={$register_gform} title=true description=false ajax=true]");
+                ?>
+            </div>
+        </div>
+        <?php
         ?>
 
     </div><!--/.row-->
@@ -472,6 +502,18 @@ function checkit($meta_prefix)
     {
         $(document).ready(function ()
         {
+            $("#lo-show-gravity-login-form-btn").click(function ()
+            {
+                $(".lo-gravity-form-container").hide(300);
+                $(".lo-gravity-login-form-container").show(300);
+            });
+
+            $("#lo-show-gravity-not-login-reg-form-btn").click(function ()
+            {
+                $(".lo-gravity-login-form-container").hide(300);
+                $(".lo-gravity-form-container").show(300);
+            });
+
             $("#lo-show-gravity-form-btn").click(function ()
             {
                 if (typeof $(this).data('form-show') == 'undefined' || $(this).data('form-show') == 0)
@@ -486,7 +528,7 @@ function checkit($meta_prefix)
                 $(".lo-gravity-form-container").toggle(300);
             });
 
-            <?php
+        <?php
             if(isset($_POST) && ! empty($_POST)) {
             ?>
             $('html, body').animate({
