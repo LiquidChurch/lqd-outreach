@@ -3,7 +3,9 @@ $disable = $this->get('disable');
 $page_link = $this->get('page_link');
 
 if(!isset($disable['header']) || !$disable['header']) {
-    LO_Template_Loader::output_template('header');
+    LO_Template_Loader::output_template('header', [
+        'force_cat_page'         => $this->get('force_cat_page'),
+    ]);
 }
 
 if(!isset($disable['nav']) || !$disable['nav']) {

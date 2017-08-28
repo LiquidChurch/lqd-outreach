@@ -465,6 +465,13 @@ class LO_Ccb_Events_Page_Settings extends LO_Base_Option_Page
         ));
 
         $cmb->add_group_field($category_mapping_id, array(
+            'name' => __('Default Header Image', 'liquid-outreach'),
+            'desc' => __('Choose a header image that will be used for all the pages.', 'liquid-outreach' ),
+            'id' => 'default_header_image',
+            'type' => 'file',
+        ));
+
+        $cmb->add_group_field($category_mapping_id, array(
             'name' => 'Select menu options for the category below',
             'desc' => '',
             'type' => 'title',

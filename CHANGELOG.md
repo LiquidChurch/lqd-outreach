@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 - Add Everyone Who Registers to Group [0.27.1]
 - Update Registration Form Appearance [0.27.2]
 - Error Handling: Messaging on Login [0.27.3]
+- Set Header Across Pages Shortcode Parameter [0.27.4]
 
 ### Changed
 
