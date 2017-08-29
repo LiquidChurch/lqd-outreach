@@ -42,7 +42,7 @@ VanderTable Responsive CSS
 }
 .VanderTable th:nth-child(2) {
     display: table-cell;
-    width:40%;
+    width:30%;
 }
 .VanderTable th:nth-child(2):after {
     content: attr(data-th);
@@ -54,6 +54,10 @@ VanderTable Responsive CSS
     .VanderTable th:nth-child(2):after {
         display: none;
     }
+}
+.VanderTable th:nth-child(6) {
+    display: table-cell;
+    width:15%;
 }
 .VanderTable td {
     display: block;

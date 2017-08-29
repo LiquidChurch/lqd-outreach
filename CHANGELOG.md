@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 - Update Registration Form Appearance [0.27.2]
 - Error Handling: Messaging on Login [0.27.3]
 - Set Header Across Pages Shortcode Parameter [0.27.4]
+- Add Column Campuses to List View, Sortable [0.27.5]
 
 ### Changed
 
