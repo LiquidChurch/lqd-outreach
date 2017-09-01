@@ -111,12 +111,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/CMB2/CMB2.git",
-                "reference": "63f09c0715c223def9ab6f39343737b661e68411"
+                "reference": "1464c84dd1696aa29c8c7ef7641a699b625f2e7b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CMB2/CMB2/zipball/63f09c0715c223def9ab6f39343737b661e68411",
-                "reference": "63f09c0715c223def9ab6f39343737b661e68411",
+                "url": "https://api.github.com/repos/CMB2/CMB2/zipball/1464c84dd1696aa29c8c7ef7641a699b625f2e7b",
+                "reference": "1464c84dd1696aa29c8c7ef7641a699b625f2e7b",
                 "shasum": ""
             },
             "require": {
@@ -160,7 +160,7 @@
                 "plugin",
                 "wordpress"
             ],
-            "time": "2017-08-17 22:24:37"
+            "time": "2017-08-30 14:03:47"
         },
         {
             "name": "webdevstudios/cpt-core",
